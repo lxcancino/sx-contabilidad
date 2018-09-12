@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "sx-contabilidad-admin": {
+    "contabilidad-admin": {
       "root": "",
       "sourceRoot": "src",
       "projectType": "application",
@@ -47,18 +47,18 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "sx-contabilidad-admin:build"
+            "browserTarget": "contabilidad-admin:build"
           },
           "configurations": {
             "production": {
-              "browserTarget": "sx-contabilidad-admin:build:production"
+              "browserTarget": "contabilidad-admin:build:production"
             }
           }
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "sx-contabilidad-admin:build"
+            "browserTarget": "contabilidad-admin:build"
           }
         },
         "test": {
@@ -86,7 +86,7 @@
         }
       }
     },
-    "sx-contabilidad-admin-e2e": {
+    "contabilidad-admin-e2e": {
       "root": "",
       "sourceRoot": "",
       "projectType": "application",
@@ -95,7 +95,7 @@
           "builder": "@angular-devkit/build-angular:protractor",
           "options": {
             "protractorConfig": "./protractor.conf.js",
-            "devServerTarget": "sx-contabilidad-admin:serve"
+            "devServerTarget": "contabilidad-admin:serve"
           }
         },
         "lint": {
@@ -108,7 +108,7 @@
       }
     }
   },
-  "defaultProject": "sx-contabilidad-admin",
+  "defaultProject": "contabilidad-admin",
   "schematics": {
     "@schematics/angular:component": {
       "inlineStyle": true,

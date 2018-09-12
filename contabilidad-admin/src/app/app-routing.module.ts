@@ -12,10 +12,10 @@ const routes: Routes = [
     canActivate: [AuthGuard],
     children: [
       { path: '', component: HomePageComponent },
-      // {
-      //   path: 'catalogos',
-      //   loadChildren: './productos/productos.module#ProductosModule'
-      // }
+      {
+        path: 'costos',
+        loadChildren: './costos/costos.module#CostosModule'
+      }
     ]
   }
 ];
