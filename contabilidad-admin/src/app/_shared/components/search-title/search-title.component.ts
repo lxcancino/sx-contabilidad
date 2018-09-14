@@ -7,7 +7,8 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
     <span class="push-left-sm">
       <span class="mat-title">{{title}}</span>
     </span>
-    <ng-content select=".info"></ng-content>
+    <span flex></span>
+    <ng-content select=".info" flex></ng-content>
     <span flex></span>
     <td-search-box class="push-right-sm" placeholder="{{searchLabel}}" flex (searchDebounce)="search.emit($event)">
     </td-search-box>
@@ -24,9 +25,12 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
   `
 })
 export class SearchTitleComponent implements OnInit {
-  @Input() title = 'Title';
-  @Input() searchLabel: 'Buscar';
-  @Output() search = new EventEmitter();
+  @Input()
+  title = 'Title';
+  @Input()
+  searchLabel: 'Buscar';
+  @Output()
+  search = new EventEmitter();
   constructor() {}
 
   ngOnInit() {}

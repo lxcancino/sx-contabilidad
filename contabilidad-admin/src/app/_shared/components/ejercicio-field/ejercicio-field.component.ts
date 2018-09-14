@@ -6,7 +6,7 @@ import { FormGroup } from '@angular/forms';
   template: `
   <ng-container [formGroup]="parent">
     <mat-form-field class="fill" >
-      <mat-select placeholder="Año" formControlName="ejercicio" class="fill">
+      <mat-select placeholder="Ejercicio" formControlName="ejercicio" class="fill">
         <mat-option *ngFor="let year of years"
             [value]="year">{{ year }}
         </mat-option>
@@ -16,14 +16,15 @@ import { FormGroup } from '@angular/forms';
   `,
   styles: [
     `
-    .fill {
-      width: 100%;
-    }
+      .fill {
+        width: 100%;
+      }
     `
   ]
 })
 export class EjercicioFieldComponent implements OnInit {
-  @Input() parent: FormGroup;
+  @Input()
+  parent: FormGroup;
 
   years = [2017, 2018, 2019, 2020];
 

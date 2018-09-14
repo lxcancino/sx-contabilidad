@@ -15,24 +15,9 @@ export class MainPageComponent implements OnInit {
       title: 'Inicio'
     },
     {
-      icon: 'storage',
-      route: '/catalogos',
-      title: 'Productos'
-    },
-    {
-      icon: 'people',
-      route: '/proveedores',
-      title: 'Proveedores'
-    },
-    {
-      icon: 'shopping_cart',
-      route: '/ordenes',
-      title: 'Ordenes'
-    },
-    {
-      icon: 'my_library_books',
-      route: '/cxp',
-      title: 'Cuentas por pagar (CXP)'
+      icon: 'settings_input_component',
+      route: '/costos',
+      title: 'Costos'
     }
   ];
 

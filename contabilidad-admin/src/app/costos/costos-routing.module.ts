@@ -1,10 +1,25 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
-const routes: Routes = [];
+import * as fromContainers from './containers';
+import * as fromGuards from './guards';
+
+const routes: Routes = [
+  {
+    path: '',
+    component: fromContainers.CostosPageComponent,
+    children: [
+      {
+        path: 'promedios',
+        canActivate: [fromGuards.CostosPromedioGuard],
+        component: fromContainers.CostosPromedioComponent
+      }
+    ]
+  }
+];
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule]
 })
-export class CostosRoutingModule { }
+export class CostosRoutingModule {}
