@@ -24,7 +24,7 @@ export class CalculoPorProductoDialogComponent implements OnInit {
   periodo: { ejercicio: number; mes: number };
   form: FormGroup;
   title;
-  productoRequerido: boolean;
+  productoRequerido = true;
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
@@ -35,31 +35,35 @@ export class CalculoPorProductoDialogComponent implements OnInit {
       ejercicio: new Date().getFullYear(),
       mes: new Date().getMonth()
     };
-    if (data.productoRequerido) {
-      this.productoRequerido = data.productoRequerido;
-    }
+    this.productoRequerido = data.productoRequerido;
+    console.log('Prd requerido: ', this.productoRequerido);
+    console.log('Data: ', this.data);
     this.buildForm();
-    console.log('El producto es requerido: ', this.productoRequerido);
-    console.log('Data: ', data);
-    if (!this.productoRequerido) {
-      this.form.get('producto').setValidators([]);
-    }
   }
 
   buildForm() {
     this.form = this.fb.group({
       ejercicio: [this.periodo.ejercicio, Validators.required],
       mes: [this.periodo.mes, Validators.required],
-      producto: [null, Validators.required]
+      producto: [null, this.productoRequerido ? [Validators.required] : []]
     });
   }
 
   getData() {
     if (this.form.valid) {
-      return {
-        ...this.form.value,
-        producto: this.form.get('producto').value.clave
-      };
+      const producto = this.form.get('producto').value;
+      if (producto !== null) {
+        return {
+          ...this.form.value,
+          producto: producto.clave
+        };
+      } else {
+        const { ejercicio, mes } = this.form.value;
+        return {
+          ejercicio,
+          mes
+        };
+      }
     }
     return null;
   }

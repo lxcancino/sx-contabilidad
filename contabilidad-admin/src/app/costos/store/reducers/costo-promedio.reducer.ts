@@ -10,16 +10,20 @@ export interface State extends EntityState<CostoPromedio> {
   loading: boolean;
   loaded: boolean;
   periodo: { ejercicio: number; mes: number };
+  selectedId: number;
 }
 
 export const adapter: EntityAdapter<CostoPromedio> = createEntityAdapter<
   CostoPromedio
->();
+>({
+  sortComparer: (costoA, costoB) => costoA.clave.localeCompare(costoB.clave)
+});
 
 export const initialState: State = adapter.getInitialState({
   loading: false,
   loaded: false,
-  periodo: { ejercicio: 2018, mes: 1 } // Periodo.getEjercicioMes()
+  periodo: { ejercicio: 2018, mes: 1 }, // Periodo.getEjercicioMes(),
+  selectedId: undefined
 });
 
 export function reducer(state = initialState, action: CostosActions): State {
@@ -66,6 +70,14 @@ export function reducer(state = initialState, action: CostosActions): State {
       });
     }
 
+    case CostoActionTypes.SetSelectedCosto: {
+      const selectedId = action.payload.selected;
+      return {
+        ...state,
+        selectedId
+      };
+    }
+
     default: {
       return state;
     }
@@ -82,3 +94,4 @@ export const {
 export const getCostosLoading = (state: State) => state.loading;
 export const getCostosLoaded = (state: State) => state.loaded;
 export const getPeriodoDeCosto = (state: State) => state.periodo;
+export const getSelectedCostoId = (state: State) => state.selectedId;

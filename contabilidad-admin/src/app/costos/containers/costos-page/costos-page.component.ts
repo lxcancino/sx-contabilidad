@@ -41,6 +41,7 @@ export class CostosPageComponent implements OnInit {
   ];
 
   loading$: Observable<boolean>;
+  periodo$: Observable<{ ejercicio: number; mes: number }>;
 
   constructor(
     public media: TdMediaService,
@@ -51,6 +52,7 @@ export class CostosPageComponent implements OnInit {
 
   ngOnInit() {
     this.loading$ = this.store.pipe(select(fromStore.getCostosLoading));
+    this.periodo$ = this.store.pipe(select(fromStore.getCostosPeriodo));
   }
 
   comsSinAnalizar() {
@@ -98,10 +100,14 @@ export class CostosPageComponent implements OnInit {
       });
   }
 
-  movimientosCosteados() {
+  movimientosCosteados(periodo: { ejercicio: number; mes: number }) {
     this.dialog
       .open(CalculoPorProductoDialogComponent, {
-        data: { title: 'Movimientos costeados', productoRequerido: false }
+        data: {
+          title: 'Movimientos costeados',
+          productoRequerido: false,
+          periodo
+        }
       })
       .afterClosed()
       .subscribe(res => {

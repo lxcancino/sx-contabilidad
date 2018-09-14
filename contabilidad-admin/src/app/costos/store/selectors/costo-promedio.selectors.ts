@@ -36,10 +36,23 @@ export const getCostosPeriodo = createSelector(
   fromCostos.getPeriodoDeCosto
 );
 
-export const getSelectedCosto = createSelector(
+export const getSCurrentCosto = createSelector(
   getCostosEntities,
   fromRoot.getRouterState,
   (entities, router): CostoPromedio => {
     return router.state && entities[router.state.params.costoId];
+  }
+);
+
+export const getSelectedCostoId = createSelector(
+  getCostoPromedioState,
+  fromCostos.getSelectedCostoId
+);
+
+export const getSelectedCosto = createSelector(
+  getCostosEntities,
+  getSelectedCostoId,
+  (entities, costoId) => {
+    return entities[costoId];
   }
 );

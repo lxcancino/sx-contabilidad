@@ -2,12 +2,14 @@ import { CostosTableComponent } from './costos-table/costos-table.component';
 import { PeriodoCostosDialogComponent } from './periodo-costos-dialog/periodo-costos-dialog.component';
 import { CalculoPorProductoDialogComponent } from './calculo-por-producto-dialog/calculo-por-producto-dialog.component';
 import { InventarioCosteadoDialogComponent } from './inventario-costeado-dialog/inventario-costeado-dialog.component';
+import { AnalisisCostoComponent } from './analisis-costo/analisis-costo.component';
 
 export const components: any[] = [
   CostosTableComponent,
   PeriodoCostosDialogComponent,
   CalculoPorProductoDialogComponent,
-  InventarioCosteadoDialogComponent
+  InventarioCosteadoDialogComponent,
+  AnalisisCostoComponent
 ];
 export const entryComponents: any[] = [
   PeriodoCostosDialogComponent,
@@ -19,3 +21,4 @@ export * from './costos-table/costos-table.component';
 export * from './periodo-costos-dialog/periodo-costos-dialog.component';
 export * from './calculo-por-producto-dialog/calculo-por-producto-dialog.component';
 export * from './inventario-costeado-dialog/inventario-costeado-dialog.component';
+export * from './analisis-costo/analisis-costo.component';

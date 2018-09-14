@@ -46,6 +46,9 @@ export class CostosTableComponent implements OnInit, OnChanges {
   @Output()
   select = new EventEmitter();
 
+  @Input()
+  selectedId: number;
+
   constructor() {}
 
   ngOnInit() {

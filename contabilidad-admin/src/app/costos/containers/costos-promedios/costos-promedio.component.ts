@@ -29,12 +29,17 @@ import { ReportService } from '../../../reportes/services/report.service';
 
       </sx-search-title>
       <mat-divider></mat-divider>
-      <sx-costos-table [costos]="costos$ | async" [filter]="search$ | async"></sx-costos-table>
+      <sx-costos-table [costos]="costos$ | async" [filter]="search$ | async" (select)="onSelect($event)"
+      [selectedId]="(selected$ | async)?.id"></sx-costos-table>
     </mat-card>
+    <div *ngIf="selected$ | async as selected">
+      <sx-analisis-costo [costo]="selected" (close)="closeAnalisis()"></sx-analisis-costo>
+    </div>
   `
 })
 export class CostosPromedioComponent implements OnInit {
   costos$: Observable<CostoPromedio[]>;
+  selected$: Observable<CostoPromedio>;
   periodo$: Observable<{ ejercicio: number; mes: number }>;
   search$ = new Subject<string>();
 
@@ -48,9 +53,14 @@ export class CostosPromedioComponent implements OnInit {
   ngOnInit() {
     this.periodo$ = this.store.pipe(select(fromStore.getCostosPeriodo));
     this.costos$ = this.store.pipe(select(fromStore.getAllCostos));
+    this.selected$ = this.store.pipe(select(fromStore.getSelectedCosto));
   }
 
-  onSelect() {}
+  onSelect(event: CostoPromedio) {
+    this.store.dispatch(
+      new fromActions.SetSelectedCosto({ selected: event.id })
+    );
+  }
 
   onSearch(event: string) {
     this.search$.next(event);
@@ -89,5 +99,9 @@ export class CostosPromedioComponent implements OnInit {
         cancelButton: 'Cancelar'
       })
       .afterClosed();
+  }
+
+  closeAnalisis() {
+    this.store.dispatch(new fromActions.SetSelectedCosto({ selected: null }));
   }
 }

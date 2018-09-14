@@ -13,4 +13,5 @@ export interface CostoPromedio {
   creeado?: string;
   modificado?: string;
   dirferencia?: number;
+  selected?: boolean;
 }
