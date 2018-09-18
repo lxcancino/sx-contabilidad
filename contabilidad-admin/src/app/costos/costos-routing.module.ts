@@ -13,6 +13,11 @@ const routes: Routes = [
         path: 'promedios',
         canActivate: [fromGuards.CostosPromedioGuard],
         component: fromContainers.CostosPromedioComponent
+      },
+      {
+        path: 'movimientos',
+        canActivate: [fromGuards.MovimientosCostoGuard],
+        component: fromContainers.MovimientosCosteadosComponent
       }
     ]
   }

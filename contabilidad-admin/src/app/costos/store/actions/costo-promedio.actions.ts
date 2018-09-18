@@ -10,6 +10,9 @@ export enum CostoActionTypes {
   CalculoDeCostoPromedio = '[CostoPromedio] Calculo de costo promedio',
   CalculoDeCostoPromedioFail = '[CostoPromedio] Calculo de costo promedio fail',
   CalculoDeCostoPromedioSuccess = '[CostoPromedio] Calculo de costo promedio success',
+  AplicarCostoPromedio = '[CostoPromedio] Aplicare costo promedio',
+  AplicarCostoPromedioFail = '[CostoPromedio] Aplicare costo promedio fail',
+  AplicarCostoPromedioSuccess = '[CostoPromedio] Aplicare costo promedio success',
   SetSelectedCosto = '[CostoPromedio] Set selected costo'
 }
 
@@ -47,6 +50,20 @@ export class CalculoDeCostoPromedioSuccess implements Action {
   constructor(public payload: { costos: CostoPromedio[] }) {}
 }
 
+export class AplicarCostoPromedio implements Action {
+  readonly type = CostoActionTypes.AplicarCostoPromedio;
+  constructor(
+    public payload: { periodo: { ejercicio: number; mes: number } }
+  ) {}
+}
+export class AplicarCostoPromedioFail implements Action {
+  readonly type = CostoActionTypes.AplicarCostoPromedioFail;
+  constructor(public payload: any) {}
+}
+export class AplicarCostoPromedioSuccess implements Action {
+  readonly type = CostoActionTypes.AplicarCostoPromedioSuccess;
+}
+
 export class SetSelectedCosto implements Action {
   readonly type = CostoActionTypes.SetSelectedCosto;
   constructor(public payload: { selected: number }) {}
@@ -60,4 +77,7 @@ export type CostosActions =
   | CalculoDeCostoPromedio
   | CalculoDeCostoPromedioFail
   | CalculoDeCostoPromedioSuccess
+  | AplicarCostoPromedio
+  | AplicarCostoPromedioFail
+  | AplicarCostoPromedioSuccess
   | SetSelectedCosto;

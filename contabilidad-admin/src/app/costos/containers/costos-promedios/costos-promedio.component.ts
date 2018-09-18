@@ -26,6 +26,9 @@ import { ReportService } from '../../../reportes/services/report.service';
       <button class="actions" mat-menu-item (click)="calcularCostoPromedio(periodo)">
         <mat-icon>settings</mat-icon> Generar cálculo
       </button>
+      <button class="actions" mat-menu-item (click)="aplicarCostoPromedio(periodo)">
+        <mat-icon>swap_vertical_circle</mat-icon> Aplicar costos
+      </button>
 
       </sx-search-title>
       <mat-divider></mat-divider>
@@ -85,6 +88,19 @@ export class CostosPromedioComponent implements OnInit {
       if (res) {
         this.store.dispatch(
           new fromActions.CalculoDeCostoPromedio({ periodo: event })
+        );
+      }
+    });
+  }
+
+  aplicarCostoPromedio(event: { ejercicio: number; mes: number }) {
+    this.confirm(
+      `Periodo ${event.mes} -  ${event.ejercicio}`,
+      `Costear el inventario y sus movimientos?`
+    ).subscribe(res => {
+      if (res) {
+        this.store.dispatch(
+          new fromActions.AplicarCostoPromedio({ periodo: event })
         );
       }
     });

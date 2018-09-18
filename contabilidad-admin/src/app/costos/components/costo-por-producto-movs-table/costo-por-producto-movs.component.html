@@ -1,0 +1,98 @@
+<table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8">
+
+  <ng-container matColumnDef="clave">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header>Clave</th>
+    <td mat-cell *matCellDef="let costop">{{costop.clave}}</td>
+  </ng-container>
+
+  <ng-container matColumnDef="descripcion">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header>Descripción</th>
+    <td mat-cell *matCellDef="let costop">{{costop.descripcion}}</td>
+  </ng-container>
+
+  <ng-container matColumnDef="comsSinAUni">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header>Coms S/A(U)</th>
+    <td mat-cell *matCellDef="let row">{{row.comsSinAUni}}</td>
+  </ng-container>
+  <ng-container matColumnDef="comsSinA">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header>Coms S/A</th>
+    <td mat-cell *matCellDef="let row">{{row.comsSinA}}</td>
+  </ng-container>
+  <ng-container matColumnDef="comsUni">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header>Coms (U)</th>
+    <td mat-cell *matCellDef="let row">{{row.comsUni}}</td>
+  </ng-container>
+  <ng-container matColumnDef="comsCosto">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header>Coms ($)</th>
+    <td mat-cell *matCellDef="let row">{{row.comsCosto}}</td>
+  </ng-container>
+
+
+  <ng-container matColumnDef="movsUni">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header>Movs (U)</th>
+    <td mat-cell *matCellDef="let row">{{row.movsUni}}</td>
+  </ng-container>
+  <ng-container matColumnDef="movsCosto">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header>Movs ($)</th>
+    <td mat-cell *matCellDef="let row">{{row.movsCosto}}</td>
+  </ng-container>
+
+
+  <ng-container matColumnDef="decUni">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header>DEC (U)</th>
+    <td mat-cell *matCellDef="let row">{{row.decUni}}</td>
+  </ng-container>
+  <ng-container matColumnDef="decCosto">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header>DEC ($)</th>
+    <td mat-cell *matCellDef="let row">{{row.decCosto}}</td>
+  </ng-container>
+
+
+
+  <ng-container matColumnDef="trasladosUni">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header>Traslados (U)</th>
+    <td mat-cell *matCellDef="let row">{{row.trasladosUni}}</td>
+  </ng-container>
+  <ng-container matColumnDef="trasladosCosto">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header>Traslados ($)</th>
+    <td mat-cell *matCellDef="let row">{{row.trasladosCosto}}</td>
+  </ng-container>
+
+  <ng-container matColumnDef="trsSalUni">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header>TRS Sal(U)</th>
+    <td mat-cell *matCellDef="let row">{{row.trsSalUni}}</td>
+  </ng-container>
+  <ng-container matColumnDef="trsSalCosto">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header>TRS Sal($)</th>
+    <td mat-cell *matCellDef="let row">{{row.trsSalCosto}}</td>
+  </ng-container>
+  <ng-container matColumnDef="trsEntUni">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header>TRS Ent(U)</th>
+    <td mat-cell *matCellDef="let row">{{row.trsEntCosto}}</td>
+  </ng-container>
+
+  <ng-container matColumnDef="devUni">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header>DEV (U)</th>
+    <td mat-cell *matCellDef="let row">{{row.devUni}}</td>
+  </ng-container>
+  <ng-container matColumnDef="devCosto">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header>DEV ($)</th>
+    <td mat-cell *matCellDef="let row">{{row.devCosto}}</td>
+  </ng-container>
+
+
+  <ng-container matColumnDef="vtaUni">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header>VTA (U)</th>
+    <td mat-cell *matCellDef="let row">{{row.vtaUni}}</td>
+  </ng-container>
+  <ng-container matColumnDef="vtaCosto">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header>VTA ($)</th>
+    <td mat-cell *matCellDef="let row">{{row.vtaCosto}}</td>
+  </ng-container>
+
+  <tr mat-header-row *matHeaderRowDef="displayColumns"></tr>
+  <tr mat-row *matRowDef="let costop; columns: displayColumns" class="cursor-pointer" (click)="select.emit(costop)"
+    [ngClass]="{'active': costop.clave === selectedId}">
+  </tr>
+</table>
+<mat-paginator [pageSizeOptions]="[ 10, 20, 50, 100, 200]" showFirstLastButtons></mat-paginator>

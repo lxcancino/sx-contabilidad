@@ -37,12 +37,19 @@ export function reducer(state = initialState, action: CostosActions): State {
       });
     }
 
-    case CostoActionTypes.CalculoDeCostoPromedioFail:
     case CostoActionTypes.LoadCostosFail: {
       return {
         ...state,
         loading: false,
         loaded: false
+      };
+    }
+
+    case CostoActionTypes.AplicarCostoPromedioFail:
+    case CostoActionTypes.CalculoDeCostoPromedioFail: {
+      return {
+        ...state,
+        loading: false
       };
     }
 
@@ -54,6 +61,7 @@ export function reducer(state = initialState, action: CostosActions): State {
       });
     }
 
+    case CostoActionTypes.AplicarCostoPromedio:
     case CostoActionTypes.CalculoDeCostoPromedio:
     case CostoActionTypes.LoadCostos: {
       return {
@@ -68,6 +76,13 @@ export function reducer(state = initialState, action: CostosActions): State {
         ...state,
         loading: false
       });
+    }
+
+    case CostoActionTypes.AplicarCostoPromedioSuccess: {
+      return {
+        ...state,
+        loading: false
+      };
     }
 
     case CostoActionTypes.SetSelectedCosto: {

@@ -57,9 +57,26 @@ export class CostoPromedioEffects {
   );
 
   @Effect()
+  aplicarCosto$ = this.actions$.pipe(
+    ofType<fromActions.AplicarCostoPromedio>(
+      CostoActionTypes.AplicarCostoPromedio
+    ),
+    map(action => action.payload.periodo),
+    switchMap(periodo => {
+      return this.service.aplicarCosto(periodo).pipe(
+        map(res => new fromActions.AplicarCostoPromedioSuccess()),
+        catchError(response =>
+          of(new fromActions.AplicarCostoPromedioFail({ response }))
+        )
+      );
+    })
+  );
+
+  @Effect()
   cambiarPeriodo$ = this.actions$.pipe(
     ofType<fromActions.SetPeriodoDeCostos>(CostoActionTypes.SetPeriodoDeCostos),
-    map( () => new fromActions.LoadCostos()));
+    map(() => new fromActions.LoadCostos())
+  );
 
   /**
    * Redirects Http errors to Root Effects handler

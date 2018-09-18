@@ -9,7 +9,8 @@ import { Observable } from 'rxjs';
 import { MatDialog } from '@angular/material';
 import {
   CalculoPorProductoDialogComponent,
-  InventarioCosteadoDialogComponent
+  InventarioCosteadoDialogComponent,
+  ReportComsSinAnalizarComponent
 } from '../../components';
 import { ReportService } from '../../../reportes/services/report.service';
 
@@ -33,10 +34,10 @@ export class CostosPageComponent implements OnInit {
       icon: 'account_balance_wallet'
     },
     {
-      route: 'inventario',
-      title: 'Inventario ',
-      description: 'Inventario costeado',
-      icon: 'rate_review'
+      route: 'movimientos',
+      title: 'Movimientos ',
+      description: 'Movimientos costeados',
+      icon: 'swap_horiz'
     }
   ];
 
@@ -56,7 +57,6 @@ export class CostosPageComponent implements OnInit {
   }
 
   comsSinAnalizar() {
-    /*
     this.dialog
       .open(ReportComsSinAnalizarComponent, {
         data: {},
@@ -71,7 +71,6 @@ export class CostosPageComponent implements OnInit {
           );
         }
       });
-      */
   }
 
   calculoDeCostoPromedio() {

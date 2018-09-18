@@ -35,6 +35,16 @@ export class CostoPromedioService {
       .pipe(catchError((error: any) => throwError(error)));
   }
 
+  aplicarCosto(periodo: {
+    ejercicio: number;
+    mes: number;
+  }): Observable<CostoPromedio[]> {
+    const url = `${this.apiUrl}/aplicar/${periodo.ejercicio}/${periodo.mes}`;
+    return this.http
+      .post<CostoPromedio[]>(url, {})
+      .pipe(catchError((error: any) => throwError(error)));
+  }
+
   get(id: string): Observable<CostoPromedio> {
     const url = `${this.apiUrl}/${id}`;
     return this.http
