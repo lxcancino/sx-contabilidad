@@ -40,6 +40,17 @@ export class Periodo {
     return new Periodo(f1.toDate(), f2.toDate());
   }
 
+  static toPeriodo(ejercicio: number, mes: number) {
+    const now = moment()
+      .set('year', ejercicio)
+      .set('month', mes - 1)
+      .set('date', 1)
+      .toDate();
+    const f1 = moment(now).startOf('month');
+    const f2 = moment(now).endOf('month');
+    return new Periodo(f1.toDate(), f2.toDate());
+  }
+
   static fromStorage(key: string, notFound: Periodo = Periodo.monthToDay()) {
     return this.fromJson(localStorage.getItem(key)) || notFound;
   }

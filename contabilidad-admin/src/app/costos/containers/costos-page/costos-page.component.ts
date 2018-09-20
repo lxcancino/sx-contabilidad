@@ -13,6 +13,8 @@ import {
   ReportComsSinAnalizarComponent
 } from '../../components';
 import { ReportService } from '../../../reportes/services/report.service';
+import { KardexReportComponent } from '../../../reportes/components';
+import { Periodo } from '../../../_core/models/periodo';
 
 @Component({
   selector: 'sx-costos-page',
@@ -112,6 +114,18 @@ export class CostosPageComponent implements OnInit {
       .subscribe(res => {
         if (res) {
           this.reportService.runReport(`costos/movimientosCosteados`, res);
+        }
+      });
+  }
+
+  kardex(event: { ejercicio: number; mes: number }) {
+    const periodo = Periodo.toPeriodo(event.ejercicio, event.mes);
+    this.dialog
+      .open(KardexReportComponent, { data: { periodo } })
+      .afterClosed()
+      .subscribe(res => {
+        if (res) {
+          this.reportService.runReport(`inventario/printKardex`, res);
         }
       });
   }
