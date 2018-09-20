@@ -72,7 +72,7 @@ export class ReportComsSinAnalizarComponent implements OnInit {
     const res = {
       fechaIni: fechaIni.toISOString(),
       fechaFin: fechaFin.toISOString(),
-      sucursal: sucursal ? sucursal.id : null,
+      sucursal,
       producto: producto ? producto.id : null,
       proveedor: proveedor ? proveedor.id : null
     };

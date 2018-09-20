@@ -41,17 +41,19 @@ export class InventarioCosteadoDialogComponent implements OnInit {
     this.form = this.fb.group({
       ejercicio: [this.periodo.ejercicio, Validators.required],
       mes: [this.periodo.mes, Validators.required],
-      sucursal: [null]
+      sucursal: []
     });
   }
 
   getData() {
+    /*
     if (this.form.valid) {
       const sucursal = this.form.get('sucursal').value;
-      if (sucursal !== null) {
+      console.log('Sucursal: ', sucursal);
+      if (sucursal) {
         return {
           ...this.form.value,
-          sucursal: sucursal.id
+          sucursal: sucursal
         };
       } else {
         const { ejercicio, mes } = this.form.value;
@@ -62,6 +64,8 @@ export class InventarioCosteadoDialogComponent implements OnInit {
       }
     }
     return null;
+    */
+    return this.form.value;
   }
 
   ngOnInit() {}
