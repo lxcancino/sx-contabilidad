@@ -37,6 +37,7 @@ export class MovsPorProductoTableComponent implements OnInit, OnChanges {
     'descripcion',
     'unidad',
     'kilos',
+    'cantidad',
     'costo',
     'costop',
     'importeCosto',

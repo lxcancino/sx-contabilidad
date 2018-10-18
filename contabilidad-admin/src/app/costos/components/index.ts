@@ -8,6 +8,9 @@ import { CostoPorProductoMovsTableComponent } from './costo-por-producto-movs-ta
 import { MovsPorProductoComponent } from './movs-por-producto/movs-por-producto.component';
 import { MovsPorProductoTableComponent } from './movs-por-producto-table/movs-por-producto-table.component';
 import { ReportComsSinAnalizarComponent } from './report-coms-sin-analizar/report-coms-sin-analizar.component';
+import { ReportFacturasAnalizadasComponent } from './report-facturas-analizadas/report-facturas-analizadas.component';
+import { ReportMovsCosteadosDoctoComponent } from './report-movs-costeado-docto/report-movs-costeado-docto.component';
+import { ReportMovsCosteadosDetComponent } from './report-movs-costeado-det/report-movs-costeado-docto.component';
 
 export const components: any[] = [
   CostosTableComponent,
@@ -19,13 +22,19 @@ export const components: any[] = [
   CostoPorProductoMovsTableComponent,
   MovsPorProductoComponent,
   MovsPorProductoTableComponent,
-  ReportComsSinAnalizarComponent
+  ReportComsSinAnalizarComponent,
+  ReportFacturasAnalizadasComponent,
+  ReportMovsCosteadosDoctoComponent,
+  ReportMovsCosteadosDetComponent
 ];
 export const entryComponents: any[] = [
   PeriodoCostosDialogComponent,
   CalculoPorProductoDialogComponent,
   InventarioCosteadoDialogComponent,
-  ReportComsSinAnalizarComponent
+  ReportComsSinAnalizarComponent,
+  ReportFacturasAnalizadasComponent,
+  ReportMovsCosteadosDoctoComponent,
+  ReportMovsCosteadosDetComponent
 ];
 
 export * from './costos-table/costos-table.component';
@@ -38,3 +47,6 @@ export * from './costo-por-producto-movs-table/costo-por-producto-movs.component
 export * from './movs-por-producto/movs-por-producto.component';
 export * from './movs-por-producto-table/movs-por-producto-table.component';
 export * from './report-coms-sin-analizar/report-coms-sin-analizar.component';
+export * from './report-facturas-analizadas/report-facturas-analizadas.component';
+export * from './report-movs-costeado-docto/report-movs-costeado-docto.component';
+export * from './report-movs-costeado-det/report-movs-costeado-docto.component';

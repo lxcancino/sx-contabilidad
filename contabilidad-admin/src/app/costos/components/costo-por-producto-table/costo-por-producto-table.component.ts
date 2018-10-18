@@ -115,6 +115,6 @@ export class CostoPorProductoTableComponent implements OnInit, OnChanges {
   }
 
   getDifCostoInv(costop) {
-    return this.getCostoCalculadoInv(costop) - this.getCostoCalculado(costop);
+    return costop.costo - this.getCostoCalculadoInv(costop);
   }
 }

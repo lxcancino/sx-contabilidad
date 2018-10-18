@@ -41,6 +41,10 @@ export class CostoPorProductoMovsTableComponent implements OnInit, OnChanges {
     'trasladosCosto',
     'trsSalUni',
     'trsSalCosto',
+    'trsEntUni',
+    'trsEntCosto',
+    'devUni',
+    'devCosto',
     'vtaUni',
     'vtaCosto'
   ];

@@ -43,6 +43,11 @@
     <td mat-cell *matCellDef="let row">{{row.kilos | number: '1.2-2'}}</td>
   </ng-container>
 
+  <ng-container matColumnDef="cantidad">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header>Cantidad</th>
+    <td mat-cell *matCellDef="let row">{{row.cantidad | number: '1.1-3'}}</td>
+  </ng-container>
+
   <ng-container matColumnDef="costo">
     <th mat-header-cell *matHeaderCellDef mat-sort-header>Costo (U)</th>
     <td mat-cell *matCellDef="let row">{{row.costo | currency}}</td>
