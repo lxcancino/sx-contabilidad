@@ -88,6 +88,6 @@ export class MovimientosCostoEffects {
     ofType<fromActions.LoadMovmientosCostoFail>(
       MovimientosCostoActionTypes.LoadMovmientosCostoFail
     ),
-    map(action => new fromRoot.HttpError(action.payload))
+    map(action => new fromRoot.GlobalHttpError({ response: action.payload }))
   );
 }
