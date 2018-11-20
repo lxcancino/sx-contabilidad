@@ -39,6 +39,7 @@ export class CostoPorProductoTableComponent implements OnInit, OnChanges {
     'costoInventario',
     'costoCalculadoInv',
     'difCostoInv',
+    'deLinea',
     'descripcion'
   ];
   @ViewChild(MatSort)
@@ -55,7 +56,7 @@ export class CostoPorProductoTableComponent implements OnInit, OnChanges {
   constructor() {}
 
   ngOnInit() {
-    this.dataSource.paginator = this.paginator;
+    // this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
   }
 
@@ -100,9 +101,11 @@ export class CostoPorProductoTableComponent implements OnInit, OnChanges {
   }
 
   getCostoCalculado(costop) {
-    return costop.saldoInicial + costop.comsUni + costop.trsEntUni !== 0
-      ? (costop.costoInicial + costop.comsCosto + costop.trsEntCosto) /
-          (costop.saldoInicial + costop.comsUni + costop.trsEntUni)
+    const saldoIni = costop.saldoInicial < 0 ? 0 : costop.saldoInicial;
+    const costoIni = costop.saldoInicial < 0 ? 0 : costop.costoInicial;
+    return saldoIni + costop.comsUni + costop.trsEntUni !== 0
+      ? (costoIni + costop.comsCosto + costop.comsFlete + costop.trsEntCosto) /
+          (saldoIni + costop.comsUni + costop.trsEntUni)
       : 0.0;
   }
 

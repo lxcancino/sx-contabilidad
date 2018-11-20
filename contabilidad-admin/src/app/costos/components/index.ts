@@ -11,6 +11,7 @@ import { ReportComsSinAnalizarComponent } from './report-coms-sin-analizar/repor
 import { ReportFacturasAnalizadasComponent } from './report-facturas-analizadas/report-facturas-analizadas.component';
 import { ReportMovsCosteadosDoctoComponent } from './report-movs-costeado-docto/report-movs-costeado-docto.component';
 import { ReportMovsCosteadosDetComponent } from './report-movs-costeado-det/report-movs-costeado-docto.component';
+import { CostoProductoDialogComponent } from './costo-producto-dialog/costo-producto-dialog.component';
 
 export const components: any[] = [
   CostosTableComponent,
@@ -25,7 +26,8 @@ export const components: any[] = [
   ReportComsSinAnalizarComponent,
   ReportFacturasAnalizadasComponent,
   ReportMovsCosteadosDoctoComponent,
-  ReportMovsCosteadosDetComponent
+  ReportMovsCosteadosDetComponent,
+  CostoProductoDialogComponent
 ];
 export const entryComponents: any[] = [
   PeriodoCostosDialogComponent,
@@ -34,7 +36,8 @@ export const entryComponents: any[] = [
   ReportComsSinAnalizarComponent,
   ReportFacturasAnalizadasComponent,
   ReportMovsCosteadosDoctoComponent,
-  ReportMovsCosteadosDetComponent
+  ReportMovsCosteadosDetComponent,
+  CostoProductoDialogComponent
 ];
 
 export * from './costos-table/costos-table.component';
@@ -50,3 +53,4 @@ export * from './report-coms-sin-analizar/report-coms-sin-analizar.component';
 export * from './report-facturas-analizadas/report-facturas-analizadas.component';
 export * from './report-movs-costeado-docto/report-movs-costeado-docto.component';
 export * from './report-movs-costeado-det/report-movs-costeado-docto.component';
+export * from './costo-producto-dialog/costo-producto-dialog.component';

@@ -5,6 +5,7 @@
 /dist-server
 /tmp
 /out-tsc
+/contabilidad
 
 # dependencies
 /node_modules

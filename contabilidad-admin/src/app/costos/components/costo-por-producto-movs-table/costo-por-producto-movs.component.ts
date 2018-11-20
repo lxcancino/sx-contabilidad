@@ -28,11 +28,13 @@ export class CostoPorProductoMovsTableComponent implements OnInit, OnChanges {
   @Input()
   displayColumns = [
     'clave',
+    'deLinea',
     // 'descripcion',
     'comsSinAUni',
     'comsSinA',
     'comsUni',
     'comsCosto',
+    'comsFlete',
     'movsUni',
     'movsCosto',
     'decUni',
@@ -62,7 +64,7 @@ export class CostoPorProductoMovsTableComponent implements OnInit, OnChanges {
   constructor() {}
 
   ngOnInit() {
-    this.dataSource.paginator = this.paginator;
+    // this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
   }
 

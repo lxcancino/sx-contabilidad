@@ -5,6 +5,11 @@
     <td mat-cell *matCellDef="let costop">{{costop.clave}}</td>
   </ng-container>
 
+  <ng-container matColumnDef="deLinea">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header>E</th>
+    <td mat-cell *matCellDef="let costop">{{costop.deLinea ? '' : 'E'}}</td>
+  </ng-container>
+
   <ng-container matColumnDef="descripcion">
     <th mat-header-cell *matHeaderCellDef mat-sort-header>Descripción</th>
     <td mat-cell *matCellDef="let costop">{{costop.descripcion}}</td>
@@ -25,6 +30,10 @@
   <ng-container matColumnDef="comsCosto">
     <th mat-header-cell *matHeaderCellDef mat-sort-header>Coms ($)</th>
     <td mat-cell *matCellDef="let row">{{row.comsCosto | currency}}</td>
+  </ng-container>
+  <ng-container matColumnDef="comsFlete">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header>Flete ($)</th>
+    <td mat-cell *matCellDef="let row">{{row.comsFlete | currency}}</td>
   </ng-container>
 
 
@@ -96,9 +105,9 @@
     <td mat-cell *matCellDef="let row">{{row.vtaCosto | currency}}</td>
   </ng-container>
 
-  <tr mat-header-row *matHeaderRowDef="displayColumns"></tr>
+  <tr mat-header-row *matHeaderRowDef="displayColumns; sticky: true"></tr>
   <tr mat-row *matRowDef="let costop; columns: displayColumns" class="cursor-pointer" (click)="select.emit(costop)"
     [ngClass]="{'active': costop.clave === selectedId}">
   </tr>
 </table>
-<mat-paginator [pageSizeOptions]="[ 10, 20, 50, 100, 200]" showFirstLastButtons></mat-paginator>
+<!-- <mat-paginator [pageSizeOptions]="[ 10, 20, 50, 100, 200]" showFirstLastButtons></mat-paginator> -->

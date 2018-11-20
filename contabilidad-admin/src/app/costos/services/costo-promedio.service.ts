@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 
 import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
@@ -32,6 +32,35 @@ export class CostoPromedioService {
     const url = `${this.apiUrl}/calcular/${periodo.ejercicio}/${periodo.mes}`;
     return this.http
       .post<CostoPromedio[]>(url, {})
+      .pipe(catchError((error: any) => throwError(error)));
+  }
+
+  costeoMedidasEspeciales(
+    periodo: {
+      ejercicio: number;
+      mes: number;
+    },
+    productos: string[]
+  ) {
+    const url = `${this.apiUrl}/costeoMedidasEspeciales`;
+    return this.http
+      .post(url, { ...periodo, productos })
+      .pipe(catchError((error: any) => throwError(error)));
+  }
+
+  calcularPorProducto(
+    periodo: {
+      ejercicio: number;
+      mes: number;
+    },
+    productoId: string
+  ) {
+    const url = `${this.apiUrl}/calcularPorProducto/${periodo.ejercicio}/${
+      periodo.mes
+    }`;
+    const params = new HttpParams().set('productoId', productoId);
+    return this.http
+      .put(url, {}, { params: params })
       .pipe(catchError((error: any) => throwError(error)));
   }
 
