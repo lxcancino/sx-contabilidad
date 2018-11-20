@@ -1,3 +1,5 @@
+import { User } from './user';
+
 export interface AuthSession {
   username: string;
   access_token: string;

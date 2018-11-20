@@ -45,6 +45,6 @@ export class MovimientosEffects {
     ofType<fromActions.LoadMovimientosFail>(
       MovimientosActionTypes.LoadMovimientosFail
     ),
-    map(action => new fromRoot.HttpError(action.payload))
+    map(action => new fromRoot.GlobalHttpError({ response: action.payload }))
   );
 }

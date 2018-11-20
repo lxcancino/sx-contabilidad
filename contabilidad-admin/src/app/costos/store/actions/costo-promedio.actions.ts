@@ -43,7 +43,7 @@ export class CalculoDeCostoPromedio implements Action {
 }
 export class CalculoDeCostoPromedioFail implements Action {
   readonly type = CostoActionTypes.CalculoDeCostoPromedioFail;
-  constructor(public payload: any) {}
+  constructor(public payload: { response: any }) {}
 }
 export class CalculoDeCostoPromedioSuccess implements Action {
   readonly type = CostoActionTypes.CalculoDeCostoPromedioSuccess;
@@ -58,7 +58,7 @@ export class AplicarCostoPromedio implements Action {
 }
 export class AplicarCostoPromedioFail implements Action {
   readonly type = CostoActionTypes.AplicarCostoPromedioFail;
-  constructor(public payload: any) {}
+  constructor(public payload: { response: any }) {}
 }
 export class AplicarCostoPromedioSuccess implements Action {
   readonly type = CostoActionTypes.AplicarCostoPromedioSuccess;

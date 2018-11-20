@@ -87,6 +87,6 @@ export class CostoPromedioEffects {
       CostoActionTypes.LoadCostosFail,
       CostoActionTypes.CalculoDeCostoPromedioFail
     ),
-    map(action => new fromRoot.HttpError(action.payload))
+    map(response => new fromRoot.GlobalHttpError({ response }))
   );
 }
