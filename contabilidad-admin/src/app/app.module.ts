@@ -23,10 +23,9 @@ import { environment } from 'environments/environment.prod';
 import { SharedModule } from './_shared/shared.module';
 import { CoreModule } from './_core/core.module';
 import { AuthModule } from './auth/auth.module';
-
+import { CuentasModule } from './cuentas/cuentas.module';
 
 import { AppComponent } from './app.component';
-
 
 export const metaReducers: MetaReducer<any>[] = !environment.production
   ? [storeFreeze]
@@ -54,6 +53,7 @@ export function onAppInit(configService: ConfigService): () => Promise<any> {
     SharedModule,
     AuthModule.forRoot(),
     CoreModule,
+    CuentasModule.forRoot()
   ],
   providers: [
     ConfigService,
