@@ -15,6 +15,20 @@ import { ReportService } from 'app/reportes/services/report.service';
 @Component({
   selector: 'sx-cuentas',
   template: `
+    <td-layout-nav  navigationRoute="/">
+      <div td-toolbar-content layout="row" layout-align="start center" flex>
+        <button mat-icon-button td-menu-button tdLayoutToggle>
+          <mat-icon>menu</mat-icon>
+        </button>
+        <span [routerLink]="['/']" class="cursor-pointer">SX-CONTABILIDAD</span>
+        <span flex></span>
+        <span>Catálogo de cuentas</span>
+        <span flex></span>
+        <sx-logout-button></sx-logout-button>
+      </div>
+      Content goes here
+    </td-layout-nav>
+    <!--
     <mat-card>
       <sx-search-title
         title="Catálogo de cuentas contables"
@@ -25,12 +39,8 @@ import { ReportService } from 'app/reportes/services/report.service';
         </button>
       </sx-search-title>
       <mat-divider></mat-divider>
-      <!--
-        <sx-cheques-table [cheques]="cobradores$ | async" [filter]="search"
-          (liberar)="onLiberar($event)" (entregar)="onEntregar($event)" (cobrado)="onCobro($event)">
-        </sx-cheques-table>
-      -->
     </mat-card>
+    -->
   `
 })
 export class CuentasComponent implements OnInit {

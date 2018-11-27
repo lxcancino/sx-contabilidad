@@ -15,6 +15,11 @@ export class MainPageComponent implements OnInit {
       title: 'Inicio'
     },
     {
+      icon: 'storage',
+      route: '/cuentas',
+      title: 'Catálogo de cuentas'
+    },
+    {
       icon: 'settings_input_component',
       route: '/costos',
       title: 'Costos'
@@ -46,6 +51,6 @@ export class MainPageComponent implements OnInit {
   constructor() {}
 
   ngOnInit() {
-    this.modulo$ = observableOf('PENDIENTE');
+    this.modulo$ = observableOf('SX-CONTA');
   }
 }
