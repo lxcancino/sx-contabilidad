@@ -18,7 +18,11 @@ export enum CuentaActionTypes {
 
   UpdateCuenta = '[Cuenta Component] Update Cuenta',
   UpdateCuentaFail = '[Cuenta API] Update Cuenta Fail',
-  UpdateCuentaSuccess = '[Cuenta API] Update Cuenta Success'
+  UpdateCuentaSuccess = '[Cuenta API] Update Cuenta Success',
+
+  SetCuentasSearchTerm = '[Cuentas component] Set cuentas search term',
+  UpsertCuenta = '[Cuenta exists guard] Upsert cuenta',
+  SetSelectedCuenta = '[Cuentas component]  cuenta'
 }
 
 // Load
@@ -83,6 +87,21 @@ export class UpdateCuentaSuccess implements Action {
   constructor(public payload: { cuenta: CuentaContable }) {}
 }
 
+export class SetCuentasSearchTerm implements Action {
+  readonly type = CuentaActionTypes.SetCuentasSearchTerm;
+  constructor(public payload: { term: string }) {}
+}
+
+export class UpsertCuenta implements Action {
+  readonly type = CuentaActionTypes.UpsertCuenta;
+  constructor(public payload: { cuenta: CuentaContable }) {}
+}
+
+export class SetSelectedCuenta implements Action {
+  readonly type = CuentaActionTypes.SetSelectedCuenta;
+  constructor(public payload: { selectedId: number }) {}
+}
+
 export type CuentaActions =
   | LoadCuentas
   | LoadCuentasFail
@@ -95,4 +114,7 @@ export type CuentaActions =
   | DeleteCuentaSuccess
   | UpdateCuenta
   | UpdateCuentaFail
-  | UpdateCuentaSuccess;
+  | UpdateCuentaSuccess
+  | SetCuentasSearchTerm
+  | UpsertCuenta
+  | SetSelectedCuenta;

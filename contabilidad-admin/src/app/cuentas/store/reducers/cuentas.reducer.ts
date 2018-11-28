@@ -8,6 +8,7 @@ export interface State extends EntityState<CuentaContable> {
   loading: boolean;
   loaded: boolean;
   searchTerm: string;
+  selectedId: number;
 }
 
 export const adapter: EntityAdapter<CuentaContable> = createEntityAdapter<
@@ -17,7 +18,8 @@ export const adapter: EntityAdapter<CuentaContable> = createEntityAdapter<
 export const initialState: State = adapter.getInitialState({
   loading: false,
   loaded: false,
-  searchTerm: ''
+  searchTerm: '',
+  selectedId: undefined
 });
 
 export function reducer(state = initialState, action: CuentaActions): State {
@@ -50,6 +52,7 @@ export function reducer(state = initialState, action: CuentaActions): State {
       });
     }
 
+    case CuentaActionTypes.UpsertCuenta:
     case CuentaActionTypes.UpdateCuentaSuccess:
     case CuentaActionTypes.CreateCuentaSuccess: {
       return adapter.upsertOne(action.payload.cuenta, {
@@ -63,6 +66,19 @@ export function reducer(state = initialState, action: CuentaActions): State {
         ...state,
         loading: false
       });
+    }
+
+    case CuentaActionTypes.SetCuentasSearchTerm: {
+      return {
+        ...state,
+        searchTerm: action.payload.term
+      };
+    }
+    case CuentaActionTypes.SetSelectedCuenta: {
+      return {
+        ...state,
+        selectedId: action.payload.selectedId
+      };
     }
   }
   return state;
@@ -78,3 +94,4 @@ export const {
 export const getCuentasLoaded = (state: State) => state.loaded;
 export const getCuentasLoading = (state: State) => state.loading;
 export const getCuentasSearchTerm = (state: State) => state.searchTerm;
+export const getSelectedCuentaId = (state: State) => state.selectedId;

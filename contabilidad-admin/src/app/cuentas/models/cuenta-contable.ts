@@ -20,4 +20,6 @@ export interface CuentaContable {
   subcuentas: Partial<CuentaContable>[];
   dateCreated: string;
   lastUpdated: string;
+  createUser: string;
+  updateUser?: string;
 }

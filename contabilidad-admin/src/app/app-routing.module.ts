@@ -29,3 +29,20 @@ const routes: Routes = [
   exports: [RouterModule]
 })
 export class AppRoutingModule {}
+/**
+ * {
+      icon: 'home',
+      route: '/',
+      title: 'Inicio'
+    },
+    {
+      icon: 'storage',
+      route: '/cuentas',
+      title: 'Catálogo de cuentas'
+    },
+    {
+      icon: 'settings_input_component',
+      route: '/costos',
+      title: 'Costos'
+    }
+ */

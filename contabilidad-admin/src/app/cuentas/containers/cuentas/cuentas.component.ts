@@ -26,27 +26,40 @@ import { ReportService } from 'app/reportes/services/report.service';
         <span flex></span>
         <sx-logout-button></sx-logout-button>
       </div>
-      Content goes here
+      <div layout-gt-sm="row" tdMediaToggle="gt-xs" [mediaClasses]="['push-sm']">
+        <div flex-gt-sm="60">
+          <mat-card>
+            <sx-search-title
+            title="Cuentas "
+            (search)="onFilter($event)">
+            <button mat-menu-item class="actions" (click)="reload()">
+              <mat-icon>refresh</mat-icon> Recargar
+            </button>
+            </sx-search-title>
+            <mat-divider></mat-divider>
+            <sx-cuentas-table [cuentas]="cuentas$ | async" [filter]="search$ | async" (select)="onSelect($event)" [selected]="selectedId$ | async"></sx-cuentas-table>
+          </mat-card>
+        </div>
+        <div flex-gt-sm="40">
+          <router-outlet></router-outlet>
+        </div>
+      </div>
     </td-layout-nav>
-    <!--
-    <mat-card>
-      <sx-search-title
-        title="Catálogo de cuentas contables"
-        (search)="search = $event"
-      >
-        <button mat-menu-item class="actions" (click)="reload()">
-          <mat-icon>refresh</mat-icon> Recargar
-        </button>
-      </sx-search-title>
-      <mat-divider></mat-divider>
-    </mat-card>
-    -->
-  `
+  `,
+  styles: [
+    `
+      .mat-card2 {
+        width: calc(100% - 15px);
+        height: calc(100% - 10px);
+      }
+    `
+  ]
 })
 export class CuentasComponent implements OnInit {
-  cobradores$: Observable<CuentaContable[]>;
+  cuentas$: Observable<CuentaContable[]>;
+  selectedId$: Observable<number>;
   loading$: Observable<boolean>;
-  search = '';
+  search$: Observable<string>;
 
   constructor(
     private store: Store<fromStore.State>,
@@ -56,12 +69,22 @@ export class CuentasComponent implements OnInit {
 
   ngOnInit() {
     this.loading$ = this.store.pipe(select(fromStore.getCuentasLoading));
-    this.cobradores$ = this.store.pipe(select(fromStore.getCuentas));
+    this.search$ = this.store.pipe(select(fromStore.getCuentasSearchTerm));
+    this.cuentas$ = this.store.pipe(select(fromStore.getCuentas));
+    this.selectedId$ = this.store.pipe(select(fromStore.getSelectedCuentaId));
   }
 
-  onSelect() {}
+  onSelect(event: CuentaContable) {
+    this.store.dispatch(
+      // new fromStore.SetSelectedCuenta({ selectedId: event.id })
+      new fromRoot.Go({ path: ['cuentas', event.id] })
+    );
+  }
 
   reload() {
     this.store.dispatch(new fromStore.LoadCuentas());
+  }
+  onFilter(event: string) {
+    this.store.dispatch(new fromStore.SetCuentasSearchTerm({ term: event }));
   }
 }

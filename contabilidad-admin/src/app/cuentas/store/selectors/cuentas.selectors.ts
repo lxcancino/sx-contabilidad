@@ -34,8 +34,31 @@ export const getSelectedCuenta = createSelector(
     return router.state && entities[router.state.params.cuentaId];
   }
 );
+export const getSelectedCuentaId = createSelector(
+  getSelectedCuenta,
+  cuenta => (cuenta ? cuenta.id : undefined)
+);
+/*
 
+export const getSelectedCuentaId = createSelector(
+  getCuentasState,
+  fromCuentas.getSelectedCuentaId
+);
+
+export const getSelectedCuenta = createSelector(
+  getCuentasEntities,
+  getSelectedCuentaId,
+  (entities, id): CuentaContable => {
+    return entities[id];
+  }
+);
+*/
 export const getCuentasLoaded = createSelector(
   getCuentasState,
   fromCuentas.getCuentasLoaded
+);
+
+export const getCuentasSearchTerm = createSelector(
+  getCuentasState,
+  fromCuentas.getCuentasSearchTerm
 );

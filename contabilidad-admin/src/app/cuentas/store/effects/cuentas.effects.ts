@@ -67,7 +67,7 @@ export class CuentasEffects {
     map(action => action.payload.cuenta),
     switchMap(cuenta => {
       return this.service.delete(cuenta).pipe(
-        map(res => new fromCuentas.DeleteCuentaSuccess({ cuenta: res })),
+        map(() => new fromCuentas.DeleteCuentaSuccess({ cuenta })),
         catchError(response =>
           of(new fromCuentas.DeleteCuentaFail({ response }))
         )
@@ -97,7 +97,7 @@ export class CuentasEffects {
     )
   );
 
-  @Effect({ dispatch: false })
+  @Effect()
   deleteSuccess$ = this.actions$.pipe(
     ofType<fromCuentas.DeleteCuentaSuccess>(
       CuentaActionTypes.DeleteCuentaSuccess
@@ -107,7 +107,8 @@ export class CuentasEffects {
       this.snackBar.open(`Cuenta ${cuenta.clave} eliminada`, 'Cerrar', {
         duration: 8000
       })
-    )
+    ),
+    map(res => new fromRoot.Go({ path: ['/cuentas'] }))
   );
 
   @Effect()
