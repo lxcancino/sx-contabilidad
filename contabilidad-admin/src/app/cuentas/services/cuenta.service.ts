@@ -19,7 +19,7 @@ export class CuentaService {
 
   list(): Observable<CuentaContable[]> {
     const params = new HttpParams()
-      .set('max', '3500')
+      // .set('max', '3500')
       .set('sort', 'lastUpdated')
       .set('order', 'desc');
     return this.http

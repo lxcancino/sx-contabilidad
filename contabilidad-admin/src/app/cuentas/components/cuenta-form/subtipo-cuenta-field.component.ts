@@ -24,7 +24,15 @@ export class SubtipoCuentaFieldComponent implements OnInit {
   @Input()
   name = 'subTipo';
 
-  tipos = ['CIRCULANTE', 'FIJO', 'DIFERIDO', 'CORTO_PLAZO', 'CAPITAL', 'ORDEN'];
+  tipos = [
+    'CIRCULANTE',
+    'FIJO',
+    'DIFERIDO',
+    'CORTO_PLAZO',
+    'LARGO_PLAZO',
+    'CAPITAL',
+    'ORDEN'
+  ];
 
   constructor() {}
 

@@ -15,8 +15,16 @@ import { containers } from './containers';
 import { AuthModule } from '../auth/auth.module';
 import { ReportesModule } from '../reportes/reportes.module';
 
+import { NgxMaskModule } from 'ngx-mask';
+
 @NgModule({
-  imports: [SharedModule, CuentasRoutingModule, AuthModule, ReportesModule],
+  imports: [
+    SharedModule,
+    CuentasRoutingModule,
+    AuthModule,
+    ReportesModule,
+    NgxMaskModule.forChild()
+  ],
   declarations: [...components, ...containers],
   entryComponents: [...entryComponents],
   exports: [...containers, ...components]

@@ -37,8 +37,9 @@ export class CuentasEffects {
   save$ = this.actions$.pipe(
     ofType<fromCuentas.CreateCuenta>(CuentaActionTypes.CreateCuenta),
     map(action => action.payload.cuenta),
-    switchMap(cobrador => {
-      return this.service.save(cobrador).pipe(
+    switchMap(cuenta => {
+      return this.service.save(cuenta).pipe(
+        tap(res => console.log('Alta de cuenta: ', res)),
         map(res => new fromCuentas.CreateCuentaSuccess({ cuenta: res })),
         catchError(response =>
           of(new fromCuentas.CreateCuentaFail({ response }))

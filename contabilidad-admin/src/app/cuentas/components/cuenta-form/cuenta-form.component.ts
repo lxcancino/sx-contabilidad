@@ -9,27 +9,30 @@ import {
   SimpleChanges
 } from '@angular/core';
 import { CuentaContable } from 'app/cuentas/models';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import {
+  FormBuilder,
+  FormGroup,
+  Validators,
+  AbstractControl
+} from '@angular/forms';
 
 @Component({
   selector: 'sx-cuenta-form',
   template: `
     <mat-card>
-      <div mat-title layout>
-        <div layout layout-align="start center"  class="pad-left-sm pad-right-sm">
-          <span class="push-left-sm">
-            <span class="mat-title">Cuenta {{cuenta.clave}}</span>
-          </span>
-        </div>
-        <span flex></span>
-          <button mat-icon-button (click)="cancel.emit()">
-            <mat-icon>close</mat-icon>
-          </button>
+      <div layout layout-align="start center"  class="pad-left-sm pad-right-sm">
+        <span class="push-left-sm">
+          <span class="mat-title">{{title}}</span>
+        </span>
       </div>
-      <mat-card-subtitle>
-        Última modificación {{cuenta?.lastUpdated | date: 'dd/MM/yyyy HH:mm'}}
-        <span class="pad-left"></span>
-        Usuario: {{cuenta?.updateUser}}
+      <mat-card-subtitle *ngIf="cuenta">
+        <div layout>
+          <span> Padre: {{cuenta?.padre?.descripcion}} ({{cuenta?.padre?.clave}})</span>
+          <span flex></span>
+          Última modificación {{cuenta?.lastUpdated | date: 'dd/MM/yyyy HH:mm'}}
+          <span class="pad-left"></span>
+          Usuario: {{cuenta?.updateUser}}
+        </div>
       </mat-card-subtitle>
       <mat-divider></mat-divider>
 
@@ -37,7 +40,9 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
         <form [formGroup]="form">
           <div layout>
             <mat-form-field flex>
-              <input matInput placeholder="Clave" autocomplete="off" formControlName="clave">
+              <input matInput placeholder="Clave" autocomplete="off" formControlName="clave"
+                type='text'  mask="AAA-AAAA-AAAA-AAAA" [dropSpecialCharacters]="false" >
+              <mat-error>Clave incorrecta</mat-error>
             </mat-form-field>
             <mat-form-field flex class="pad-left">
               <input matInput type="number" placeholder="Nivel" formControlName="nivel" autocomplete="off">
@@ -48,9 +53,9 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
           </div>
           <div layout>
-            <mat-form-field flex>
-              <input matInput placeholder="Descripción" autocomplete="off" formControlName="descripcion">
-            </mat-form-field>
+            <sx-upper-case-field formControlName="descripcion" autocomplete="off" placeholder="Descripción" flex>
+            </sx-upper-case-field>
+
           </div>
           <div layout>
             <sx-naturaleza-field [parent]="form" flex></sx-naturaleza-field>
@@ -79,7 +84,11 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
         <button mat-button (click)="onSubmit()" color="primary" [disabled]="form.invalid || form.pristine">
           <mat-icon>save</mat-icon> Salvar
         </button>
-        <button mat-button type="button" (click)="delete.emit(cuenta)" color="warn" *ngIf="cuenta?.subcuentas.length === 0">
+        <button mat-button type="button" (click)="agregar.emit(cuenta)" *ngIf="cuenta && !cuenta.detalle">
+          <mat-icon></mat-icon> Agregar subcuenta
+        </button>
+        <button mat-button type="button" (click)="delete.emit(cuenta)" color="warn"
+          *ngIf="cuenta?.subcuentas?.length === 0 || !cuenta?.subcuentas">
           <mat-icon>delete</mat-icon> Eliminar
         </button>
       </mat-card-actions>
@@ -90,6 +99,9 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 export class CuentaFormComponent implements OnInit, OnChanges {
   @Input()
   cuenta: CuentaContable;
+
+  @Input()
+  padre: CuentaContable;
 
   @Output()
   cancel = new EventEmitter();
@@ -103,6 +115,9 @@ export class CuentaFormComponent implements OnInit, OnChanges {
   @Output()
   delete = new EventEmitter();
 
+  @Output()
+  agregar = new EventEmitter();
+
   form: FormGroup;
 
   constructor(private fb: FormBuilder) {}
@@ -110,7 +125,16 @@ export class CuentaFormComponent implements OnInit, OnChanges {
   ngOnInit() {
     this.buildForm();
     if (this.cuenta) {
+      console.log('Cuenta: ', this.cuenta);
       this.form.patchValue(this.cuenta);
+    } else {
+      if (this.padre) {
+        this.form.patchValue({
+          ...this.padre,
+          descripcion: null,
+          clave: null
+        });
+      }
     }
   }
 
@@ -129,13 +153,13 @@ export class CuentaFormComponent implements OnInit, OnChanges {
       naturaleza: [null, [Validators.required]],
       tipo: [null, [Validators.required]],
       subTipo: [null, [Validators.required]],
-      nivel: [null, [Validators.required]],
-      deResultado: [null, [Validators.required]],
-      detalle: [null, [Validators.required]],
-      presentacionContable: [null],
-      presentacionFinanciera: [null],
-      presentacionFiscal: [null],
-      presentacionPresupuestal: [null]
+      nivel: [{ value: null, disabled: true }],
+      deResultado: [false],
+      detalle: [false],
+      presentacionContable: [false],
+      presentacionFinanciera: [false],
+      presentacionFiscal: [false],
+      presentacionPresupuestal: [false]
     });
   }
 
@@ -154,7 +178,33 @@ export class CuentaFormComponent implements OnInit, OnChanges {
       } else {
         this.save.emit(entity);
       }
+
       this.form.markAsPristine();
     }
   }
+
+  get title() {
+    if (this.cuenta) {
+      return `Cuenta ${this.cuenta.clave}`;
+    } else {
+      if (this.padre) {
+        return `Alta de sub cuenta a ${this.padre.clave}`;
+      } else {
+        return 'Alta de cuenta ';
+      }
+    }
+  }
+  /*
+  validarClave(control: AbstractControl) {
+    if (!this.form) {
+      return null;
+    }
+    const clave = control.value;
+    const origen = this.cuentaOrigen;
+    if (origen) {
+      return destino.id === origen.id ? { mismaCuenta: true } : null;
+    }
+    return null;
+  }
+  */
 }

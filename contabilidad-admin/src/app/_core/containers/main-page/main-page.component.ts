@@ -1,13 +1,18 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 
-import { of as observableOf, Observable } from 'rxjs';
+import { Store, select } from '@ngrx/store';
+import * as fromStore from 'app/store';
+import * as fromAuth from 'app/auth/store';
+
+import { of, Observable } from 'rxjs';
+import { User } from 'app/auth/models/user';
 
 @Component({
   selector: 'sx-main-page',
   templateUrl: './main-page.component.html',
   styles: []
 })
-export class MainPageComponent implements OnInit {
+export class MainPageComponent implements OnInit, OnDestroy {
   navigation: Array<{ icon: string; route: string; title: string }> = [
     {
       icon: 'home',
@@ -28,29 +33,33 @@ export class MainPageComponent implements OnInit {
 
   usermenu: Array<{ icon: string; route: string; title: string }> = [
     {
-      icon: 'swap_horiz',
-      route: '.',
-      title: 'Cambio de usuario'
-    },
-    {
-      icon: 'tune',
+      icon: 'person',
       route: '.',
       title: 'Cuenta'
-    },
-    {
-      icon: 'exit_to_app',
-      route: '.',
-      title: 'Salir del sistema'
     }
   ];
 
   modulo$: Observable<string>;
-
+  expiration$: Observable<any>;
+  apiInfo$: Observable<any>;
+  user: User;
   sidenavWidth = 300;
 
-  constructor() {}
+  constructor(private store: Store<fromStore.State>) {}
 
   ngOnInit() {
-    this.modulo$ = observableOf('SX-CONTA');
+    this.modulo$ = of('SX-CONTABILIDAD');
+    this.store.dispatch(new fromAuth.LoadUserSession());
+
+    this.expiration$ = this.store.pipe(select(fromAuth.getSessionExpiration));
+    this.apiInfo$ = this.store.pipe(select(fromAuth.getApiInfo));
+
+    this.store.pipe(select(fromAuth.getUser)).subscribe(u => (this.user = u));
+  }
+
+  ngOnDestroy() {}
+
+  logout() {
+    this.store.dispatch(new fromAuth.Logout());
   }
 }

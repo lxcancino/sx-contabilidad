@@ -11,6 +11,7 @@ import { Observable } from 'rxjs';
 import { MatDialog } from '@angular/material';
 
 import { ReportService } from 'app/reportes/services/report.service';
+import { CuentaCreateDialogComponent } from 'app/cuentas/components';
 
 @Component({
   selector: 'sx-cuentas',
@@ -27,22 +28,23 @@ import { ReportService } from 'app/reportes/services/report.service';
         <sx-logout-button></sx-logout-button>
       </div>
       <div layout-gt-sm="row" tdMediaToggle="gt-xs" [mediaClasses]="['push-sm']">
-        <div flex-gt-sm="60">
-          <mat-card>
-            <sx-search-title
-            title="Cuentas "
-            (search)="onFilter($event)">
-            <button mat-menu-item class="actions" (click)="reload()">
-              <mat-icon>refresh</mat-icon> Recargar
-            </button>
-            </sx-search-title>
-            <mat-divider></mat-divider>
-            <sx-cuentas-table [cuentas]="cuentas$ | async" [filter]="search$ | async" (select)="onSelect($event)" [selected]="selectedId$ | async"></sx-cuentas-table>
-          </mat-card>
-        </div>
-        <div flex-gt-sm="40">
-          <router-outlet></router-outlet>
-        </div>
+        <mat-card flex>
+          <sx-search-title
+          title="Cuentas "
+          (search)="onFilter($event)">
+          <button mat-menu-item class="actions" (click)="onCreate()">
+            <mat-icon>add</mat-icon> Nueva cuenta
+          </button>
+          <button mat-menu-item class="actions" (click)="reload()">
+            <mat-icon>refresh</mat-icon> Recargar
+          </button>
+          </sx-search-title>
+          <mat-divider></mat-divider>
+          <sx-cuentas-table [cuentas]="cuentas$ | async"
+            [filter]="search$ | async"
+            (select)="onSelect($event)" [selected]="selectedId$ | async">
+          </sx-cuentas-table>
+        </mat-card>
       </div>
     </td-layout-nav>
   `,
@@ -84,7 +86,19 @@ export class CuentasComponent implements OnInit {
   reload() {
     this.store.dispatch(new fromStore.LoadCuentas());
   }
+
   onFilter(event: string) {
     this.store.dispatch(new fromStore.SetCuentasSearchTerm({ term: event }));
+  }
+
+  onCreate() {
+    this.dialog
+      .open(CuentaCreateDialogComponent, { data: {} })
+      .afterClosed()
+      .subscribe((cuenta: CuentaContable) => {
+        if (cuenta) {
+          this.store.dispatch(new fromStore.CreateCuenta({ cuenta }));
+        }
+      });
   }
 }

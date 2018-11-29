@@ -37,6 +37,7 @@
     "lodash": "^4.17.5",
     "moment": "^2.20.1",
     "ngrx-store-freeze": "^0.2.1",
+    "ngx-mask": "^7.0.1",
     "rxjs": "^6.2.2",
     "zone.js": "^0.8.19"
   },

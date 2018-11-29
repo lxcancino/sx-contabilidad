@@ -30,6 +30,15 @@ import { CuentaContable } from '../../models';
       .mat-row {
         height: 30px;
       }
+      .mat-column-descripcion {
+        max-width: 200px;
+      }
+      .mat-column-nivel {
+        max-width: 90px;
+      }
+      .mat-column-tipo {
+        max-width: 90px;
+      }
     `
   ]
 })
@@ -43,7 +52,7 @@ export class CuentasTableComponent implements OnInit, OnChanges {
   @Input()
   selected: number;
 
-  displayColumns = [
+  @Input() displayColumns = [
     'clave',
     'descripcion',
     'nivel',

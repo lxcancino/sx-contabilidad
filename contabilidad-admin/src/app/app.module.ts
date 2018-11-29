@@ -27,6 +27,8 @@ import { CuentasModule } from './cuentas/cuentas.module';
 
 import { AppComponent } from './app.component';
 
+import { NgxMaskModule } from 'ngx-mask';
+
 export const metaReducers: MetaReducer<any>[] = !environment.production
   ? [storeFreeze]
   : [];
@@ -51,6 +53,7 @@ export function onAppInit(configService: ConfigService): () => Promise<any> {
     EffectsModule.forRoot(effects),
     StoreRouterConnectingModule,
     SharedModule,
+    NgxMaskModule.forRoot(),
     AuthModule.forRoot(),
     CoreModule,
     CuentasModule.forRoot()

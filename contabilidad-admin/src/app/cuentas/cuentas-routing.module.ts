@@ -8,8 +8,12 @@ const routes: Routes = [
   {
     path: '',
     canActivate: [fromGuards.CuentasGuard],
-    component: fromContainers.CuentasComponent,
-    children: [{ path: ':cuentaId', component: fromContainers.CuentaComponent }]
+    component: fromContainers.CuentasComponent
+  },
+  {
+    path: ':cuentaId',
+    canActivate: [fromGuards.CuentaExistsGuard],
+    component: fromContainers.CuentaComponent
   }
 ];
 
