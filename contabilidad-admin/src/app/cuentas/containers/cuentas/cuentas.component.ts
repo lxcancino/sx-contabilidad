@@ -4,7 +4,7 @@ import { Store, select } from '@ngrx/store';
 import * as fromRoot from 'app/store';
 import * as fromStore from '../../store';
 import * as fromActions from '../../store/actions/cuentas.actions';
-import { CuentaContable } from '../../models';
+import { CuentaContable, CatalogoFilter } from '../../models';
 
 import { Observable } from 'rxjs';
 
@@ -31,13 +31,16 @@ import { CuentaCreateDialogComponent } from 'app/cuentas/components';
         <mat-card flex>
           <sx-search-title
           title="Cuentas "
-          (search)="onFilter($event)">
-          <button mat-menu-item class="actions" (click)="onCreate()">
-            <mat-icon>add</mat-icon> Nueva cuenta
-          </button>
-          <button mat-menu-item class="actions" (click)="reload()">
-            <mat-icon>refresh</mat-icon> Recargar
-          </button>
+          (search)="onSearch($event)">
+            <button mat-menu-item class="actions" (click)="onCreate()">
+              <mat-icon>add</mat-icon> Nueva cuenta
+            </button>
+            <sx-cuentas-filter-btn class="options" [filter]="filter$ | async" (change)="onFilter($event)">
+            </sx-cuentas-filter-btn>
+            <button mat-menu-item class="actions" (click)="reload(filter)" *ngIf="filter$ | async as filter">
+              <mat-icon>refresh</mat-icon> Recargar
+            </button>
+
           </sx-search-title>
           <mat-divider></mat-divider>
           <sx-cuentas-table [cuentas]="cuentas$ | async"
@@ -62,6 +65,7 @@ export class CuentasComponent implements OnInit {
   selectedId$: Observable<number>;
   loading$: Observable<boolean>;
   search$: Observable<string>;
+  filter$: Observable<CatalogoFilter>;
 
   constructor(
     private store: Store<fromStore.State>,
@@ -72,6 +76,7 @@ export class CuentasComponent implements OnInit {
   ngOnInit() {
     this.loading$ = this.store.pipe(select(fromStore.getCuentasLoading));
     this.search$ = this.store.pipe(select(fromStore.getCuentasSearchTerm));
+    this.filter$ = this.store.pipe(select(fromStore.getCatalogoFilter));
     this.cuentas$ = this.store.pipe(select(fromStore.getCuentas));
     this.selectedId$ = this.store.pipe(select(fromStore.getSelectedCuentaId));
   }
@@ -83,12 +88,16 @@ export class CuentasComponent implements OnInit {
     );
   }
 
-  reload() {
-    this.store.dispatch(new fromStore.LoadCuentas());
+  reload(filter: CatalogoFilter) {
+    this.store.dispatch(new fromStore.LoadCuentas({ filter }));
   }
 
-  onFilter(event: string) {
+  onSearch(event: string) {
     this.store.dispatch(new fromStore.SetCuentasSearchTerm({ term: event }));
+  }
+
+  onFilter(event: CatalogoFilter) {
+    this.store.dispatch(new fromStore.SetCatalogoFilter({ filter: event }));
   }
 
   onCreate() {

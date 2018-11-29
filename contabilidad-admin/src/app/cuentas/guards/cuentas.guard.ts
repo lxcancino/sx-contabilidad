@@ -22,7 +22,11 @@ export class CuentasGuard implements CanActivate {
     return this.store.select(fromStore.getCuentasLoaded).pipe(
       tap(loaded => {
         if (!loaded) {
-          this.store.dispatch(new fromStore.LoadCuentas());
+          this.store.dispatch(
+            new fromStore.LoadCuentas({
+              filter: { registros: 100, mayor: true }
+            })
+          );
         }
       }),
       filter(loaded => loaded), // Waiting for loaded

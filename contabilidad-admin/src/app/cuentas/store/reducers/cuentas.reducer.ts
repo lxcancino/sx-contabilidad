@@ -2,13 +2,14 @@ import { EntityState, EntityAdapter, createEntityAdapter } from '@ngrx/entity';
 
 import { CuentaActionTypes, CuentaActions } from '../actions/cuentas.actions';
 
-import { CuentaContable } from '../../models';
+import { CuentaContable, CatalogoFilter } from '../../models';
 
 export interface State extends EntityState<CuentaContable> {
   loading: boolean;
   loaded: boolean;
   searchTerm: string;
   selectedId: number;
+  filter: CatalogoFilter;
 }
 
 export const adapter: EntityAdapter<CuentaContable> = createEntityAdapter<
@@ -19,7 +20,8 @@ export const initialState: State = adapter.getInitialState({
   loading: false,
   loaded: false,
   searchTerm: '',
-  selectedId: undefined
+  selectedId: undefined,
+  filter: { registros: 100, mayor: true }
 });
 
 export function reducer(state = initialState, action: CuentaActions): State {
@@ -80,6 +82,13 @@ export function reducer(state = initialState, action: CuentaActions): State {
         selectedId: action.payload.selectedId
       };
     }
+
+    case CuentaActionTypes.SetCatalogoFilter: {
+      return {
+        ...state,
+        filter: action.payload.filter
+      };
+    }
   }
   return state;
 }
@@ -95,3 +104,4 @@ export const getCuentasLoaded = (state: State) => state.loaded;
 export const getCuentasLoading = (state: State) => state.loading;
 export const getCuentasSearchTerm = (state: State) => state.searchTerm;
 export const getSelectedCuentaId = (state: State) => state.selectedId;
+export const getCatalogosFilter = (state: State) => state.filter;

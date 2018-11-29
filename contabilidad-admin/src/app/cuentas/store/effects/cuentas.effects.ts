@@ -23,8 +23,8 @@ export class CuentasEffects {
   @Effect()
   load$ = this.actions$.pipe(
     ofType<fromCuentas.LoadCuentas>(CuentaActionTypes.LoadCuentas),
-    switchMap(() => {
-      return this.service.list().pipe(
+    switchMap(action => {
+      return this.service.list(action.payload.filter).pipe(
         map(cuentas => new fromCuentas.LoadCuentasSuccess({ cuentas })),
         catchError(response =>
           of(new fromCuentas.LoadCuentasFail({ response }))
@@ -39,7 +39,6 @@ export class CuentasEffects {
     map(action => action.payload.cuenta),
     switchMap(cuenta => {
       return this.service.save(cuenta).pipe(
-        tap(res => console.log('Alta de cuenta: ', res)),
         map(res => new fromCuentas.CreateCuentaSuccess({ cuenta: res })),
         catchError(response =>
           of(new fromCuentas.CreateCuentaFail({ response }))
@@ -91,11 +90,13 @@ export class CuentasEffects {
       CuentaActionTypes.UpdateCuentaSuccess
     ),
     map(action => action.payload.cuenta),
+    tap(res => console.log('Update success from: ', res)),
     tap(cuenta =>
       this.snackBar.open(`Cuenta ${cuenta.clave} actualizada`, 'Cerrar', {
         duration: 8000
       })
     )
+    // map(cuenta => new fromRoot.Go({ path: ['/cuentas', cuenta.id] }))
   );
 
   @Effect()
@@ -110,6 +111,14 @@ export class CuentasEffects {
       })
     ),
     map(res => new fromRoot.Go({ path: ['/cuentas'] }))
+  );
+
+  @Effect()
+  setFilter$ = this.actions$.pipe(
+    ofType<fromCuentas.SetCatalogoFilter>(CuentaActionTypes.SetCatalogoFilter),
+    map(
+      action => new fromCuentas.LoadCuentas({ filter: action.payload.filter })
+    )
   );
 
   @Effect()

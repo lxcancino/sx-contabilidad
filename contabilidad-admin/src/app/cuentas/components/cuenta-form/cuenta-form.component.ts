@@ -80,15 +80,17 @@ import {
       </mat-card-content>
 
       <mat-card-actions>
-        <button mat-button type="button" (click)="cancel.emit()"> Cancelar </button>
+        <button mat-button type="button" (click)="cancel.emit()">
+          <mat-icon>arrow_back</mat-icon> Regresar
+        </button>
         <button mat-button (click)="onSubmit()" color="primary" [disabled]="form.invalid || form.pristine">
           <mat-icon>save</mat-icon> Salvar
         </button>
         <button mat-button type="button" (click)="agregar.emit(cuenta)" *ngIf="cuenta && !cuenta.detalle">
-          <mat-icon></mat-icon> Agregar subcuenta
+          <mat-icon>my_library_add</mat-icon> Agregar subcuenta
         </button>
         <button mat-button type="button" (click)="delete.emit(cuenta)" color="warn"
-          *ngIf="cuenta?.subcuentas?.length === 0 || !cuenta?.subcuentas">
+           *ngIf="cuenta" [disabled]="!canDelete(cuenta)">
           <mat-icon>delete</mat-icon> Eliminar
         </button>
       </mat-card-actions>
@@ -207,4 +209,8 @@ export class CuentaFormComponent implements OnInit, OnChanges {
     return null;
   }
   */
+
+  canDelete(cuenta: CuentaContable) {
+    return !this.cuenta.subcuentas || this.cuenta.subcuentas.length === 0;
+  }
 }

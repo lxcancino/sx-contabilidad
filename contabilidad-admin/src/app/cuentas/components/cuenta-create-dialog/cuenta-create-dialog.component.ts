@@ -6,7 +6,8 @@ import { CuentaContable } from '../../models';
 @Component({
   selector: 'sx-cuenta-create-dialog',
   template: `
-      <sx-cuenta-form (save)="onSave($event)" [padre]="padre"></sx-cuenta-form>
+      <sx-cuenta-form (save)="onSave($event)" [padre]="padre"
+        (cancel)="dialogRef.close()"></sx-cuenta-form>
     `
 })
 export class CuentaCreateDialogComponent implements OnInit {

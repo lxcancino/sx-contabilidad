@@ -23,3 +23,9 @@ export interface CuentaContable {
   createUser: string;
   updateUser?: string;
 }
+
+export class CatalogoFilter {
+  registros: number;
+  mayor: boolean;
+  term?: string;
+}

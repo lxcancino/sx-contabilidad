@@ -1,9 +1,10 @@
 import { Action } from '@ngrx/store';
 
-import { CuentaContable } from '../../models';
+import { CuentaContable, CatalogoFilter } from '../../models';
 import { Update } from '@ngrx/entity';
 
 export enum CuentaActionTypes {
+  SetCatalogoFilter = '[Cuentas component] Set Catalogo filter',
   LoadCuentas = '[Cuentas Guard] Load Cuentas',
   LoadCuentasSuccess = '[Cuenta API] Load Cuentas Success',
   LoadCuentasFail = '[Cuenta API] Load Cuentas Fail',
@@ -25,9 +26,16 @@ export enum CuentaActionTypes {
   SetSelectedCuenta = '[Cuentas component]  cuenta'
 }
 
+// Set
+export class SetCatalogoFilter implements Action {
+  readonly type = CuentaActionTypes.SetCatalogoFilter;
+  constructor(public payload: {filter: CatalogoFilter}) {}
+}
+
 // Load
 export class LoadCuentas implements Action {
   readonly type = CuentaActionTypes.LoadCuentas;
+  constructor(public payload: {filter: CatalogoFilter}) {}
 }
 export class LoadCuentasFail implements Action {
   readonly type = CuentaActionTypes.LoadCuentasFail;
@@ -117,4 +125,5 @@ export type CuentaActions =
   | UpdateCuentaSuccess
   | SetCuentasSearchTerm
   | UpsertCuenta
-  | SetSelectedCuenta;
+  | SetSelectedCuenta
+  | SetCatalogoFilter;

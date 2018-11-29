@@ -5,6 +5,8 @@ import { TipoCuentaFieldComponent } from './cuenta-form/tipo-cuenta-field.compon
 import { SubtipoCuentaFieldComponent } from './cuenta-form/subtipo-cuenta-field.component';
 import { CuentaSatFieldComponent } from './cuenta-form/cuenta-sat-field.component';
 import { CuentaCreateDialogComponent } from './cuenta-create-dialog/cuenta-create-dialog.component';
+import { CuentasFilterComponent } from './cuentas-filter/cuentas-filter.component';
+import { CuentasFilterBtnComponent } from './cuentas-filter/cuentas-filter-btn.component';
 
 export const components: any[] = [
   CuentasTableComponent,
@@ -13,10 +15,15 @@ export const components: any[] = [
   TipoCuentaFieldComponent,
   SubtipoCuentaFieldComponent,
   CuentaSatFieldComponent,
-  CuentaCreateDialogComponent
+  CuentaCreateDialogComponent,
+  CuentasFilterComponent,
+  CuentasFilterBtnComponent
 ];
 
-export const entryComponents: any[] = [CuentaCreateDialogComponent];
+export const entryComponents: any[] = [
+  CuentaCreateDialogComponent,
+  CuentasFilterComponent
+];
 
 export * from './cuentas-table/cuentas-table.component';
 export * from './cuenta-form/cuenta-form.component';
@@ -25,3 +32,5 @@ export * from './cuenta-form/tipo-cuenta-field.component';
 export * from './cuenta-form/subtipo-cuenta-field.component';
 export * from './cuenta-form/cuenta-sat-field.component';
 export * from './cuenta-create-dialog/cuenta-create-dialog.component';
+export * from './cuentas-filter/cuentas-filter.component';
+export * from './cuentas-filter/cuentas-filter-btn.component';

@@ -6,7 +6,7 @@ import { catchError } from 'rxjs/operators';
 
 import { ConfigService } from 'app/utils/config.service';
 
-import { CuentaContable } from '../models';
+import { CuentaContable, CatalogoFilter } from '../models';
 import { Update } from '@ngrx/entity';
 
 @Injectable()
@@ -17,11 +17,19 @@ export class CuentaService {
     // this.apiUrl = configService.buildApiUrl('cuentaes');
   }
 
-  list(): Observable<CuentaContable[]> {
-    const params = new HttpParams()
-      // .set('max', '3500')
+  list(
+    filter: CatalogoFilter = { mayor: true, registros: 10 }
+  ): Observable<CuentaContable[]> {
+    let params = new HttpParams()
+      .set('max', filter.registros.toString())
       .set('sort', 'lastUpdated')
       .set('order', 'desc');
+    if (filter.mayor) {
+      params = params.set('mayor', filter.mayor.toString());
+    }
+    if (filter.term) {
+      params = params.set('term', filter.term);
+    }
     return this.http
       .get<CuentaContable[]>(this.apiUrl, { params: params })
       .pipe(catchError((error: any) => throwError(error)));

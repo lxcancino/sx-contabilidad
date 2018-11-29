@@ -38,6 +38,12 @@ export const getSelectedCuentaId = createSelector(
   getSelectedCuenta,
   cuenta => (cuenta ? cuenta.id : undefined)
 );
+
+export const getCatalogoFilter = createSelector(
+  getCuentasState,
+  fromCuentas.getCatalogosFilter
+);
+
 /*
 
 export const getSelectedCuentaId = createSelector(
