@@ -38,9 +38,9 @@ import { CuentaCreateDialogComponent } from 'app/cuentas/components';
       </div>
       <div flex>
         <mat-card>
-          <mat-card-title>Sub cuentas</mat-card-title>
+          <sx-search-title title="Sub cuentas" (search)="search = $event"></sx-search-title>
           <mat-divider></mat-divider>
-          <sx-cuentas-table [cuentas]="cuenta.subcuentas" [displayColumns]="columns" (select)="onSelect($event)">
+          <sx-cuentas-table [cuentas]="cuenta.subcuentas" [displayColumns]="columns" (select)="onSelect($event)" [filter]="search">
           </sx-cuentas-table>
         </mat-card>
       </div>
@@ -54,6 +54,7 @@ export class CuentaComponent implements OnInit, OnDestroy {
   cuenta$: Observable<CuentaContable>;
   loading$: Observable<boolean>;
   columns = ['clave', 'descripcion', 'detalle', 'cuentaSat'];
+  search: string;
 
   constructor(
     private store: Store<fromStore.State>,

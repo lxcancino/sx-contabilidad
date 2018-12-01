@@ -25,6 +25,11 @@ export class MainPageComponent implements OnInit, OnDestroy {
       title: 'Catálogo de cuentas'
     },
     {
+      icon: 'library_books',
+      route: '/polizas',
+      title: 'Polizas contables'
+    },
+    {
       icon: 'settings_input_component',
       route: '/costos',
       title: 'Costos'
