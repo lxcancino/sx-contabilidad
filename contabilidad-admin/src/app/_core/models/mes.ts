@@ -13,7 +13,8 @@ export class Mes {
     new Mes(9, 'Septiembre'),
     new Mes(10, 'Octubre'),
     new Mes(11, 'Noviembre'),
-    new Mes(12, 'Diciembre')
+    new Mes(12, 'Diciembre'),
+    new Mes(13, 'Cierre')
   ];
 
   static getMes(index: number) {

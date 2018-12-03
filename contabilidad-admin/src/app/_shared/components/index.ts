@@ -18,6 +18,8 @@ import { MonedaFieldComponent } from './moneda-field/moneda-field.component';
 import { TipoCambioFieldComponent } from './tipo-cambio-field/tipo-cambio-field.component';
 import { ProductoFieldComponent } from './producto-field/producto-field.component';
 import { ProveedorFieldComponent } from './proveedor-field/proveedor-field.component';
+import { EjercicioMesDialogComponent } from './ejercicio-mes-dialog/ejercicio-mes-dialog.component';
+import { EjercicioMesBtnComponent } from './ejercicio-mes-dialog/ejercicio-mes-btn.component';
 
 export const components = [
   DireccionComponent,
@@ -39,12 +41,15 @@ export const components = [
   MonedaFieldComponent,
   TipoCambioFieldComponent,
   ProductoFieldComponent,
-  ProveedorFieldComponent
+  ProveedorFieldComponent,
+  EjercicioMesDialogComponent,
+  EjercicioMesBtnComponent
 ];
 
 export const entyComponents: any[] = [
   FechaDialogComponent,
-  PeriodoDialogComponent
+  PeriodoDialogComponent,
+  EjercicioMesDialogComponent
 ];
 
 export * from './direccion/direccion.component';
@@ -66,3 +71,5 @@ export * from './tipo-cambio-field/tipo-cambio-field.component';
 
 export * from './producto-field/producto-field.component';
 export * from './proveedor-field/proveedor-field.component';
+export * from './ejercicio-mes-dialog/ejercicio-mes-dialog.component';
+export * from './ejercicio-mes-dialog/ejercicio-mes-btn.component';

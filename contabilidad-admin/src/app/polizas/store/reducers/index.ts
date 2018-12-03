@@ -22,3 +22,8 @@ export const getState = createFeatureSelector<State>('polizas');
 export const getContextState = createSelector(getState, state => state.context);
 
 export const getGrupos = createSelector(getContextState, fromContext.getGrupos);
+
+export const getPeriodoDePolizas = createSelector(
+  getContextState,
+  fromContext.getPeriodo
+);

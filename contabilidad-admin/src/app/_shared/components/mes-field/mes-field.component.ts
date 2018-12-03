@@ -9,7 +9,7 @@ import { Mes } from 'app/_core/models/mes';
     <mat-form-field class="fill" >
       <mat-select placeholder="Mes" formControlName="mes" class="fill">
         <mat-option *ngFor="let mes of meses"
-            [value]="mes.clave">{{ mes.descripcion }}
+            [value]="mes.clave">{{ mes.descripcion }} ({{mes.clave}})
         </mat-option>
       </mat-select>
     </mat-form-field>
@@ -17,15 +17,17 @@ import { Mes } from 'app/_core/models/mes';
   `,
   styles: [
     `
-    .fill {
-      width: 100%;
-    }
+      .fill {
+        width: 100%;
+      }
     `
   ]
 })
 export class MesFieldComponent implements OnInit {
-  @Input() parent: FormGroup;
+  @Input()
+  parent: FormGroup;
 
+  @Input()
   meses = Mes.MESES;
 
   constructor() {}

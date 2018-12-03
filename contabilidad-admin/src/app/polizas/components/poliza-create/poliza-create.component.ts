@@ -14,23 +14,27 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
   <form [formGroup]="form">
     <span mat-dialog-title>Alta de póliza</span>
     <div mat-dialog-content>
-      <mat-form-field flex>
-        <input matInput placeholder="Ejercicio" formControlName="ejercicio" readonly="true">
-      </mat-form-field>
-      <mat-form-field flex>
-        <input matInput placeholder="Mes" formControlName="mes">
-      </mat-form-field>
-      <mat-form-field flex>
-        <input matInput placeholder="Tipo" formControlName="tipo">
-      </mat-form-field>
-      <mat-form-field flex>
-        <input matInput placeholder="Subtipo" formControlName="suptipo">
-      </mat-form-field>
-      <mat-form-field >
-        <input matInput [matDatepicker]="myDatepicker" placeholder="Fecha" formControlName="fecha">
-        <mat-datepicker-toggle matSuffix [for]="myDatepicker"></mat-datepicker-toggle>
-        <mat-datepicker #myDatepicker></mat-datepicker>
-      </mat-form-field>
+      <div layout="column">
+        <div layout>
+          <mat-form-field flex>
+            <input matInput placeholder="Ejercicio" formControlName="ejercicio" readonly="true">
+          </mat-form-field>
+          <mat-form-field flex class="pad-left">
+            <input matInput placeholder="Mes" formControlName="mes">
+          </mat-form-field>
+        </div>
+        <mat-form-field flex>
+          <input matInput placeholder="Tipo" formControlName="tipo">
+        </mat-form-field>
+        <mat-form-field flex>
+          <input matInput placeholder="Subtipo" formControlName="suptipo">
+        </mat-form-field>
+        <mat-form-field >
+          <input matInput [matDatepicker]="myDatepicker" placeholder="Fecha" formControlName="fecha">
+          <mat-datepicker-toggle matSuffix [for]="myDatepicker"></mat-datepicker-toggle>
+          <mat-datepicker #myDatepicker></mat-datepicker>
+        </mat-form-field>
+      </div>
     </div>
     <mat-dialog-actions>
       <button mat-button [mat-dialog-close]="form.value" [disabled]="form.invalid">Aceptar</button>

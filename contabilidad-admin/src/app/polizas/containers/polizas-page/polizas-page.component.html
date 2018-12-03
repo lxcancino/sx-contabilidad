@@ -12,7 +12,13 @@
     <button mat-icon-button tdLayoutNavListOpen [hideWhenOpened]="true">
       <mat-icon>arrow_back</mat-icon>
     </button>
-    <span tdLayoutNavListToggle class="cursor-pointer">Polizas contables</span>
+    <span tdLayoutNavListToggle class="cursor-pointer">
+      <span>Pólizas contables</span>
+    </span>
+    <sx-ejercicio-mes-btn
+      [periodo]="periodo$ | async"
+      (change)="onCambiarPeriodo($event)"
+    ></sx-ejercicio-mes-btn>
     <span flex></span>
   </div>
   <!--

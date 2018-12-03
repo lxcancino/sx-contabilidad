@@ -7,6 +7,7 @@ import * as fromStore from '../../store';
 
 import { Observable } from 'rxjs';
 import { Grupo } from 'app/polizas/store/reducers/ui-context.reducre';
+import { EjercicioMes } from '../../../models/ejercicio-mes';
 
 @Component({
   selector: 'sx-polizas-page',
@@ -45,6 +46,7 @@ export class PolizasPageComponent implements OnInit {
 
   loading$: Observable<boolean>;
   grupos$: Observable<Grupo[]>;
+  periodo$: Observable<EjercicioMes>;
 
   constructor(
     public media: TdMediaService,
@@ -53,5 +55,10 @@ export class PolizasPageComponent implements OnInit {
 
   ngOnInit() {
     this.grupos$ = this.store.pipe(select(fromStore.getGrupos));
+    this.periodo$ = this.store.pipe(select(fromStore.getPeriodoDePolizas));
+  }
+
+  onCambiarPeriodo(event: EjercicioMes) {
+    console.log('Cambiando periodo: ', event);
   }
 }

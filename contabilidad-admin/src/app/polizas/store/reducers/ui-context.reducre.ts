@@ -1,3 +1,8 @@
+import {
+  EjercicioMes,
+  buildCurrentPeriodo
+} from '../../../models/ejercicio-mes';
+
 export class Grupo {
   constructor(
     public tipo: string,
@@ -8,10 +13,12 @@ export class Grupo {
 }
 
 export interface State {
+  periodo: EjercicioMes;
   grupos: Grupo[];
 }
 
 export const initialState: State = {
+  periodo: buildCurrentPeriodo(),
   grupos: [
     new Grupo('INGRESO', 'Ingreso', 'Pólizas de ingresos', [
       new Grupo('COBRANZA_CON', 'Cobranza CON', 'Contado'),
@@ -61,3 +68,4 @@ export function reducer(state = initialState, action): State {
 }
 
 export const getGrupos = (state: State) => state.grupos;
+export const getPeriodo = (state: State) => state.periodo;

@@ -6,6 +6,7 @@ import * as fromStore from '../../store';
 import * as fromActions from '../../store/actions';
 
 import { Observable } from 'rxjs';
+import { switchMap, withLatestFrom } from 'rxjs/operators';
 
 import { Poliza, PolizasFilter } from '../../models';
 import { ReportService } from 'app/reportes/services/report.service';
@@ -15,6 +16,7 @@ import { TdDialogService } from '@covalent/core';
 import { ActivatedRoute } from '@angular/router';
 import { map } from 'rxjs/operators';
 import { PolizaCreateComponent } from 'app/polizas/components';
+import { EjercicioMes } from '../../../models/ejercicio-mes';
 
 @Component({
   selector: 'sx-polizas-ingreso',
@@ -32,7 +34,7 @@ import { PolizaCreateComponent } from 'app/polizas/components';
 
       </mat-card-footer>
       <a mat-fab matTooltip="Alta de póliza" matTooltipPosition="before" color="accent" class="mat-fab-position-bottom-right z-3"
-      (click)="onCreate(subtipo)">
+      (click)="onCreate(subtipo) ">
     <mat-icon>add</mat-icon>
     </a>
     </mat-card>
@@ -50,10 +52,12 @@ import { PolizaCreateComponent } from 'app/polizas/components';
 export class PolizasDeIngresoComponent implements OnInit {
   polizas$: Observable<Poliza[]>;
   search = '';
+  tipo: string;
 
   tipo$: Observable<string>;
-  tipo: string;
   subtipo$: Observable<string>;
+  periodo$: Observable<EjercicioMes>;
+  config: PolizasFilter;
 
   constructor(
     private store: Store<fromStore.State>,
@@ -70,6 +74,22 @@ export class PolizasDeIngresoComponent implements OnInit {
     this.subtipo$ = this.route.queryParamMap.pipe(
       map(params => params.get('subtipo'))
     );
+    this.periodo$ = this.store.pipe(select(fromStore.getPeriodoDePolizas));
+
+    this.route.queryParamMap
+      .pipe(
+        withLatestFrom(this.periodo$, (paramMap, periodo) => {
+          return {
+            ...periodo,
+            tipo: paramMap.get('tipo'),
+            subtipo: paramMap.get('subtipo')
+          };
+        })
+      )
+      .subscribe(command => (this.config = command));
+    this.store
+      .pipe(select(fromStore.getCurrentPolizaGroup))
+      .subscribe(val => console.log('Current grupo:', val));
   }
 
   onSelect() {}
@@ -82,7 +102,7 @@ export class PolizasDeIngresoComponent implements OnInit {
     this.store.dispatch(new fromStore.LoadPolizas({ filter }));
   }
 
-  onCreate(subtipo: string) {
+  onCreate(subtipo: string, periodo) {
     this.dialog
       .open(PolizaCreateComponent, {
         data: { config: { tipo: 'INGRESO', subtipo, ejercicio: 2018, mes: 1 } }

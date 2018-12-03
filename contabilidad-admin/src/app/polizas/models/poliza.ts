@@ -26,5 +26,3 @@ export interface PolizasFilter {
   tipo: string;
   subtipo: string;
 }
-
-export const TIPOS = [{ tipo: '', subtipo: [''] }];
