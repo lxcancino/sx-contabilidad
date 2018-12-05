@@ -14,10 +14,10 @@ import { TdDialogService } from '@covalent/core';
   selector: 'sx-poliza',
   template: `
   <ng-template tdLoading [tdLoadingUntil]="!(loading$ | async)"  tdLoadingStrategy="overlay" >
-    <div>
+    <div *ngIf="poliza$ | async as poliza">
       <sx-poliza-form
-        [poliza]="poliza$ | async"
-        (cancel)="onCancel()"
+        [poliza]="poliza"
+        (cancel)="onCancel(poliza)"
         (update)="onUpdate($event)"
         (delete)="onDelete($event)"
         (cerrar)="onCerrar($event)">
@@ -41,8 +41,10 @@ export class PolizaComponent implements OnInit {
     this.loading$ = this.store.select(fromStore.getPolizasLoading);
   }
 
-  onCancel() {
-    this.store.dispatch(new fromRoot.Back());
+  onCancel(event: Poliza) {
+    this.store.dispatch(
+      new fromRoot.Go({ path: [`polizas/${event.tipo.toLowerCase()}`] })
+    );
   }
 
   onUpdate(event: { id: number; changes: Partial<Poliza> }) {
