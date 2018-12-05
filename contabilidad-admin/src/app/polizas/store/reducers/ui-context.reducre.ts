@@ -2,6 +2,7 @@ import {
   EjercicioMes,
   buildCurrentPeriodo
 } from '../../../models/ejercicio-mes';
+import * as fromActions from '../actions/ui-context.actions';
 
 export class Grupo {
   constructor(
@@ -18,7 +19,7 @@ export interface State {
 }
 
 export const initialState: State = {
-  periodo: buildCurrentPeriodo(),
+  periodo: { ejercicio: 2018, mes: 11 }, // buildCurrentPeriodo(),
   grupos: [
     new Grupo('INGRESO', 'Ingreso', 'Pólizas de ingresos', [
       new Grupo('COBRANZA_CON', 'Cobranza CON', 'Contado'),
@@ -40,11 +41,7 @@ export const initialState: State = {
     ]),
     new Grupo('DIARIO', 'Diario', 'Pólizas de diario', [
       new Grupo('VENTAS', 'Ventas', 'Pólizas de ventas'),
-      new Grupo(
-        'NOTAS_DE_CARGO',
-        'Notas de cargo',
-        'Pólizas de notas de cargo'
-      ),
+      new Grupo('CARGOS', 'Cargos diversos', 'Pólizas de notas de cargo'),
       new Grupo('NOTAS_DE_CREDITO', 'Notas de crédito', ''),
       new Grupo('ANTICIPOS', 'Anticipos', ''),
       new Grupo('COMPRAS', 'Compras', ''),
@@ -61,8 +58,17 @@ export const initialState: State = {
   ]
 };
 
-export function reducer(state = initialState, action): State {
+export function reducer(
+  state = initialState,
+  action: fromActions.UIContextActions
+): State {
   switch (action.type) {
+    case fromActions.UIContextActionTypes.SetPeriodoDePoliza: {
+      return {
+        ...state,
+        periodo: action.payload.periodo
+      };
+    }
   }
   return state;
 }

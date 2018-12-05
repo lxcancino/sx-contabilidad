@@ -54,13 +54,22 @@ export const getPolizasLoaded = createSelector(
 export const getCurrentPolizaGroup = createSelector(
   fromRoot.getRouterState,
   (router): { tipo: string; subtipo: string } => {
-    console.log('Router state', router.state);
-    console.log('Params: ', router.state.queryParams);
     return (
       router.state && {
-        tipo: router.state.queryParams.get('tipo'),
-        subtipo: router.state.queryParams.get('subtipo')
+        tipo: router.state.queryParams.tipo,
+        subtipo: router.state.queryParams.subtipo
       }
     );
+  }
+);
+
+export const getCurrentPeriodoGrupo = createSelector(
+  getCurrentPolizaGroup,
+  fromFeature.getPeriodoDePolizas,
+  (grupo, periodo) => {
+    return {
+      ...grupo,
+      ...periodo
+    };
   }
 );

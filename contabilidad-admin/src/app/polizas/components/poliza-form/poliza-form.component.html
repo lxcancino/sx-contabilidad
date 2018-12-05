@@ -1,20 +1,25 @@
 <form [formGroup]="form" (ngSubmit)="onSubmit()">
   <mat-card>
-    <mat-card-title> POLIZA HEADER </mat-card-title>
-    <mat-card-subtitle> POLIZA SUB HEADER </mat-card-subtitle>
+    <mat-card-title>
+      Póliza {{ poliza?.concepto }} {{ poliza?.folio }}
+    </mat-card-title>
+    <mat-card-subtitle>
+      <span layout>
+        <span class="pad-left pad-right"
+          >Tipo: {{ poliza.tipo }} {{ poliza.subtipo }} Fecha:</span
+        >
+        <span class="pad-left"
+          >Fecha: {{ poliza.fecha | date: 'dd/MM/yyyy' }}</span
+        >
+        <span flex></span> <span>Usuario: {{ poliza.updateUser }}</span>
+      </span>
+    </mat-card-subtitle>
     <mat-divider></mat-divider>
 
     <div class="partidas-panel">
-      <!--
-        <sx-requisicion-partidas
-          [parent]="form"
-          [partidas]="partidas.value"
-          (delete)="onDeleteRow($event)"
-          (update)="onUpdateRow($event)"
-          [readOnly]="form.disabled"
-        >
-        </sx-requisicion-partidas>
-      -->
+      <sx-poliza-partidas-table
+        [partidas]="poliza.partidas"
+      ></sx-poliza-partidas-table>
     </div>
 
     <mat-divider></mat-divider>
@@ -28,6 +33,9 @@
         *ngIf="!form.disabled"
       >
         <mat-icon>save</mat-icon> Salvar
+      </button>
+      <button mat-button color="primary" (click)="update.emit(poliza)">
+        <mat-icon>loop</mat-icon> Actualizar
       </button>
     </mat-card-actions>
   </mat-card>

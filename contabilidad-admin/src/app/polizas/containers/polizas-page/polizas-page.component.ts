@@ -59,6 +59,6 @@ export class PolizasPageComponent implements OnInit {
   }
 
   onCambiarPeriodo(event: EjercicioMes) {
-    console.log('Cambiando periodo: ', event);
+    this.store.dispatch(new fromStore.SetPeriodoDePoliza({ periodo: event }));
   }
 }

@@ -19,22 +19,24 @@ import { PolizaCreateComponent } from 'app/polizas/components';
 import { EjercicioMes } from '../../../models/ejercicio-mes';
 
 @Component({
-  selector: 'sx-polizas-ingreso',
+  selector: 'sx-polizas',
   template: `
-    <mat-card *ngIf="subtipo$ | async as subtipo">
-      <sx-search-title title="Pólizas de ingreso ({{subtipo}})" (search)="search = $event">
-        <button mat-menu-item class="actions" (click)="reload(subtipo)"><mat-icon>refresh</mat-icon> Recargar</button>
-        <a mat-menu-item  color="accent"[routerLink]="['create']" class="actions">
+    <mat-card *ngIf="config$ | async as config">
+      <sx-search-title title="Pólizas de {{config?.tipo?.toLowerCase()}} ({{config?.subtipo}})" (search)="search = $event">
+        <button mat-menu-item class="actions" (click)="reload(config)"><mat-icon>refresh</mat-icon> Recargar</button>
+        <a mat-menu-item  color="accent" class="actions" (click)="onCreate(config) ">
           <mat-icon>add</mat-icon> Nueva póliza
         </a>
       </sx-search-title>
       <mat-divider></mat-divider>
-      <sx-polizas-table></sx-polizas-table>
+        <ng-template tdLoading [tdLoadingUntil]="!(loading$ | async)"  tdLoadingStrategy="overlay" >
+          <sx-polizas-table [polizas]="polizas$ | async" (select)="onSelect($event)"></sx-polizas-table>
+        </ng-template>
       <mat-card-footer>
 
       </mat-card-footer>
       <a mat-fab matTooltip="Alta de póliza" matTooltipPosition="before" color="accent" class="mat-fab-position-bottom-right z-3"
-      (click)="onCreate(subtipo) ">
+      (click)="onCreate(config) ">
     <mat-icon>add</mat-icon>
     </a>
     </mat-card>
@@ -49,15 +51,12 @@ import { EjercicioMes } from '../../../models/ejercicio-mes';
     `
   ]
 })
-export class PolizasDeIngresoComponent implements OnInit {
-  polizas$: Observable<Poliza[]>;
+export class PolizasComponent implements OnInit {
   search = '';
-  tipo: string;
 
-  tipo$: Observable<string>;
-  subtipo$: Observable<string>;
-  periodo$: Observable<EjercicioMes>;
-  config: PolizasFilter;
+  polizas$: Observable<Poliza[]>;
+  config$: Observable<PolizasFilter>;
+  loading$: Observable<boolean>;
 
   constructor(
     private store: Store<fromStore.State>,
@@ -68,44 +67,31 @@ export class PolizasDeIngresoComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    // this.polizas$ = this.store.pipe(select(fromStore.getAllCobros));
-    // this.filter$ = this.store.pipe(select(fromStore.getCobrosFilter));
-    this.route.queryParamMap.pipe(map(params => params.get('tipo')));
-    this.subtipo$ = this.route.queryParamMap.pipe(
-      map(params => params.get('subtipo'))
-    );
-    this.periodo$ = this.store.pipe(select(fromStore.getPeriodoDePolizas));
-
-    this.route.queryParamMap
-      .pipe(
-        withLatestFrom(this.periodo$, (paramMap, periodo) => {
-          return {
-            ...periodo,
-            tipo: paramMap.get('tipo'),
-            subtipo: paramMap.get('subtipo')
-          };
-        })
-      )
-      .subscribe(command => (this.config = command));
-    this.store
-      .pipe(select(fromStore.getCurrentPolizaGroup))
-      .subscribe(val => console.log('Current grupo:', val));
+    this.loading$ = this.store.pipe(select(fromStore.getPolizasLoading));
+    this.polizas$ = this.store.pipe(select(fromStore.getPolizas));
+    this.config$ = this.store.pipe(select(fromStore.getCurrentPeriodoGrupo));
   }
 
-  onSelect() {}
+  onSelect(event: Poliza) {
+    this.store.dispatch(
+      new fromRoot.Go({
+        path: [`polizas/${event.tipo.toLowerCase()}`, event.id]
+      })
+    );
+  }
 
   onFilterChange(filter: PolizasFilter) {
     this.store.dispatch(new fromStore.SetPolizasFilter({ filter }));
   }
 
-  reload(filter: PolizasFilter) {
-    this.store.dispatch(new fromStore.LoadPolizas({ filter }));
+  reload(event: PolizasFilter) {
+    this.store.dispatch(new fromStore.LoadPolizas({ filter: event }));
   }
 
-  onCreate(subtipo: string, periodo) {
+  onCreate(event: PolizasFilter) {
     this.dialog
       .open(PolizaCreateComponent, {
-        data: { config: { tipo: 'INGRESO', subtipo, ejercicio: 2018, mes: 1 } }
+        data: { config: event }
       })
       .afterClosed()
       .subscribe(command => {

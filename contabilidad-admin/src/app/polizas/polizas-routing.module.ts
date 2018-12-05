@@ -9,8 +9,28 @@ const routes: Routes = [
     path: '',
     component: fromContainers.PolizasPageComponent,
     children: [
-      { path: 'ingreso', component: fromContainers.PolizasDeIngresoComponent },
-      { path: 'ingreso/:id', component: fromContainers.PolizaComponent }
+      {
+        path: 'ingreso',
+        canActivate: [fromGuards.PolizasGuard],
+        component: fromContainers.PolizasComponent
+      },
+      { path: 'ingreso/:id', component: fromContainers.PolizaComponent },
+      {
+        path: 'egreso',
+        canActivate: [fromGuards.PolizasGuard],
+        component: fromContainers.PolizasComponent
+      },
+      { path: 'egreso/:id', component: fromContainers.PolizaComponent },
+      {
+        path: 'diario',
+        canActivate: [fromGuards.PolizasGuard],
+        component: fromContainers.PolizasComponent
+      },
+      {
+        path: 'diario/:polizaId',
+        canActivate: [fromGuards.PolizaExistsGuard],
+        component: fromContainers.PolizaComponent
+      }
     ]
   }
 ];

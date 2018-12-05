@@ -6,6 +6,7 @@ import {
 } from '@angular/core';
 import { MAT_DIALOG_DATA } from '@angular/material';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { Periodo } from 'app/_core/models/periodo';
 
 @Component({
   selector: 'sx-poliza-create',
@@ -20,17 +21,17 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
             <input matInput placeholder="Ejercicio" formControlName="ejercicio" readonly="true">
           </mat-form-field>
           <mat-form-field flex class="pad-left">
-            <input matInput placeholder="Mes" formControlName="mes">
+            <input matInput placeholder="Mes" formControlName="mes" readonly="true">
           </mat-form-field>
         </div>
         <mat-form-field flex>
-          <input matInput placeholder="Tipo" formControlName="tipo">
+          <input matInput placeholder="Tipo" formControlName="tipo" readonly="true">
         </mat-form-field>
         <mat-form-field flex>
-          <input matInput placeholder="Subtipo" formControlName="suptipo">
+          <input matInput placeholder="Subtipo" formControlName="subtipo" readonly="true">
         </mat-form-field>
         <mat-form-field >
-          <input matInput [matDatepicker]="myDatepicker" placeholder="Fecha" formControlName="fecha">
+          <input matInput [matDatepicker]="myDatepicker" placeholder="Fecha" [max]="maxDate" [min]="minDate" formControlName="fecha" >
           <mat-datepicker-toggle matSuffix [for]="myDatepicker"></mat-datepicker-toggle>
           <mat-datepicker #myDatepicker></mat-datepicker>
         </mat-form-field>
@@ -52,16 +53,23 @@ export class PolizaCreateComponent implements OnInit {
     subtipo: string;
     fecha: Date;
   };
+
+  maxDate: Date;
+  minDate: Date;
+
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
     private fb: FormBuilder
   ) {
     this.config = data.config;
+    const periodo = Periodo.toPeriodo(this.config.ejercicio, this.config.mes);
+    this.minDate = periodo.fechaInicial;
+    this.maxDate = periodo.fechaFinal;
   }
 
   ngOnInit() {
     this.buildForm();
-    this.form.setValue(this.config);
+    this.form.patchValue(this.config);
   }
 
   buildForm() {
@@ -70,7 +78,7 @@ export class PolizaCreateComponent implements OnInit {
       mes: [null, [Validators.required]],
       tipo: [null, [Validators.required]],
       subtipo: [null, [Validators.required]],
-      fecha: [null, [Validators.required]]
+      fecha: [new Date(), [Validators.required]]
     });
   }
 }

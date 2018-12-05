@@ -54,8 +54,8 @@ export class PolizaFormComponent implements OnInit, OnDestroy, OnChanges {
   constructor(private fb: FormBuilder) {}
 
   ngOnInit() {
-    this.buildForm();
-    this.setPoliza();
+    // this.buildForm();
+    // this.setPoliza();
   }
 
   ngOnDestroy() {
@@ -71,7 +71,10 @@ export class PolizaFormComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   setPoliza() {
-    console.log('Editando poliza: ', this.poliza);
+    console.log('Editando poliza:', this.poliza);
+    if (!this.form) {
+      this.buildForm();
+    }
     this.form.patchValue(this.poliza);
     this.cleanPartidas();
     this.poliza.partidas.forEach(det => {
@@ -85,7 +88,7 @@ export class PolizaFormComponent implements OnInit, OnDestroy, OnChanges {
   private buildForm() {
     if (!this.form) {
       this.form = this.fb.group({
-        fecha: [new Date(), [Validators.required]],
+        // fecha: [new Date(), [Validators.required]],
         concepto: [null, [Validators.required]],
         manual: [false, [Validators.required]],
         partidas: this.fb.array([])
@@ -104,8 +107,7 @@ export class PolizaFormComponent implements OnInit, OnDestroy, OnChanges {
       const entity: Update<Poliza> = {
         id: this.poliza.id,
         changes: {
-          ...this.form.value,
-          fecha: this.form.get('fecha').value.toISOString()
+          ...this.form.value
         }
       };
       this.update.emit(entity);

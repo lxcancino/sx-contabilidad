@@ -14,10 +14,12 @@ import { components, entryComponents } from './components';
 import { containers } from './containers';
 import { AuthModule } from '../auth/auth.module';
 import { ReportesModule } from '../reportes/reportes.module';
+import { AgGridModule } from 'ag-grid-angular';
 
 @NgModule({
   imports: [
     SharedModule,
+    AgGridModule.withComponents([]),
     AuthModule,
     ReportesModule,
     PolizasRoutingModule,
