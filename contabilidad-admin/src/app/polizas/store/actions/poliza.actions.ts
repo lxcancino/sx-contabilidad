@@ -21,6 +21,11 @@ export enum PolizaActionTypes {
   UpdatePolizaFail = '[Poliza API] Update Poliza Fail',
   UpdatePolizaSuccess = '[Poliza API] Update Poliza Success',
 
+  // Recalcular
+  RecalcularPoliza = '[Poliza Component] Recalcular Poliza',
+  RecalcularPolizaFail = '[Poliza API] Recalcular Poliza Fail',
+  RecalcularPolizaSuccess = '[Poliza API] Recalcular Poliza Success',
+
   UpsertPoliza = '[Poliza exists guard] Upsert poliza'
 }
 
@@ -77,6 +82,25 @@ export class DeletePolizaSuccess implements Action {
   constructor(public payload: { poliza: Poliza }) {}
 }
 // Update
+export class RecalcularPoliza implements Action {
+  readonly type = PolizaActionTypes.RecalcularPoliza;
+  constructor(public payload: { polizaId: number }) {}
+}
+export class RecalcularPolizaFail implements Action {
+  readonly type = PolizaActionTypes.RecalcularPolizaFail;
+  constructor(public payload: { response: any }) {}
+}
+export class RecalcularPolizaSuccess implements Action {
+  readonly type = PolizaActionTypes.RecalcularPolizaSuccess;
+  constructor(public payload: { poliza: Poliza }) {}
+}
+
+export class UpsertPoliza implements Action {
+  readonly type = PolizaActionTypes.UpsertPoliza;
+  constructor(public payload: { poliza: Poliza }) {}
+}
+
+// Recalcular
 export class UpdatePoliza implements Action {
   readonly type = PolizaActionTypes.UpdatePoliza;
 
@@ -90,11 +114,6 @@ export class UpdatePolizaFail implements Action {
 export class UpdatePolizaSuccess implements Action {
   readonly type = PolizaActionTypes.UpdatePolizaSuccess;
 
-  constructor(public payload: { poliza: Poliza }) {}
-}
-
-export class UpsertPoliza implements Action {
-  readonly type = PolizaActionTypes.UpsertPoliza;
   constructor(public payload: { poliza: Poliza }) {}
 }
 
@@ -112,4 +131,7 @@ export type PolizaActions =
   | UpdatePolizaFail
   | UpdatePolizaSuccess
   | UpsertPoliza
+  | RecalcularPoliza
+  | RecalcularPolizaFail
+  | RecalcularPolizaSuccess
   | SetPolizasFilter;

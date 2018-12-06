@@ -62,6 +62,20 @@ export class PolizasEffects {
   );
 
   @Effect()
+  recalcular$ = this.actions$.pipe(
+    ofType<fromActions.RecalcularPoliza>(PolizaActionTypes.RecalcularPoliza),
+    map(action => action.payload.polizaId),
+    switchMap(polizaId => {
+      return this.service.recalcular(polizaId).pipe(
+        map(res => new fromActions.RecalcularPolizaSuccess({ poliza: res })),
+        catchError(response =>
+          of(new fromActions.RecalcularPolizaFail({ response }))
+        )
+      );
+    })
+  );
+
+  @Effect()
   delete$ = this.actions$.pipe(
     ofType<fromActions.DeletePoliza>(PolizaActionTypes.DeletePoliza),
     map(action => action.payload.poliza),
@@ -81,16 +95,24 @@ export class PolizasEffects {
       PolizaActionTypes.CreatePolizaSuccess
     ),
     map(action => action.payload.poliza),
-    map(res => new fromRoot.Go({ path: ['/polizas', res.id] }))
+    map(
+      poliza =>
+        new fromRoot.Go({
+          path: [`polizas/${poliza.tipo.toLowerCase()}`, poliza.id],
+          query: { tipo: poliza.tipo, subtipo: poliza.subtipo }
+        })
+    )
   );
 
   @Effect({ dispatch: false })
   updateSuccess$ = this.actions$.pipe(
-    ofType<fromActions.UpdatePolizaSuccess>(
-      PolizaActionTypes.UpdatePolizaSuccess
+    ofType<
+      fromActions.UpdatePolizaSuccess | fromActions.RecalcularPolizaSuccess
+    >(
+      PolizaActionTypes.UpdatePolizaSuccess,
+      PolizaActionTypes.RecalcularPolizaSuccess
     ),
     map(action => action.payload.poliza),
-    tap(res => console.log('Update success from: ', res)),
     tap(poliza =>
       this.snackBar.open(`Poliza ${poliza.id} actualizada`, 'Cerrar', {
         duration: 8000
@@ -106,11 +128,21 @@ export class PolizasEffects {
     ),
     map(action => action.payload.poliza),
     tap(poliza =>
-      this.snackBar.open(`Poliza ${poliza.folio} eliminada`, 'Cerrar', {
-        duration: 8000
-      })
+      this.snackBar.open(
+        `Poliza ${poliza.tipo} ${poliza.subtipo}: ${poliza.folio} eliminada`,
+        'Cerrar',
+        {
+          duration: 8000
+        }
+      )
     ),
-    map(res => new fromRoot.Go({ path: ['/polizas'] }))
+    map(
+      poliza =>
+        new fromRoot.Go({
+          path: [`polizas/${poliza.tipo.toLowerCase()}`],
+          query: { tipo: poliza.tipo, subtipo: poliza.subtipo }
+        })
+    )
   );
 
   @Effect()
@@ -127,10 +159,12 @@ export class PolizasEffects {
       | fromActions.LoadPolizasFail
       | fromActions.CreatePolizaFail
       | fromActions.UpdatePolizaFail
+      | fromActions.RecalcularPolizaFail
     >(
       PolizaActionTypes.LoadPolizasFail,
       PolizaActionTypes.CreatePolizaFail,
-      PolizaActionTypes.UpdatePolizaFail
+      PolizaActionTypes.UpdatePolizaFail,
+      PolizaActionTypes.RecalcularPolizaFail
     ),
     map(action => action.payload.response),
     map(response => new fromRoot.GlobalHttpError({ response }))

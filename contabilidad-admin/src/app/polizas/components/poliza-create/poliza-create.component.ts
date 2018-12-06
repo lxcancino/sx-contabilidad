@@ -78,7 +78,7 @@ export class PolizaCreateComponent implements OnInit {
       mes: [null, [Validators.required]],
       tipo: [null, [Validators.required]],
       subtipo: [null, [Validators.required]],
-      fecha: [new Date(), [Validators.required]]
+      fecha: [null, [Validators.required]]
     });
   }
 }

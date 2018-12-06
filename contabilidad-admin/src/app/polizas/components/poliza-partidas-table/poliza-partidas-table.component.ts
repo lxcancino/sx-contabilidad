@@ -7,49 +7,48 @@ import {
   SimpleChanges,
   ViewChild,
   Output,
-  EventEmitter
+  EventEmitter,
+  ChangeDetectorRef
 } from '@angular/core';
-import { MatTableDataSource, MatPaginator, MatSort } from '@angular/material';
 
 import { PolizaDet } from '../../models';
-import { GridOptions } from 'ag-grid-community';
+import {
+  GridOptions,
+  FilterChangedEvent,
+  GridReadyEvent,
+  GridApi
+} from 'ag-grid-community';
 
 @Component({
   selector: 'sx-poliza-partidas-table',
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <ag-grid-angular #agGrid
-      style="width: 100%; height: 300px;"
-      class="ag-theme-balham"
-      [gridOptions]="gridOptions"
-      [defaultColDef]="defaultColDef"
-      [enableFilter]="true"
-      [floatingFilter]="true"
-      [enableColResize]="true"
-      (gridReady)="onGridReady($event)">
-    </ag-grid-angular>
+    <div style='height: 100%'>
+      <ag-grid-angular #agGrid
+        class="ag-theme-balham"
+        [ngClass]="{myGrid: !printFriendly, print: printFriendly}"
+        [gridOptions]="gridOptions"
+        [defaultColDef]="defaultColDef"
+        [enableFilter]="true"
+        [enableSorting]="true"
+        [floatingFilter]="true"
+        [enableColResize]="true"
+        [animateRows]="true"
+        (firstDataRendered)="onFirstDataRendered($event)"
+        (gridReady)="onGridReady($event)"
+        (modelUpdated)="onModelUpdate($event)">
+      </ag-grid-angular>
+    </div>
   `,
   styles: [
     `
-      table {
+      .myGrid {
         width: 100%;
-        max-height: 500px;
-        overflow: auto;
+        height: 100%;
       }
-      .mat-cell {
-        font-size: 11px;
-      }
-      .mat-row {
-        height: 30px;
-      }
-      .mat-column-descripcion {
-        max-width: 200px;
-      }
-      .mat-column-nivel {
-        max-width: 90px;
-      }
-      .mat-column-tipo {
-        max-width: 90px;
+      .print {
+        width: '';
+        height: '';
       }
     `
   ]
@@ -57,38 +56,16 @@ import { GridOptions } from 'ag-grid-community';
 export class PolizaPartidasTableComponent implements OnInit, OnChanges {
   @Input()
   partidas: PolizaDet[] = [];
+
   @Input()
   filter: string;
-  dataSource = new MatTableDataSource<PolizaDet>([]);
 
   @Input()
   selected: number;
 
-  private gridOptions: GridOptions;
-  private defaultColDef;
-
-  @Input()
-  displayColumns = [
-    'cuenta',
-    'concepto',
-    'descripcion',
-    'debe',
-    'haber',
-    'referencia',
-    'referencia2',
-    'asiento',
-    // 'origen',
-    // 'entidad',
-    // 'documento',
-    'documentoFecha'
-    // 'sucursal'
-  ];
-
-  @ViewChild(MatSort)
-  sort: MatSort;
-
-  @ViewChild(MatPaginator)
-  paginator: MatPaginator;
+  gridOptions: GridOptions;
+  gridApi: GridApi;
+  defaultColDef;
 
   @Output()
   select = new EventEmitter();
@@ -96,9 +73,75 @@ export class PolizaPartidasTableComponent implements OnInit, OnChanges {
   @Output()
   edit = new EventEmitter();
 
-  constructor() {
+  @Output()
+  totalesChanged = new EventEmitter<{ debe: number; haber: number }>();
+
+  printFriendly = false;
+
+  constructor(private cd: ChangeDetectorRef) {
     this.gridOptions = <GridOptions>{};
-    this.gridOptions.columnDefs = [
+    this.gridOptions.columnDefs = this.buildColsDef();
+    this.defaultColDef = {
+      width: 100,
+      editable: false,
+      filter: 'agTextColumnFilter'
+    };
+
+    this.gridOptions.onFilterChanged = this.onFilter;
+  }
+
+  ngOnInit() {}
+
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes.partidas && changes.partidas.currentValue) {
+      // this.gridOptions.rowData = changes.partidas.currentValue;
+      if (this.gridApi) {
+        this.gridApi.setRowData(changes.partidas.currentValue);
+      }
+    }
+  }
+
+  onModelUpdate(event) {
+    this.actualizarTotales();
+  }
+
+  onGridReady(params: GridReadyEvent) {
+    this.gridApi = params.api;
+    this.gridApi.setRowData(this.partidas);
+  }
+
+  onFirstDataRendered(params) {
+    params.api.sizeColumnsToFit();
+  }
+
+  onFilter(event: FilterChangedEvent) {}
+
+  actualizarTotales() {
+    if (this.gridApi) {
+      let debe = 0.0;
+      let haber = 0.0;
+      this.gridApi.forEachNodeAfterFilter((rowNode, index) => {
+        debe += rowNode.data.debe;
+        haber += rowNode.data.haber;
+      });
+      this.totalesChanged.emit({ debe, haber });
+    }
+  }
+
+  printGrid() {
+    this.gridApi.setDomLayout('print');
+    this.printFriendly = true;
+    this.cd.detectChanges();
+    setTimeout(() => {
+      print();
+      this.gridApi.setDomLayout(null);
+      this.printFriendly = false;
+      this.cd.detectChanges();
+    }, 8000);
+  }
+
+  private buildColsDef() {
+    return [
       {
         headerName: 'Clave',
         field: 'clave',
@@ -131,6 +174,7 @@ export class PolizaPartidasTableComponent implements OnInit, OnChanges {
       {
         headerName: 'Referencias',
         marryChildren: true,
+        openByDefault: 'false',
         children: [
           {
             headerName: 'Sucursal',
@@ -140,8 +184,7 @@ export class PolizaPartidasTableComponent implements OnInit, OnChanges {
           { headerName: 'Ref', field: 'referencia', columnGroupShow: 'closed' },
           {
             headerName: 'Ref2',
-            field: 'referencia2',
-            columnGroupShow: 'closed'
+            field: 'referencia2'
           },
           { headerName: 'Origen', field: 'origen', columnGroupShow: 'closed' },
           { headerName: 'Entidad', field: 'entidad', columnGroupShow: 'closed' }
@@ -149,54 +192,22 @@ export class PolizaPartidasTableComponent implements OnInit, OnChanges {
       },
       {
         headerName: 'Documento',
+        openByDefault: 'false',
         children: [
           { headerName: 'Docto', field: 'documento', columnGroupShow: 'open' },
           {
             headerName: 'Docto T',
-            field: 'documentoTipo'
+            field: 'documentoTipo',
+            columnGroupShow: 'closed'
           },
           {
             headerName: 'Docto F',
             field: 'documentoFecha',
-            filter: 'agDateColumnFilter'
+            filter: 'agDateColumnFilter',
+            columnGroupShow: 'closed'
           }
         ]
       }
     ];
-    this.defaultColDef = {
-      width: 150,
-      editable: false,
-      filter: 'agTextColumnFilter'
-    };
-  }
-
-  ngOnInit() {
-    this.dataSource.paginator = this.paginator;
-    this.dataSource.sort = this.sort;
-  }
-
-  ngOnChanges(changes: SimpleChanges) {
-    if (changes.partidas && changes.partidas.currentValue) {
-      this.dataSource.data = changes.partidas.currentValue;
-      this.gridOptions.rowData = changes.partidas.currentValue;
-    }
-    if (changes.filter) {
-      const s = changes.filter.currentValue || '';
-      this.dataSource.filter = s.toLowerCase();
-    }
-  }
-
-  onGridReady(params) {
-    console.log('Grid params: ', params);
-    /*
-    this.gridApi = params.api;
-    this.gridColumnApi = params.columnApi;
-
-    this.http
-      .get("https://raw.githubusercontent.com/ag-grid/ag-grid/master/packages/ag-grid-docs/src/olympicWinners.json")
-      .subscribe(data => {
-        this.rowData = data;
-      });
-      */
   }
 }

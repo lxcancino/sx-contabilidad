@@ -63,6 +63,13 @@ export class PolizaService {
       .pipe(catchError((error: any) => throwError(error)));
   }
 
+  recalcular(polizaId: number): Observable<Poliza> {
+    const url = `${this.apiUrl}/recalcular/${polizaId}`;
+    return this.http
+      .put<Poliza>(url, {})
+      .pipe(catchError((error: any) => throwError(error)));
+  }
+
   get apiUrl() {
     if (!this._apiUrl) {
       this._apiUrl = this.config.buildApiUrl('contabilidad/polizas');

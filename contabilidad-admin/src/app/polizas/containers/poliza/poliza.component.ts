@@ -9,6 +9,8 @@ import * as fromStore from '../../store';
 import { Poliza } from '../../models';
 
 import { TdDialogService } from '@covalent/core';
+import * as moment from 'moment';
+import { ReportService } from 'app/reportes/services/report.service';
 
 @Component({
   selector: 'sx-poliza',
@@ -19,8 +21,10 @@ import { TdDialogService } from '@covalent/core';
         [poliza]="poliza"
         (cancel)="onCancel(poliza)"
         (update)="onUpdate($event)"
+        (recalcular)="onRecalcular($event)"
         (delete)="onDelete($event)"
-        (cerrar)="onCerrar($event)">
+        (cerrar)="onCerrar($event)"
+        (print)="onPrint($event)">
       </sx-poliza-form>
     </div>
   </ng-template>
@@ -33,7 +37,8 @@ export class PolizaComponent implements OnInit {
 
   constructor(
     private store: Store<fromStore.State>,
-    private dialogService: TdDialogService
+    private dialogService: TdDialogService,
+    private reportService: ReportService
   ) {}
 
   ngOnInit() {
@@ -41,10 +46,17 @@ export class PolizaComponent implements OnInit {
     this.loading$ = this.store.select(fromStore.getPolizasLoading);
   }
 
-  onCancel(event: Poliza) {
+  onCancel(poliza: Poliza) {
     this.store.dispatch(
-      new fromRoot.Go({ path: [`polizas/${event.tipo.toLowerCase()}`] })
+      new fromRoot.Go({
+        path: [`polizas/${poliza.tipo.toLowerCase()}`],
+        query: { tipo: poliza.tipo, subtipo: poliza.subtipo }
+      })
     );
+  }
+
+  onRecalcular(event: Poliza) {
+    this.store.dispatch(new fromStore.RecalcularPoliza({ polizaId: event.id }));
   }
 
   onUpdate(event: { id: number; changes: Partial<Poliza> }) {
@@ -54,8 +66,10 @@ export class PolizaComponent implements OnInit {
   onDelete(event: Poliza) {
     this.dialogService
       .openConfirm({
-        title: 'Eliminar poliza',
-        message: `Folio: ${event.folio}`,
+        title: `Eliminar poliza ${event.tipo}`,
+        message: `${event.subtipo} Folio: ${event.folio} Fecha: ${moment(
+          event.fecha
+        ).format('DD/MM/YYYY')}`,
         acceptButton: 'Eliminar',
         cancelButton: 'Cancelar'
       })
@@ -65,6 +79,10 @@ export class PolizaComponent implements OnInit {
           this.store.dispatch(new fromStore.DeletePoliza({ poliza: event }));
         }
       });
+  }
+
+  onPrint(event: Poliza) {
+    this.reportService.runReport(`contabilidad/polizas/print/${event.id}`, {});
   }
 
   onCerrar(event: Poliza) {
