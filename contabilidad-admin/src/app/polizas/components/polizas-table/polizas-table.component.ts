@@ -63,6 +63,7 @@ export class PolizasTableComponent implements OnInit, OnChanges {
     'fecha',
     'debe',
     'haber',
+    'cuadre',
     'manual',
     'cierre',
     'updateUser'

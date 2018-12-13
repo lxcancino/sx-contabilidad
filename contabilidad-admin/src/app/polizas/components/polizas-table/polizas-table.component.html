@@ -45,6 +45,10 @@
     <th mat-header-cell *matHeaderCellDef mat-sort-header>Haber</th>
     <td mat-cell *matCellDef="let row">{{ row.haber | currency }}</td>
   </ng-container>
+  <ng-container matColumnDef="cuadre">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header>Cuadre</th>
+    <td mat-cell *matCellDef="let row">{{ row.cuadre | currency }}</td>
+  </ng-container>
 
   <ng-container matColumnDef="manual">
     <th mat-header-cell *matHeaderCellDef mat-sort-header>Manual</th>

@@ -30,6 +30,11 @@ export class MainPageComponent implements OnInit, OnDestroy {
       title: 'Polizas contables'
     },
     {
+      icon: 'tune',
+      route: '/saldos',
+      title: 'Saldos de cuenta'
+    },
+    {
       icon: 'settings_input_component',
       route: '/costos',
       title: 'Costos'
