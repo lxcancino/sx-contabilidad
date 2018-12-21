@@ -14,13 +14,21 @@ const routes: Routes = [
         canActivate: [fromGuards.PolizasGuard],
         component: fromContainers.PolizasComponent
       },
-      { path: 'ingreso/:id', component: fromContainers.PolizaComponent },
+      {
+        path: 'ingreso/:polizaId',
+        canActivate: [fromGuards.PolizaExistsGuard],
+        component: fromContainers.PolizaComponent
+      },
       {
         path: 'egreso',
         canActivate: [fromGuards.PolizasGuard],
         component: fromContainers.PolizasComponent
       },
-      { path: 'egreso/:id', component: fromContainers.PolizaComponent },
+      {
+        path: 'egreso/:polizaId',
+        canActivate: [fromGuards.PolizaExistsGuard],
+        component: fromContainers.PolizaComponent
+      },
       {
         path: 'diario',
         canActivate: [fromGuards.PolizasGuard],

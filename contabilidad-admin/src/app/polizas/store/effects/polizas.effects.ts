@@ -154,17 +154,35 @@ export class PolizasEffects {
   );
 
   @Effect()
+  createEgresos$ = this.actions$.pipe(
+    ofType<fromActions.CreatePolizasEgreso>(
+      PolizaActionTypes.CreatePolizasEgreso
+    ),
+    map(action => action.payload.filter),
+    switchMap(filter => {
+      return this.service.generarPolizasEgreso(filter).pipe(
+        map(polizas => new fromActions.CreatePolizasEgresoSuccess({ polizas })),
+        catchError(response =>
+          of(new fromActions.CreatePolizasEgresoFail({ response }))
+        )
+      );
+    })
+  );
+
+  @Effect()
   errorHandler$ = this.actions$.pipe(
     ofType<
       | fromActions.LoadPolizasFail
       | fromActions.CreatePolizaFail
       | fromActions.UpdatePolizaFail
       | fromActions.RecalcularPolizaFail
+      | fromActions.CreatePolizasEgresoFail
     >(
       PolizaActionTypes.LoadPolizasFail,
       PolizaActionTypes.CreatePolizaFail,
       PolizaActionTypes.UpdatePolizaFail,
-      PolizaActionTypes.RecalcularPolizaFail
+      PolizaActionTypes.RecalcularPolizaFail,
+      PolizaActionTypes.CreatePolizasEgresoFail
     ),
     map(action => action.payload.response),
     map(response => new fromRoot.GlobalHttpError({ response }))

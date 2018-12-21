@@ -49,6 +49,13 @@ export class PolizaService {
       .pipe(catchError((error: any) => throwError(error)));
   }
 
+  generarPolizasEgreso(command: PolizasFilter): Observable<Poliza[]> {
+    const url = `${this.apiUrl}/generarPolizasEgreso`;
+    return this.http
+      .post<Poliza[]>(url, command)
+      .pipe(catchError((error: any) => throwError(error)));
+  }
+
   delete(poliza: Poliza) {
     const url = `${this.apiUrl}/${poliza.id}`;
     return this.http

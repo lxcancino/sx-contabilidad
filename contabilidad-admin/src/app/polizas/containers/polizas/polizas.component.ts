@@ -1,12 +1,12 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy, AfterViewInit } from '@angular/core';
 
 import { Store, select } from '@ngrx/store';
 import * as fromRoot from 'app/store';
 import * as fromStore from '../../store';
 import * as fromActions from '../../store/actions';
 
-import { Observable } from 'rxjs';
-import { switchMap, withLatestFrom } from 'rxjs/operators';
+import { Observable, Subject } from 'rxjs';
+import { switchMap, withLatestFrom, takeUntil } from 'rxjs/operators';
 
 import { Poliza, PolizasFilter } from '../../models';
 import { ReportService } from 'app/reportes/services/report.service';
@@ -51,12 +51,14 @@ import { EjercicioMes } from '../../../models/ejercicio-mes';
     `
   ]
 })
-export class PolizasComponent implements OnInit {
+export class PolizasComponent implements OnInit, OnDestroy {
   search = '';
 
   polizas$: Observable<Poliza[]>;
   config$: Observable<PolizasFilter>;
+  filter: PolizasFilter;
   loading$: Observable<boolean>;
+  destroy$ = new Subject<boolean>();
 
   constructor(
     private store: Store<fromStore.State>,
@@ -70,6 +72,18 @@ export class PolizasComponent implements OnInit {
     this.loading$ = this.store.pipe(select(fromStore.getPolizasLoading));
     this.polizas$ = this.store.pipe(select(fromStore.getPolizas));
     this.config$ = this.store.pipe(select(fromStore.getCurrentPeriodoGrupo));
+
+    this.config$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(filter => (this.filter = filter));
+
+    this.route.queryParamMap
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(params => this.reload(this.filter));
+  }
+
+  ngOnDestroy() {
+    this.destroy$.next(true);
   }
 
   onSelect(event: Poliza) {
@@ -96,9 +110,15 @@ export class PolizasComponent implements OnInit {
       .afterClosed()
       .subscribe(command => {
         if (command) {
-          this.store.dispatch(
-            new fromActions.CreatePoliza({ poliza: command })
-          );
+          if (command.tipo === 'EGRESO') {
+            this.store.dispatch(
+              new fromActions.CreatePolizasEgreso({ filter: command })
+            );
+          } else {
+            this.store.dispatch(
+              new fromActions.CreatePoliza({ poliza: command })
+            );
+          }
         }
       });
   }
