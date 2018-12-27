@@ -7,6 +7,7 @@ import * as fromGuards from './guards';
 const routes: Routes = [
   {
     path: '',
+    canActivate: [fromGuards.SaldosGuard],
     component: fromContainers.SaldosPageComponent,
     children: [{ path: 'mayor', component: fromContainers.SaldosComponent }]
   }

@@ -70,7 +70,12 @@ export class SaldosTableComponent implements OnInit, OnChanges {
   edit = new EventEmitter();
 
   @Output()
-  totalesChanged = new EventEmitter<{ debe: number; haber: number }>();
+  totalesChanged = new EventEmitter<{
+    saldoInicial: number;
+    debe: number;
+    haber: number;
+    saldoFinal: number;
+  }>();
 
   printFriendly = false;
 
@@ -78,7 +83,7 @@ export class SaldosTableComponent implements OnInit, OnChanges {
     this.gridOptions = <GridOptions>{};
     this.gridOptions.columnDefs = this.buildColsDef();
     this.defaultColDef = {
-      width: 100,
+      // width: 100,
       editable: false,
       filter: 'agTextColumnFilter'
     };
@@ -114,13 +119,18 @@ export class SaldosTableComponent implements OnInit, OnChanges {
 
   actualizarTotales() {
     if (this.gridApi) {
+      let saldoInicial = 0.0;
       let debe = 0.0;
       let haber = 0.0;
-      this.gridApi.forEachNodeAfterFilter((rowNode, index) => {
+      let saldoFinal = 0.0;
+      this.gridApi.forEachNodeAfterFilterAndSort((rowNode, index) => {
+        saldoInicial += rowNode.data.saldoInicial;
         debe += rowNode.data.debe;
         haber += rowNode.data.haber;
+        saldoFinal += rowNode.data.saldoFinal;
       });
-      this.totalesChanged.emit({ debe, haber });
+      const totales = { saldoInicial, debe, haber, saldoFinal };
+      this.totalesChanged.emit(totales);
     }
   }
 

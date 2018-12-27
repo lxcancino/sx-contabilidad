@@ -3,11 +3,17 @@ import { EntityState, EntityAdapter, createEntityAdapter } from '@ngrx/entity';
 import { SaldosActionTypes, SaldosActions } from '../actions/saldos.actions';
 
 import { SaldoPorCuentaContable } from '../../models';
+import * as moment from 'moment';
 
-import {
-  EjercicioMes,
-  buildCurrentPeriodo
-} from '../../../models/ejercicio-mes';
+import { EjercicioMes } from '../../../models/ejercicio-mes';
+
+export function buildLastPeriodo(): EjercicioMes {
+  const now = moment();
+  return {
+    ejercicio: now.year(),
+    mes: now.month()
+  };
+}
 
 export interface State extends EntityState<SaldoPorCuentaContable> {
   loading: boolean;
@@ -22,7 +28,7 @@ export const adapter: EntityAdapter<
 export const initialState: State = adapter.getInitialState({
   loading: false,
   loaded: false,
-  periodo: buildCurrentPeriodo()
+  periodo: buildLastPeriodo()
 });
 
 export function reducer(state = initialState, action: SaldosActions): State {

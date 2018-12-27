@@ -22,13 +22,28 @@ import { EjercicioMes } from '../../../models/ejercicio-mes';
   template: `
     <mat-card >
       <sx-search-title title="Saldos de cuenta" (search)="search = $event">
+        <span class="info" *ngIf="totales">
+          <span>Inicial: {{totales.saldoInicial | currency}}</span>
+          <span class="pad-left">Debe: {{totales.debe | currency}}</span>
+          <span class="pad-left">Haber: {{totales.haber | currency}}</span>
+          <span class="pad-left">Final: {{totales.saldoFinal | currency}}</span>
+        </span>
         <button mat-menu-item class="actions" (click)="reload()"><mat-icon>refresh</mat-icon> Recargar</button>
         <a mat-menu-item  color="accent" class="actions" (click)="onActualizar()">
           <mat-icon>add</mat-icon> Actualizar saldos
         </a>
       </sx-search-title>
       <mat-divider></mat-divider>
-        <sx-saldos-table [saldos]="saldos$ | async" (select)="onSelect($event)"></sx-saldos-table>
+      <ng-template
+    tdLoading
+    [tdLoadingUntil]="!(loading$ | async)"
+    tdLoadingStrategy="overlay"
+    >
+    </ng-template>
+    <sx-saldos-table [saldos]="saldos$ | async"
+      (select)="onSelect($event)"
+      (totalesChanged)="onFilter($event)">
+    </sx-saldos-table>
       <mat-card-footer>
 
       </mat-card-footer>
@@ -51,6 +66,8 @@ export class SaldosComponent implements OnInit, OnDestroy {
   config$: Observable<EjercicioMes>;
   filter: EjercicioMes;
   destroy$ = new Subject<boolean>();
+  loading$: Observable<boolean>;
+  totales: any;
 
   constructor(
     private store: Store<fromStore.State>,
@@ -61,6 +78,7 @@ export class SaldosComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit() {
+    this.loading$ = this.store.pipe(select(fromStore.getSaldosLoading));
     this.saldos$ = this.store.pipe(select(fromStore.getSaldos));
     this.config$ = this.store.pipe(select(fromStore.getSaldosPeriodo));
 
@@ -89,4 +107,8 @@ export class SaldosComponent implements OnInit, OnDestroy {
     this.store.dispatch(new fromStore.LoadSaldos());
   }
   onActualizar() {}
+
+  onFilter(event) {
+    this.totales = event;
+  }
 }
