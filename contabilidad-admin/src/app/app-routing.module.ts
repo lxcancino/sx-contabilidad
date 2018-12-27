@@ -17,6 +17,10 @@ const routes: Routes = [
         loadChildren: './cuentas/cuentas.module#CuentasModule'
       },
       {
+        path: 'saldos',
+        loadChildren: './saldos/saldos.module#SaldosModule'
+      },
+      {
         path: 'polizas',
         loadChildren: './polizas/polizas.module#PolizasModule'
       },

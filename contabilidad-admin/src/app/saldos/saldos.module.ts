@@ -1,13 +1,34 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
 
 import { SaldosRoutingModule } from './saldos-routing.module';
+import { SharedModule } from '../_shared/shared.module';
+
+import { StoreModule } from '@ngrx/store';
+import { EffectsModule } from '@ngrx/effects';
+
+import { reducers, effects } from './store';
+
+import { services } from './services';
+import { guards } from './guards';
+import { components, entryComponents } from './components';
+import { containers } from './containers';
+import { AuthModule } from '../auth/auth.module';
+import { ReportesModule } from '../reportes/reportes.module';
+import { AgGridModule } from 'ag-grid-angular';
 
 @NgModule({
   imports: [
-    CommonModule,
-    SaldosRoutingModule
+    SharedModule,
+    AgGridModule.withComponents([]),
+    AuthModule,
+    ReportesModule,
+    SaldosRoutingModule,
+    StoreModule.forFeature('saldos', reducers),
+    EffectsModule.forFeature(effects)
   ],
-  declarations: []
+  declarations: [...components, ...containers],
+  entryComponents: [...entryComponents],
+  providers: [...services, ...guards],
+  exports: [...containers, ...components]
 })
-export class SaldosModule { }
+export class SaldosModule {}

@@ -4,6 +4,8 @@ export interface SaldoPorCuentaContable {
   id: number;
   cuenta: Partial<CuentaContable>;
   clave: string;
+  descripcion: string;
+  nivel: number;
   ejercicio: number;
   mes: number;
   debe: number;
