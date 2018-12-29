@@ -11,6 +11,9 @@
         <span class="pad-left"
           >Fecha: {{ poliza.fecha | date: 'dd/MM/yyyy' }}</span
         >
+        <span class="pad-left" *ngIf="poliza.cierre"
+          >Cierre: {{ poliza.cierre | date: 'dd/MM/yyyy' }}</span
+        >
         <span flex></span> <span>Usuario: {{ poliza.updateUser }}</span>
       </span>
     </mat-card-subtitle>
@@ -49,14 +52,22 @@
         <button mat-button (click)="print.emit(poliza)" type="button">
           <mat-icon>print</mat-icon> Imprimir
         </button>
+        <button mat-button (click)="cerrar.emit(poliza)" color="primary">
+          <mat-icon>layers_clear</mat-icon> Cerrar
+        </button>
         <button mat-button (click)="delete.emit(poliza)" color="warn">
           <mat-icon>delete</mat-icon> Eliminar
         </button>
-        <ng-container *ngIf="(totales$ | async) as t">
+        <span
+          *ngIf="(totales$ | async) as t"
+          class="text-md"
+          layout
+          layout-align="center center"
+        >
           <span flex> </span> <span> Debe: {{ t.debe | currency }} </span>
           <span class="pad-left"> Haber: {{ t.haber | currency }} </span>
           <span class="pad-left"> Cuadre: {{ t.cuadre | currency }} </span>
-        </ng-container>
+        </span>
       </div>
     </mat-card-actions>
   </mat-card>

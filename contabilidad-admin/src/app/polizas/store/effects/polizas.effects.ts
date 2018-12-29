@@ -62,6 +62,20 @@ export class PolizasEffects {
   );
 
   @Effect()
+  cerrar$ = this.actions$.pipe(
+    ofType<fromActions.CerrarPoliza>(PolizaActionTypes.CerrarPoliza),
+    map(action => action.payload.polizaId),
+    switchMap(polizaId => {
+      return this.service.cerrar(polizaId).pipe(
+        map(res => new fromActions.CerrarPolizaSuccess({ poliza: res })),
+        catchError(response =>
+          of(new fromActions.CerrarPolizaFail({ response }))
+        )
+      );
+    })
+  );
+
+  @Effect()
   recalcular$ = this.actions$.pipe(
     ofType<fromActions.RecalcularPoliza>(PolizaActionTypes.RecalcularPoliza),
     map(action => action.payload.polizaId),
@@ -107,10 +121,13 @@ export class PolizasEffects {
   @Effect({ dispatch: false })
   updateSuccess$ = this.actions$.pipe(
     ofType<
-      fromActions.UpdatePolizaSuccess | fromActions.RecalcularPolizaSuccess
+      | fromActions.UpdatePolizaSuccess
+      | fromActions.RecalcularPolizaSuccess
+      | fromActions.CerrarPolizaSuccess
     >(
       PolizaActionTypes.UpdatePolizaSuccess,
-      PolizaActionTypes.RecalcularPolizaSuccess
+      PolizaActionTypes.RecalcularPolizaSuccess,
+      PolizaActionTypes.CerrarPolizaSuccess
     ),
     map(action => action.payload.poliza),
     tap(poliza =>

@@ -41,6 +41,22 @@ export class SaldosService {
       .pipe(catchError((error: any) => throwError(error)));
   }
 
+  cierreMensual(periodo: EjercicioMes) {
+    const url = `${this.apiUrl}/cierreMensual/${periodo.ejercicio}/${
+      periodo.mes
+    }`;
+    return this.http
+      .put(url, {})
+      .pipe(catchError((error: any) => throwError(error)));
+  }
+
+  cierreAnual(periodo: EjercicioMes) {
+    const url = `${this.apiUrl}/cierreAnual/${periodo.ejercicio}`;
+    return this.http
+      .put(url, {})
+      .pipe(catchError((error: any) => throwError(error)));
+  }
+
   get apiUrl() {
     if (!this._apiUrl) {
       this._apiUrl = this.config.buildApiUrl('contabilidad/saldos');

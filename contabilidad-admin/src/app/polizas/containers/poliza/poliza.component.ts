@@ -90,7 +90,7 @@ export class PolizaComponent implements OnInit {
       this.dialogService
         .openConfirm({
           title: `Cerrar Poliza ${event.folio}`,
-          message: `ADVERTENCIA: Ya no sera posible revertir el cambio!`,
+          message: `Cierrar poliza y actualizar saldos`,
           acceptButton: 'Cerrar',
           cancelButton: 'Cancelar'
         })
@@ -101,7 +101,9 @@ export class PolizaComponent implements OnInit {
               id: event.id,
               changes: { cierre: new Date().toISOString() }
             };
-            this.store.dispatch(new fromStore.UpdatePoliza({ poliza: update }));
+            this.store.dispatch(
+              new fromStore.CerrarPoliza({ polizaId: event.id })
+            );
           }
         });
     }

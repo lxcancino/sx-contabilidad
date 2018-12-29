@@ -32,6 +32,12 @@ import { EjercicioMes } from '../../../models/ejercicio-mes';
         <a mat-menu-item  color="accent" class="actions" (click)="onActualizar()">
           <mat-icon>add</mat-icon> Actualizar saldos
         </a>
+        <a mat-menu-item  color="accent" class="actions" (click)="onCierre()">
+          <mat-icon>fast_forward</mat-icon> Cierre mensual
+        </a>
+        <a mat-menu-item  color="accent" class="actions" (click)="onPolizaDeCierre()" *ngIf="filter.mes === 13">
+          <mat-icon>leak_remove</mat-icon> Poliza CIERRE ANUAL
+        </a>
       </sx-search-title>
       <mat-divider></mat-divider>
       <ng-template
@@ -106,9 +112,55 @@ export class SaldosComponent implements OnInit, OnDestroy {
   reload() {
     this.store.dispatch(new fromStore.LoadSaldos());
   }
-  onActualizar() {}
 
   onFilter(event) {
     this.totales = event;
+  }
+
+  onActualizar() {
+    this.dialogService
+      .openConfirm({
+        title: `Actualizar saldos de cuentas`,
+        message: `Actualiza y corre saldos para todas las cuentas contables`,
+        acceptButton: 'Actualizar',
+        cancelButton: 'Cancelar'
+      })
+      .afterClosed()
+      .subscribe(res => {
+        if (res) {
+          this.store.dispatch(new fromStore.ActualizarSaldos());
+        }
+      });
+  }
+
+  onCierre() {
+    this.dialogService
+      .openConfirm({
+        title: `Cierre mensual`,
+        message: `Traslada los saldos al mes siguiente`,
+        acceptButton: 'Cerrar mes',
+        cancelButton: 'Cancelar'
+      })
+      .afterClosed()
+      .subscribe(res => {
+        if (res) {
+          this.store.dispatch(new fromStore.CierreMensual());
+        }
+      });
+  }
+  onPolizaDeCierre() {
+    this.dialogService
+      .openConfirm({
+        title: `CIERRE ANUAL`,
+        message: `Generar poliza de cierre anual`,
+        acceptButton: 'ACEPTAR',
+        cancelButton: 'CANCELAR'
+      })
+      .afterClosed()
+      .subscribe(res => {
+        if (res) {
+          this.store.dispatch(new fromStore.CierreAnual());
+        }
+      });
   }
 }

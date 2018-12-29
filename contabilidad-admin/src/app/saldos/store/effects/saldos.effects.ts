@@ -63,6 +63,44 @@ export class SaldosEffects {
     )
   );
 
+  @Effect()
+  cierreMensual$ = this.actions$.pipe(
+    ofType(SaldosActionTypes.CierreMensual),
+    switchMap(() => {
+      return this.store.pipe(
+        select(getSaldosPeriodo),
+        take(1)
+      );
+    }),
+    switchMap(filter =>
+      this.service.cierreMensual(filter).pipe(
+        map(() => new fromActions.CierreMensualSuccess()),
+        catchError(error =>
+          of(new fromActions.CierreMensualFail({ response: error }))
+        )
+      )
+    )
+  );
+
+  @Effect()
+  cierreAnual$ = this.actions$.pipe(
+    ofType(SaldosActionTypes.CierreAnual),
+    switchMap(() => {
+      return this.store.pipe(
+        select(getSaldosPeriodo),
+        take(1)
+      );
+    }),
+    switchMap(filter =>
+      this.service.cierreAnual(filter).pipe(
+        map(() => new fromActions.CierreAnualSuccess()),
+        catchError(error =>
+          of(new fromActions.CierreAnualFail({ response: error }))
+        )
+      )
+    )
+  );
+
   @Effect({ dispatch: false })
   actualizarSuccess$ = this.actions$.pipe(
     ofType<fromActions.ActualizarSaldosSuccess>(
@@ -76,6 +114,30 @@ export class SaldosEffects {
     )
   );
 
+  @Effect({ dispatch: false })
+  cierreMensualSuccess$ = this.actions$.pipe(
+    ofType<fromActions.CierreMensualSuccess>(
+      SaldosActionTypes.CierreMensualSuccess
+    ),
+    tap(() =>
+      this.snackBar.open(`Cierre de mes terminado `, 'Cerrar', {
+        duration: 8000
+      })
+    )
+  );
+
+  @Effect({ dispatch: false })
+  cierreAnuallSuccess$ = this.actions$.pipe(
+    ofType<fromActions.CierreAnualSuccess>(
+      SaldosActionTypes.CierreAnualSuccess
+    ),
+    tap(() =>
+      this.snackBar.open(`Cierre de ejercicio terminado `, 'Cerrar', {
+        duration: 8000
+      })
+    )
+  );
+
   @Effect()
   setPeriodo$ = this.actions$.pipe(
     ofType<fromActions.SetSaldosPeriodo>(SaldosActionTypes.SetSaldosPeriodo),
@@ -84,9 +146,16 @@ export class SaldosEffects {
 
   @Effect()
   errorHandler$ = this.actions$.pipe(
-    ofType<fromActions.LoadSaldosFail | fromActions.ActualizarSaldosFail>(
+    ofType<
+      | fromActions.LoadSaldosFail
+      | fromActions.ActualizarSaldosFail
+      | fromActions.CierreMensualFail
+      | fromActions.CierreAnualFail
+    >(
       SaldosActionTypes.LoadSaldosFail,
-      SaldosActionTypes.ActualizarSaldosFail
+      SaldosActionTypes.ActualizarSaldosFail,
+      SaldosActionTypes.CierreMensualFail,
+      SaldosActionTypes.CierreAnualFail
     ),
     map(action => action.payload.response),
     map(response => new fromRoot.GlobalHttpError({ response }))

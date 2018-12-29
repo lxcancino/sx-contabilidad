@@ -40,12 +40,18 @@ export function reducer(state = initialState, action: SaldosActions): State {
       };
     }
 
+    case SaldosActionTypes.CierreAnual:
+    case SaldosActionTypes.CierreMensual:
+    case SaldosActionTypes.ActualizarSaldos:
     case SaldosActionTypes.LoadSaldos: {
       return {
         ...state,
         loading: true
       };
     }
+    case SaldosActionTypes.CierreAnualFail:
+    case SaldosActionTypes.CierreMensualFail:
+    case SaldosActionTypes.ActualizarSaldosFail:
     case SaldosActionTypes.LoadSaldosFail: {
       return {
         ...state,
@@ -53,12 +59,21 @@ export function reducer(state = initialState, action: SaldosActions): State {
       };
     }
 
+    case SaldosActionTypes.ActualizarSaldosSuccess:
     case SaldosActionTypes.LoadSaldosSuccess: {
       return adapter.addAll(action.payload.saldos, {
         ...state,
         loading: false,
         loaded: true
       });
+    }
+
+    case SaldosActionTypes.CierreAnualSuccess:
+    case SaldosActionTypes.CierreMensualSuccess: {
+      return {
+        ...state,
+        loading: false
+      };
     }
   }
   return state;

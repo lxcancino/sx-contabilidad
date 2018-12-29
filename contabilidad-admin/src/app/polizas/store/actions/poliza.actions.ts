@@ -31,6 +31,11 @@ export enum PolizaActionTypes {
   RecalcularPolizaFail = '[Poliza API] Recalcular Poliza Fail',
   RecalcularPolizaSuccess = '[Poliza API] Recalcular Poliza Success',
 
+  // Cerrar
+  CerrarPoliza = '[Poliza Component] Cerrar Poliza',
+  CerrarPolizaFail = '[Poliza API] Cerrar Poliza Fail',
+  CerrarPolizaSuccess = '[Poliza API] Cerrar Poliza Success',
+
   UpsertPoliza = '[Poliza exists guard] Upsert poliza'
 }
 
@@ -100,6 +105,7 @@ export class DeletePolizaSuccess implements Action {
 
   constructor(public payload: { poliza: Poliza }) {}
 }
+
 // Update
 export class RecalcularPoliza implements Action {
   readonly type = PolizaActionTypes.RecalcularPoliza;
@@ -111,6 +117,20 @@ export class RecalcularPolizaFail implements Action {
 }
 export class RecalcularPolizaSuccess implements Action {
   readonly type = PolizaActionTypes.RecalcularPolizaSuccess;
+  constructor(public payload: { poliza: Poliza }) {}
+}
+
+// Cerrar
+export class CerrarPoliza implements Action {
+  readonly type = PolizaActionTypes.CerrarPoliza;
+  constructor(public payload: { polizaId: number }) {}
+}
+export class CerrarPolizaFail implements Action {
+  readonly type = PolizaActionTypes.CerrarPolizaFail;
+  constructor(public payload: { response: any }) {}
+}
+export class CerrarPolizaSuccess implements Action {
+  readonly type = PolizaActionTypes.CerrarPolizaSuccess;
   constructor(public payload: { poliza: Poliza }) {}
 }
 
@@ -156,4 +176,7 @@ export type PolizaActions =
   | SetPolizasFilter
   | CreatePolizasEgreso
   | CreatePolizasEgresoFail
-  | CreatePolizasEgresoSuccess;
+  | CreatePolizasEgresoSuccess
+  | CerrarPoliza
+  | CerrarPolizaFail
+  | CerrarPolizaSuccess;
