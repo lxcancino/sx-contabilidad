@@ -5,7 +5,12 @@ import { SaldosActionTypes, SaldosActions } from '../actions/saldos.actions';
 import { SaldoPorCuentaContable } from '../../models';
 import * as moment from 'moment';
 
-import { EjercicioMes } from '../../../models/ejercicio-mes';
+import {
+  EjercicioMes,
+  loadEjercicioMesFromStorage
+} from '../../../models/ejercicio-mes';
+
+export const SALDOS_STORAGE_KEY = 'contabilidad.saldos.period';
 
 export function buildLastPeriodo(): EjercicioMes {
   const now = moment();
@@ -28,7 +33,7 @@ export const adapter: EntityAdapter<
 export const initialState: State = adapter.getInitialState({
   loading: false,
   loaded: false,
-  periodo: buildLastPeriodo()
+  periodo: loadEjercicioMesFromStorage(SALDOS_STORAGE_KEY)
 });
 
 export function reducer(state = initialState, action: SaldosActions): State {

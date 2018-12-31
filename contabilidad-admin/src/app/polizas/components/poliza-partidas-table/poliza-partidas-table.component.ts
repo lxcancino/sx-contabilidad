@@ -34,6 +34,7 @@ import {
         [floatingFilter]="true"
         [enableColResize]="true"
         [animateRows]="true"
+        [localeText]="localeText"
         (firstDataRendered)="onFirstDataRendered($event)"
         (gridReady)="onGridReady($event)"
         (modelUpdated)="onModelUpdate($event)">
@@ -78,6 +79,8 @@ export class PolizaPartidasTableComponent implements OnInit, OnChanges {
 
   printFriendly = false;
 
+  localeText;
+
   constructor(private cd: ChangeDetectorRef) {
     this.gridOptions = <GridOptions>{};
     this.gridOptions.columnDefs = this.buildColsDef();
@@ -88,6 +91,7 @@ export class PolizaPartidasTableComponent implements OnInit, OnChanges {
     };
 
     this.gridOptions.onFilterChanged = this.onFilter;
+    this.buildLocalText();
   }
 
   ngOnInit() {}
@@ -209,5 +213,32 @@ export class PolizaPartidasTableComponent implements OnInit, OnChanges {
         ]
       }
     ];
+  }
+
+  buildLocalText() {
+    this.localeText = {
+      page: 'página',
+      more: 'mas',
+      to: 'a',
+      of: 'de',
+      next: 'siguiente',
+      last: 'ultimo',
+      first: 'primero',
+      previous: 'anterior',
+      loadingOoo: 'cargando...',
+      applyFilter: 'Aplicar...',
+      equals: 'igual',
+      notEqual: 'diferente a',
+      lessThan: 'menor que',
+      greaterThan: 'mayor que',
+      lessThanOrEqual: 'menor o igual',
+      greaterThanOrEqual: 'mayor o igual',
+      inRange: 'rango',
+      contains: 'contiene',
+      notContains: 'no contiene',
+      startsWith: 'inicia con',
+      endsWith: 'termina con',
+      filters: 'filtros'
+    };
   }
 }

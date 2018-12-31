@@ -4,6 +4,7 @@ import { Store, select } from '@ngrx/store';
 import * as fromRoot from 'app/store';
 import * as fromStore from '../../store';
 import { getSaldosPeriodo } from '../../store/selectors';
+import { SALDOS_STORAGE_KEY } from '../reducers/saldos.reducer';
 
 import { Effect, Actions, ofType } from '@ngrx/effects';
 import { map, switchMap, catchError, tap, take } from 'rxjs/operators';
@@ -15,6 +16,8 @@ import { SaldosActionTypes } from '../actions/saldos.actions';
 import * as fromServices from '../../services';
 
 import { MatSnackBar } from '@angular/material';
+
+import { saveOnStorage } from '../../../models/ejercicio-mes';
 
 @Injectable()
 export class SaldosEffects {
@@ -141,6 +144,9 @@ export class SaldosEffects {
   @Effect()
   setPeriodo$ = this.actions$.pipe(
     ofType<fromActions.SetSaldosPeriodo>(SaldosActionTypes.SetSaldosPeriodo),
+    tap(action => {
+      saveOnStorage(SALDOS_STORAGE_KEY, action.payload.periodo);
+    }),
     map(action => new fromActions.LoadSaldos())
   );
 

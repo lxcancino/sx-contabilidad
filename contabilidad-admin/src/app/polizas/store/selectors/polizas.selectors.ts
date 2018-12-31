@@ -51,6 +51,12 @@ export const getPolizasLoaded = createSelector(
   fromPolizas.getPolizasLoaded
 );
 
+/**
+ * Selector de vital importancia ya que regresa el grupo de poliza vigente
+ * entendiendo como gupo de poliza el tipo y subtipo de la misma. Utiliza el RouterState
+ * ya que estos datos estan; por diseño; incluidos en la ruta vigente, esto mediante
+ * QueryParams
+ */
 export const getCurrentPolizaGroup = createSelector(
   fromRoot.getRouterState,
   (router): { tipo: string; subtipo: string } => {
@@ -63,6 +69,14 @@ export const getCurrentPolizaGroup = createSelector(
   }
 );
 
+/**
+ * Selector que para obtener el filtro de polizas vigente, esto es el grupo de polizas
+ * (stipo y subtipo) y el periodo de las mismas (ejercicio, mes). El objeto es de tipo
+ * PolizaFilter y es el que se observa en PolizaComponent para determinar el tipo de poliza
+ * con el que se está interactuando. El estado que represneta Tipo,Subtipo,Ejercicio y Mes
+ * es util muchos contenedores y API calls por lo que representa un enomre ahorro de ifra estructura
+ * el poder agrupar las polizas de esta manera.
+ */
 export const getCurrentPeriodoGrupo = createSelector(
   getCurrentPolizaGroup,
   fromFeature.getPeriodoDePolizas,

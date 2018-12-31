@@ -34,6 +34,7 @@ import {
         [floatingFilter]="true"
         [enableColResize]="true"
         [animateRows]="true"
+        [localeText]="localeText"
         (firstDataRendered)="onFirstDataRendered($event)"
         (gridReady)="onGridReady($event)"
         (modelUpdated)="onModelUpdate($event)">
@@ -79,6 +80,8 @@ export class SaldosTableComponent implements OnInit, OnChanges {
 
   printFriendly = false;
 
+  localeText;
+
   constructor(private cd: ChangeDetectorRef) {
     this.gridOptions = <GridOptions>{};
     this.gridOptions.columnDefs = this.buildColsDef();
@@ -89,6 +92,7 @@ export class SaldosTableComponent implements OnInit, OnChanges {
     };
 
     this.gridOptions.onFilterChanged = this.onFilter;
+    this.buildLocalText();
   }
 
   ngOnInit() {}
@@ -146,6 +150,23 @@ export class SaldosTableComponent implements OnInit, OnChanges {
     }, 8000);
   }
 
+  exportData() {
+    const params = {
+      // skipHeader: getBooleanValue("#skipHeader"),
+      // columnGroups: getBooleanValue("#columnGroups"),
+      // skipFooters: getBooleanValue("#skipFooters"),
+      // skipGroups: getBooleanValue("#skipGroups"),
+      // skipPinnedTop: getBooleanValue("#skipPinnedTop"),
+      // skipPinnedBottom: getBooleanValue("#skipPinnedBottom"),
+      // allColumns: getBooleanValue("#allColumns"),
+      // onlySelected: getBooleanValue("#onlySelected"),
+      // suppressQuotes: getBooleanValue("#suppressQuotes"),
+      fileName: 'saldos.csv'
+      // columnSeparator: document.querySelector("#columnSeparator").value
+    };
+    this.gridApi.exportDataAsCsv(params);
+  }
+
   private buildColsDef() {
     return [
       {
@@ -186,5 +207,31 @@ export class SaldosTableComponent implements OnInit, OnChanges {
         width: 150
       }
     ];
+  }
+  buildLocalText() {
+    this.localeText = {
+      page: 'página',
+      more: 'mas',
+      to: 'a',
+      of: 'de',
+      next: 'siguiente',
+      last: 'ultimo',
+      first: 'primero',
+      previous: 'anterior',
+      loadingOoo: 'cargando...',
+      applyFilter: 'Aplicar...',
+      equals: 'igual',
+      notEqual: 'diferente a',
+      lessThan: 'menor que',
+      greaterThan: 'mayor que',
+      lessThanOrEqual: 'menor o igual',
+      greaterThanOrEqual: 'mayor o igual',
+      inRange: 'rango',
+      contains: 'contiene',
+      notContains: 'no contiene',
+      startsWith: 'inicia con',
+      endsWith: 'termina con',
+      filters: 'filtros'
+    };
   }
 }

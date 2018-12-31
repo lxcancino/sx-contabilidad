@@ -9,6 +9,10 @@ import { PolizaActionTypes } from '../actions/poliza.actions';
 
 import * as fromServices from '../../services';
 import * as fromRoot from 'app/store';
+import * as fromContext from '../actions/ui-context.actions';
+
+import { POLIZAS_STORAGE_KEY } from '../reducers/ui-context.reducre';
+import { saveOnStorage } from 'app/models/ejercicio-mes';
 
 import { MatSnackBar } from '@angular/material';
 
@@ -162,12 +166,14 @@ export class PolizasEffects {
     )
   );
 
-  @Effect()
+  @Effect({ dispatch: false })
   setFilter$ = this.actions$.pipe(
-    ofType<fromActions.SetPolizasFilter>(PolizaActionTypes.SetPolizasFilter),
-    map(
-      action => new fromActions.LoadPolizas({ filter: action.payload.filter })
-    )
+    ofType<fromContext.SetPeriodoDePoliza>(
+      fromContext.UIContextActionTypes.SetPeriodoDePoliza
+    ),
+    tap(action => {
+      saveOnStorage(POLIZAS_STORAGE_KEY, action.payload.periodo);
+    })
   );
 
   @Effect()

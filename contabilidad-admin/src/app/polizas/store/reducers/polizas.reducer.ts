@@ -3,7 +3,8 @@ import { EntityState, EntityAdapter, createEntityAdapter } from '@ngrx/entity';
 import { PolizaActionTypes, PolizaActions } from '../actions/poliza.actions';
 
 import { Poliza, PolizasFilter } from '../../models';
-import { Periodo } from 'app/_core/models/periodo';
+
+// export const POLIZAS_STORAGE_KEY = 'contabilidad.polizas.period';
 
 export interface State extends EntityState<Poliza> {
   loading: boolean;

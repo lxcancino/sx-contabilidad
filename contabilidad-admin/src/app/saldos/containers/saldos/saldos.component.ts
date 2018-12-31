@@ -21,6 +21,41 @@ import { EjercicioMes } from '../../../models/ejercicio-mes';
   selector: 'sx-saldos',
   template: `
     <mat-card >
+      <div layout layout-align="start center"  class="pad">
+        <span class="push-left-sm">
+          <span class="mat-title">Saldos de cuenta</span>
+        </span>
+        <span flex></span>
+        <span class="info" *ngIf="totales">
+          <span>Inicial: {{totales.saldoInicial | currency}}</span>
+          <span class="pad-left">Debe: {{totales.debe | currency}}</span>
+          <span class="pad-left">Haber: {{totales.haber | currency}}</span>
+          <span class="pad-left">Final: {{totales.saldoFinal | currency}}</span>
+        </span>
+        <span flex></span>
+        <button mat-button mat-icon-button (click)="grid.exportData()" matTooltip="Exportar a CSV">
+          <mat-icon color="primary">file_download</mat-icon>
+        </button>
+
+        <span>
+          <button mat-icon-button [matMenuTriggerFor]="toolbarMenu">
+            <mat-icon>more_vert</mat-icon>
+          </button>
+          <mat-menu #toolbarMenu="matMenu">
+            <button mat-menu-item class="actions" (click)="reload()"><mat-icon>refresh</mat-icon> Recargar</button>
+            <a mat-menu-item  color="accent" class="actions" (click)="onActualizar()">
+              <mat-icon>add</mat-icon> Actualizar saldos
+            </a>
+            <a mat-menu-item  color="accent" class="actions" (click)="onCierre()">
+              <mat-icon>fast_forward</mat-icon> Cierre mensual
+            </a>
+            <a mat-menu-item  color="accent" class="actions" (click)="onPolizaDeCierre()" *ngIf="filter.mes === 13">
+              <mat-icon>leak_remove</mat-icon> Poliza CIERRE ANUAL
+            </a>
+          </mat-menu>
+        </span>
+      </div>
+      <!--
       <sx-search-title title="Saldos de cuenta" (search)="search = $event">
         <span class="info" *ngIf="totales">
           <span>Inicial: {{totales.saldoInicial | currency}}</span>
@@ -39,6 +74,7 @@ import { EjercicioMes } from '../../../models/ejercicio-mes';
           <mat-icon>leak_remove</mat-icon> Poliza CIERRE ANUAL
         </a>
       </sx-search-title>
+      -->
       <mat-divider></mat-divider>
       <ng-template
     tdLoading
@@ -46,7 +82,7 @@ import { EjercicioMes } from '../../../models/ejercicio-mes';
     tdLoadingStrategy="overlay"
     >
     </ng-template>
-    <sx-saldos-table [saldos]="saldos$ | async"
+    <sx-saldos-table [saldos]="saldos$ | async" #grid
       (select)="onSelect($event)"
       (totalesChanged)="onFilter($event)">
     </sx-saldos-table>

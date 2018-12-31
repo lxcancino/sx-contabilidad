@@ -6,17 +6,14 @@ import * as fromStore from '../../store';
 import * as fromActions from '../../store/actions';
 
 import { Observable, Subject } from 'rxjs';
-import { switchMap, withLatestFrom, takeUntil } from 'rxjs/operators';
+import { takeUntil } from 'rxjs/operators';
 
 import { Poliza, PolizasFilter } from '../../models';
 import { ReportService } from 'app/reportes/services/report.service';
 
 import { MatDialog } from '@angular/material';
 import { TdDialogService } from '@covalent/core';
-import { ActivatedRoute } from '@angular/router';
-import { map } from 'rxjs/operators';
 import { PolizaCreateComponent } from 'app/polizas/components';
-import { EjercicioMes } from '../../../models/ejercicio-mes';
 
 @Component({
   selector: 'sx-polizas',
@@ -64,22 +61,22 @@ export class PolizasComponent implements OnInit, OnDestroy {
     private store: Store<fromStore.State>,
     private dialog: MatDialog,
     private reportService: ReportService,
-    private dialogService: TdDialogService,
-    private route: ActivatedRoute
+    private dialogService: TdDialogService
   ) {}
 
   ngOnInit() {
     this.loading$ = this.store.pipe(select(fromStore.getPolizasLoading));
     this.polizas$ = this.store.pipe(select(fromStore.getPolizas));
     this.config$ = this.store.pipe(select(fromStore.getCurrentPeriodoGrupo));
+    this.registerListeners();
+  }
 
-    this.config$
-      .pipe(takeUntil(this.destroy$))
-      .subscribe(filter => (this.filter = filter));
-
-    this.route.queryParamMap
-      .pipe(takeUntil(this.destroy$))
-      .subscribe(params => this.reload(this.filter));
+  registerListeners() {
+    // Listen to CurrentPeriodoGroup changes to reload the container
+    this.config$.pipe(takeUntil(this.destroy$)).subscribe(filter => {
+      this.filter = filter;
+      this.reload(filter);
+    });
   }
 
   ngOnDestroy() {
@@ -92,10 +89,6 @@ export class PolizasComponent implements OnInit, OnDestroy {
         path: [`polizas/${event.tipo.toLowerCase()}`, event.id]
       })
     );
-  }
-
-  onFilterChange(filter: PolizasFilter) {
-    this.store.dispatch(new fromStore.SetPolizasFilter({ filter }));
   }
 
   reload(event: PolizasFilter) {
@@ -122,8 +115,6 @@ export class PolizasComponent implements OnInit, OnDestroy {
         }
       });
   }
-
-  onEdit(event: Poliza) {}
 
   onDelete(event: Poliza) {
     this.dialogService

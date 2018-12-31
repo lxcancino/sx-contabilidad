@@ -1,8 +1,10 @@
 import {
   EjercicioMes,
-  buildCurrentPeriodo
+  loadEjercicioMesFromStorage
 } from '../../../models/ejercicio-mes';
 import * as fromActions from '../actions/ui-context.actions';
+
+export const POLIZAS_STORAGE_KEY = 'contabilidad.polizas.periodo';
 
 export class Grupo {
   constructor(
@@ -19,7 +21,7 @@ export interface State {
 }
 
 export const initialState: State = {
-  periodo: { ejercicio: 2018, mes: 11 }, // buildCurrentPeriodo(),
+  periodo: loadEjercicioMesFromStorage(POLIZAS_STORAGE_KEY),
   grupos: [
     new Grupo('INGRESO', 'Ingreso', 'Pólizas de ingresos', [
       new Grupo('COBRANZA_CON', 'Cobranza CON', 'Contado'),

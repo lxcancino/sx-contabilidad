@@ -32,7 +32,7 @@ export class MainPageComponent implements OnInit, OnDestroy {
     {
       icon: 'tune',
       route: '/saldos',
-      title: 'Saldos de cuenta'
+      title: 'Saldos / Balanza'
     },
     {
       icon: 'settings_input_component',
