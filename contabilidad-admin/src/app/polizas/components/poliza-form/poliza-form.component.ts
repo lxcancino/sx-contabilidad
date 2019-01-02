@@ -64,6 +64,9 @@ export class PolizaFormComponent implements OnInit, OnDestroy, OnChanges {
   @Output()
   print = new EventEmitter();
 
+  @Output()
+  toogleManual = new EventEmitter();
+
   subscription: Subscription;
 
   form: FormGroup;
@@ -183,5 +186,10 @@ export class PolizaFormComponent implements OnInit, OnDestroy, OnChanges {
 
   onPrint() {
     this.partidasGrid.printGrid();
+  }
+
+  actualizarManual(event: Poliza) {
+    event.manual = !event.manual;
+    this.toogleManual.emit(event);
   }
 }

@@ -24,7 +24,8 @@ import { ReportService } from 'app/reportes/services/report.service';
         (recalcular)="onRecalcular($event)"
         (delete)="onDelete($event)"
         (cerrar)="onCerrar($event)"
-        (print)="onPrint($event)">
+        (print)="onPrint($event)"
+        (toogleManual)="onManual($event)">
       </sx-poliza-form>
     </div>
   </ng-template>
@@ -107,5 +108,22 @@ export class PolizaComponent implements OnInit {
           }
         });
     }
+  }
+
+  onManual(event: Poliza) {
+    this.dialogService
+      .openConfirm({
+        title: 'Mantenimiento de la póliza',
+        message: `Cambiar a : ${event.manual ? 'MANUAL' : 'AUTOMATICA'}`,
+        acceptButton: 'ACEPTAR',
+        cancelButton: 'CANCELAR'
+      })
+      .afterClosed()
+      .subscribe(res => {
+        if (res) {
+          const update = { id: event.id, changes: { manual: event.manual } };
+          this.store.dispatch(new fromStore.UpdatePoliza({ poliza: update }));
+        }
+      });
   }
 }

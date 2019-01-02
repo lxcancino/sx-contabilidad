@@ -1,22 +1,46 @@
 <form [formGroup]="form">
   <mat-card>
-    <mat-card-title>
-      Póliza {{ poliza?.concepto }} {{ poliza?.folio }}
-    </mat-card-title>
-    <mat-card-subtitle>
-      <span layout>
+    <div layout layout-align="start center" class="pad">
+      <span class="push-left-sm mat-title ">
         <span class="pad-left pad-right"
-          >Tipo: {{ poliza.tipo }} {{ poliza.subtipo }} Fecha:</span
+          >Póliza: {{ poliza.tipo }} {{ poliza.subtipo }}</span
         >
+        <span>Folio: {{ poliza?.folio }}</span>
         <span class="pad-left"
           >Fecha: {{ poliza.fecha | date: 'dd/MM/yyyy' }}</span
         >
-        <span class="pad-left" *ngIf="poliza.cierre"
-          >Cierre: {{ poliza.cierre | date: 'dd/MM/yyyy' }}</span
+        <span class="pad-left cursor-pointer"
+          >Concepto: {{ poliza?.concepto }}</span
         >
-        <span flex></span> <span>Usuario: {{ poliza.updateUser }}</span>
       </span>
-    </mat-card-subtitle>
+
+      <span flex></span>
+      <span class="pad-left" *ngIf="poliza.cierre"
+        >Cerrada: {{ poliza.cierre | date: 'dd/MM/yyyy' }}</span
+      >
+      <span *ngIf="poliza.manual" class="tc-indigo-800 pad-left pad-right"
+        >POLIZA MANUAL</span
+      >
+      <span>Usuario: {{ poliza.updateUser }}</span>
+      <span>
+        <button mat-icon-button [matMenuTriggerFor]="toolbarMenu">
+          <mat-icon>more_vert</mat-icon>
+        </button>
+        <mat-menu #toolbarMenu="matMenu">
+          <button
+            (click)="actualizarManual(poliza)"
+            mat-menu-item
+            matTooltip="Hacer la poliza {{
+              poliza.manual ? 'Automática' : 'Manual'
+            }}"
+          >
+            <mat-icon>dialpad</mat-icon>
+            <span>{{ poliza.manual ? 'AUTOMÁTICA' : 'MANUAL' }}</span>
+          </button>
+        </mat-menu>
+      </span>
+    </div>
+
     <mat-divider></mat-divider>
 
     <div class="partidas-panel" style="width: 100%; height: 650px;">
@@ -46,6 +70,7 @@
           color="primary"
           (click)="recalcular.emit(poliza)"
           type="button"
+          *ngIf="!poliza.manual"
         >
           <mat-icon>loop</mat-icon> Recalcular
         </button>

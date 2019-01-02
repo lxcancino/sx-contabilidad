@@ -106,7 +106,7 @@ export class DeletePolizaSuccess implements Action {
   constructor(public payload: { poliza: Poliza }) {}
 }
 
-// Update
+// Recalcular
 export class RecalcularPoliza implements Action {
   readonly type = PolizaActionTypes.RecalcularPoliza;
   constructor(public payload: { polizaId: number }) {}
@@ -139,7 +139,7 @@ export class UpsertPoliza implements Action {
   constructor(public payload: { poliza: Poliza }) {}
 }
 
-// Recalcular
+// Actualizar
 export class UpdatePoliza implements Action {
   readonly type = PolizaActionTypes.UpdatePoliza;
 
