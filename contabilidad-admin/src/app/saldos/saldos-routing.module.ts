@@ -7,9 +7,19 @@ import * as fromGuards from './guards';
 const routes: Routes = [
   {
     path: '',
-    canActivate: [fromGuards.SaldosGuard],
+    // canActivate: [fromGuards.SaldosGuard],
     component: fromContainers.SaldosPageComponent,
-    children: [{ path: 'mayor', component: fromContainers.SaldosComponent }]
+    children: [
+      {
+        path: '',
+        redirectTo: 'mayor'
+      },
+      {
+        path: 'mayor',
+        canActivate: [fromGuards.SaldosGuard],
+        component: fromContainers.SaldosComponent
+      }
+    ]
   }
 ];
 

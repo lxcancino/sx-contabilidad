@@ -1,4 +1,11 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  Input,
+  Output,
+  EventEmitter,
+  OnChanges
+} from '@angular/core';
 
 @Component({
   selector: 'sx-search-title',
@@ -10,7 +17,8 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
     <span flex></span>
     <ng-content select=".info" flex></ng-content>
     <span flex></span>
-    <td-search-box class="push-right-sm" placeholder="{{searchLabel}}" flex (searchDebounce)="search.emit($event)">
+    <td-search-box class="push-right-sm" placeholder="{{searchLabel}}" flex (searchDebounce)="search.emit($event)"
+      [(ngModel)]="inputValue" [alwaysVisible]="visible">
     </td-search-box>
     <ng-content select=".options"></ng-content>
     <span>
@@ -24,14 +32,26 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
   </div>
   `
 })
-export class SearchTitleComponent implements OnInit {
+export class SearchTitleComponent implements OnInit, OnChanges {
   @Input()
   title = 'Title';
+
+  @Input()
+  inputValue = '';
+
+  @Input()
+  visible = false;
+
   @Input()
   searchLabel: 'Buscar';
+
   @Output()
   search = new EventEmitter();
+
   constructor() {}
 
   ngOnInit() {}
+  ngOnChanges(changes) {
+    // console.log('Changes:', changes);
+  }
 }

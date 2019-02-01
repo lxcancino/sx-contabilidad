@@ -13,6 +13,11 @@ export enum PolizaActionTypes {
   CreatePolizaSuccess = '[Poliza API] Poliza create  Success',
   CreatePolizaFail = '[Poliza API] Poliza create  Fail',
 
+  // Generar polizas (Batch)
+  GenerarPolizas = '[Poliza Component] Generar polizas ',
+  GenerarPolizasSuccess = '[Poliza API] Generar Polizas Success',
+  GenerarPolizasFail = '[Poliza API] Generar Polizas  Fail',
+
   // Egresos
   CreatePolizasEgreso = '[Poliza Component] Create polizas  egreso',
   CreatePolizasEgresoSuccess = '[Poliza API] Create Polizas egreso Success',
@@ -36,13 +41,18 @@ export enum PolizaActionTypes {
   CerrarPolizaFail = '[Poliza API] Cerrar Poliza Fail',
   CerrarPolizaSuccess = '[Poliza API] Cerrar Poliza Success',
 
-  UpsertPoliza = '[Poliza exists guard] Upsert poliza'
+  UpsertPoliza = '[Poliza exists guard] Upsert poliza',
+  SetPolizasSearchTerm = '[Polizas component] Set polizas search term'
 }
 
 // Set
 export class SetPolizasFilter implements Action {
   readonly type = PolizaActionTypes.SetPolizasFilter;
   constructor(public payload: { filter: PolizasFilter }) {}
+}
+export class SetPolizasSearchTerm implements Action {
+  readonly type = PolizaActionTypes.SetPolizasSearchTerm;
+  constructor(public payload: { term: string }) {}
 }
 
 // Load
@@ -86,6 +96,20 @@ export class CreatePolizasEgresoFail implements Action {
 }
 export class CreatePolizasEgresoSuccess implements Action {
   readonly type = PolizaActionTypes.CreatePolizasEgresoSuccess;
+  constructor(public payload: { polizas: Poliza[] }) {}
+}
+
+// Generar polizas (BATCH)
+export class GenerarPolizas implements Action {
+  readonly type = PolizaActionTypes.GenerarPolizas;
+  constructor(public payload: { filter: PolizasFilter }) {}
+}
+export class GenerarPolizasFail implements Action {
+  readonly type = PolizaActionTypes.GenerarPolizasFail;
+  constructor(public payload: { response: any }) {}
+}
+export class GenerarPolizasSuccess implements Action {
+  readonly type = PolizaActionTypes.GenerarPolizasSuccess;
   constructor(public payload: { polizas: Poliza[] }) {}
 }
 
@@ -174,9 +198,13 @@ export type PolizaActions =
   | RecalcularPolizaFail
   | RecalcularPolizaSuccess
   | SetPolizasFilter
+  | SetPolizasSearchTerm
   | CreatePolizasEgreso
   | CreatePolizasEgresoFail
   | CreatePolizasEgresoSuccess
   | CerrarPoliza
   | CerrarPolizaFail
-  | CerrarPolizaSuccess;
+  | CerrarPolizaSuccess
+  | GenerarPolizas
+  | GenerarPolizasFail
+  | GenerarPolizasSuccess;

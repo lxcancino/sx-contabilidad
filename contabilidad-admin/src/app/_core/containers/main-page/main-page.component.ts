@@ -32,12 +32,17 @@ export class MainPageComponent implements OnInit, OnDestroy {
     {
       icon: 'tune',
       route: '/saldos',
-      title: 'Saldos / Balanza'
+      title: 'Balanza (Saldos)'
     },
     {
       icon: 'settings_input_component',
       route: '/costos',
       title: 'Costos'
+    },
+    {
+      icon: 'settings_input_antenna',
+      route: '/econta',
+      title: 'Contabilidad SAT'
     }
   ];
 

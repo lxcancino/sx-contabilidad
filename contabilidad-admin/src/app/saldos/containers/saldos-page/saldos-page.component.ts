@@ -25,15 +25,9 @@ export class SaldosPageComponent implements OnInit {
   navmenu: Object[] = [
     {
       route: 'mayor',
-      title: 'Mayor',
-      description: 'Saldos y/o Balanza de mayor',
+      title: 'BALANZA',
+      description: 'Balanza de comprobación',
       icon: 'filter_1'
-    },
-    {
-      route: 'segundo',
-      title: '2do Nivel',
-      description: 'Saldos / Balanza a 2o nivel',
-      icon: 'filter_2'
     }
   ];
 

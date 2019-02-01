@@ -14,39 +14,22 @@ export class PolizasGuard implements CanActivate {
   canActivate(): Observable<boolean> {
     return this.store.pipe(
       select(fromStore.getCurrentPeriodoGrupo),
+      // tap( data => console.log('Current periodo: ', data)),
       tap(config => {
-        this.store.dispatch(new fromStore.LoadPolizas({ filter: config }));
+        // this.store.dispatch(new fromStore.LoadPolizas({ filter: config }));
       }),
       switchMap(data => of(true)),
       catchError(() => of(false))
     );
-    /*
-    return this.checkStore().pipe(
-      switchMap(() => of(true)),
-      catchError(() => of(false))
-    );
-    *
   }
 
   checkStore(): Observable<boolean> {
     return this.store.pipe(
       select(fromStore.getCurrentPeriodoGrupo),
-      tap( config => {
-        this.store.dispatch(new fromStore.LoadPolizas({filter: config}));
+      tap(config => {
+        this.store.dispatch(new fromStore.LoadPolizas({ filter: config }));
       }),
-      switchMap( data => of(true))
+      switchMap(data => of(true))
     );
-    /*
-    return this.store.select(fromStore.getPolizasLoaded).pipe(
-      tap(loaded => {
-        if (!loaded) {
-          this.store.dispatch(new fromStore.LoadCheques());
-        }
-      }),
-      filter(loaded => loaded), // Waiting for loaded
-      take(1) // End the stream
-    );
-  }
-  */
   }
 }

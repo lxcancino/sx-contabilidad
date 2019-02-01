@@ -9,6 +9,7 @@ export interface Poliza {
   subtipo: string;
   fecha: string;
   concepto: string;
+  sucursal: string;
   debe: number;
   haber: number;
   manual: boolean;
@@ -18,6 +19,8 @@ export interface Poliza {
   createUser?: string;
   updateUser?: string;
   partidas: Partial<PolizaDet>[];
+  totalNacional?: number;
+  totalExtranjero?: number;
 }
 
 export interface PolizasFilter {

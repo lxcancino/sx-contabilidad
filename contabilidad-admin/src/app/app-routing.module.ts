@@ -27,6 +27,10 @@ const routes: Routes = [
       {
         path: 'costos',
         loadChildren: './costos/costos.module#CostosModule'
+      },
+      {
+        path: 'econta',
+        loadChildren: './econta/econta.module#EcontaModule'
       }
     ]
   }

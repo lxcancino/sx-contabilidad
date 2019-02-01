@@ -3,19 +3,29 @@ import { PolizaFormComponent } from './poliza-form/poliza-form.component';
 import { AgregarPolizadetBtnComponent } from './poliza-det-form/agregar-poliza-det-btn.component';
 import { PolizaCreateComponent } from './poliza-create/poliza-create.component';
 import { PolizaPartidasTableComponent } from './poliza-partidas-table/poliza-partidas-table.component';
+import { PolizaDetComponent } from './poliza-det-form/poliza-det-form.component';
+import { ComprobantesDialogComponent } from './comprobantes-dialog/comprobantes-dialog.component';
 
 export const components: any[] = [
   PolizasTableComponent,
   PolizaFormComponent,
   AgregarPolizadetBtnComponent,
   PolizaCreateComponent,
-  PolizaPartidasTableComponent
+  PolizaPartidasTableComponent,
+  PolizaDetComponent,
+  ComprobantesDialogComponent
 ];
 
-export const entryComponents: any[] = [PolizaCreateComponent];
+export const entryComponents: any[] = [
+  PolizaCreateComponent,
+  PolizaDetComponent,
+  ComprobantesDialogComponent
+];
 
 export * from './polizas-table/polizas-table.component';
 export * from './poliza-form/poliza-form.component';
-export * from './poliza-det-form/agregar-poliza-det-btn.component';
 export * from './poliza-create/poliza-create.component';
 export * from './poliza-partidas-table/poliza-partidas-table.component';
+export * from './poliza-det-form/poliza-det-form.component';
+export * from './poliza-det-form/agregar-poliza-det-btn.component';
+export * from './comprobantes-dialog/comprobantes-dialog.component';

@@ -22,12 +22,14 @@ import {
 import { Poliza } from '../../models';
 
 import * as _ from 'lodash';
-import * as moment from 'moment';
 
-import { Subscription, BehaviorSubject, Subject } from 'rxjs';
+import { Subscription, BehaviorSubject } from 'rxjs';
 import { Update } from '@ngrx/entity';
 import { PolizaDet } from 'app/polizas/models/poliza-det';
 import { PolizaPartidasTableComponent } from '../poliza-partidas-table/poliza-partidas-table.component';
+import { TdDialogService } from '@covalent/core';
+import { MatDialog } from '@angular/material';
+import { ComprobantesDialogComponent } from '../comprobantes-dialog/comprobantes-dialog.component';
 
 @Component({
   selector: 'sx-poliza-form',
@@ -65,6 +67,9 @@ export class PolizaFormComponent implements OnInit, OnDestroy, OnChanges {
   print = new EventEmitter();
 
   @Output()
+  comprobantes = new EventEmitter<{ id: number; tipo: 'N' | 'S' }>();
+
+  @Output()
   toogleManual = new EventEmitter();
 
   subscription: Subscription;
@@ -83,7 +88,12 @@ export class PolizaFormComponent implements OnInit, OnDestroy, OnChanges {
   @ViewChild('partidasGrid')
   partidasGrid: PolizaPartidasTableComponent;
 
-  constructor(private fb: FormBuilder, private chr: ChangeDetectorRef) {}
+  constructor(
+    private fb: FormBuilder,
+    private chr: ChangeDetectorRef,
+    private dialogService: TdDialogService,
+    private dialog: MatDialog
+  ) {}
 
   ngOnInit() {}
 
@@ -97,6 +107,7 @@ export class PolizaFormComponent implements OnInit, OnDestroy, OnChanges {
     if (changes.poliza && changes.poliza.currentValue) {
       this.setPoliza();
       this.chr.detectChanges();
+      // console.log('Poliza: ', this.poliza);
     }
   }
 
@@ -139,18 +150,19 @@ export class PolizaFormComponent implements OnInit, OnDestroy, OnChanges {
     }
   }
 
-  onSubmit() {
-    if (this.form.valid && !this.form.disabled) {
-      const changes = this.form.get('manual').value
-        ? { ...this.form.value }
-        : {};
-      const entity: Update<Poliza> = {
-        id: this.poliza.id,
-        changes
-      };
-      console.log('Update: ', entity);
-      this.update.emit(entity);
-      this.form.markAsPristine();
+  onUpdate() {
+    if (this.poliza.manual) {
+      if (this.form.valid && !this.form.disabled) {
+        const changes = { concepto: this.form.get('concepto') }
+          ? { ...this.form.value }
+          : {};
+        const entity: Update<Poliza> = {
+          id: this.poliza.id,
+          changes
+        };
+        this.update.emit(entity);
+        this.form.markAsPristine();
+      }
     }
   }
 
@@ -158,7 +170,7 @@ export class PolizaFormComponent implements OnInit, OnDestroy, OnChanges {
     return this.form.get('partidas') as FormArray;
   }
 
-  onAgregarFactura(partida: PolizaDet) {
+  agregarPartida(partida: PolizaDet) {
     this.partidas.push(new FormControl(partida));
     this.form.markAsDirty();
   }
@@ -189,7 +201,42 @@ export class PolizaFormComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   actualizarManual(event: Poliza) {
-    event.manual = !event.manual;
     this.toogleManual.emit(event);
+  }
+
+  changeConcepto() {
+    if (this.poliza.manual) {
+      this.dialogService
+        .openPrompt({
+          title: 'Cambio de concepto',
+          message: 'Concepto:',
+          value: this.form.get('concepto').value,
+          acceptButton: 'ACEPTAR',
+          cancelButton: 'CANCELAR'
+        })
+        .afterClosed()
+        .subscribe(res => {
+          if (res) {
+            this.form.get('concepto').setValue(res);
+            this.form.markAsDirty();
+            this.chr.detectChanges();
+          }
+        });
+    }
+  }
+
+  get concepto() {
+    return this.form.get('concepto').value;
+  }
+
+  mostrarComprobantes(poliza: Poliza, tipo: string) {
+    // console.log('Comprobantes de la poliza: ', poliza);
+    this.dialog
+      .open(ComprobantesDialogComponent, {
+        data: { poliza, tipo },
+        width: '650px'
+      })
+      .afterClosed()
+      .subscribe(res => {});
   }
 }

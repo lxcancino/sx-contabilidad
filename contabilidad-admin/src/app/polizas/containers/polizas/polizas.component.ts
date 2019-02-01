@@ -19,7 +19,10 @@ import { PolizaCreateComponent } from 'app/polizas/components';
   selector: 'sx-polizas',
   template: `
     <mat-card *ngIf="config$ | async as config">
-      <sx-search-title title="Pólizas de {{config?.tipo?.toLowerCase()}} ({{config?.subtipo}})" (search)="search = $event">
+      <sx-search-title title="Pólizas de {{config?.tipo?.toLowerCase()}} ({{config?.subtipo}})"
+        [inputValue]="searchTerm$ | async"
+        [visible]="(searchTerm$ | async).length > 0"
+        (search)="onFilter($event)">
         <button mat-menu-item class="actions" (click)="reload(config)"><mat-icon>refresh</mat-icon> Recargar</button>
         <a mat-menu-item  color="accent" class="actions" (click)="onCreate(config) ">
           <mat-icon>add</mat-icon> Nueva póliza
@@ -27,7 +30,7 @@ import { PolizaCreateComponent } from 'app/polizas/components';
       </sx-search-title>
       <mat-divider></mat-divider>
         <ng-template tdLoading [tdLoadingUntil]="!(loading$ | async)"  tdLoadingStrategy="overlay" >
-          <sx-polizas-table [polizas]="polizas$ | async" (select)="onSelect($event)"></sx-polizas-table>
+          <sx-polizas-table [polizas]="polizas$ | async" (select)="onSelect($event)" [filter]="searchTerm$ | async"></sx-polizas-table>
         </ng-template>
       <mat-card-footer>
 
@@ -56,6 +59,7 @@ export class PolizasComponent implements OnInit, OnDestroy {
   filter: PolizasFilter;
   loading$: Observable<boolean>;
   destroy$ = new Subject<boolean>();
+  searchTerm$: Observable<string>;
 
   constructor(
     private store: Store<fromStore.State>,
@@ -68,14 +72,18 @@ export class PolizasComponent implements OnInit, OnDestroy {
     this.loading$ = this.store.pipe(select(fromStore.getPolizasLoading));
     this.polizas$ = this.store.pipe(select(fromStore.getPolizas));
     this.config$ = this.store.pipe(select(fromStore.getCurrentPeriodoGrupo));
+    this.searchTerm$ = this.store.pipe(select(fromStore.getPolizasSearchTerm));
     this.registerListeners();
+    // this.reload()
   }
 
   registerListeners() {
     // Listen to CurrentPeriodoGroup changes to reload the container
     this.config$.pipe(takeUntil(this.destroy$)).subscribe(filter => {
       this.filter = filter;
-      this.reload(filter);
+      if (filter.subtipo) {
+        this.reload(filter);
+      }
     });
   }
 
@@ -102,12 +110,27 @@ export class PolizasComponent implements OnInit, OnDestroy {
       })
       .afterClosed()
       .subscribe(command => {
-        if (command) {
-          if (command.tipo === 'EGRESO') {
+        switch (command.subtipo) {
+          case 'EGRESO': {
             this.store.dispatch(
               new fromActions.CreatePolizasEgreso({ filter: command })
             );
-          } else {
+            break;
+          }
+          // case 'NOTAS_DE_CREDITO_DEV':
+          // case 'NOTAS_DE_CREDITO_BON':
+          case 'COBRANZA_CON':
+          case 'COBRANZA_COD':
+          case 'COBRANZA_CRE':
+          case 'VENTAS_CON':
+          case 'VENTAS_COD':
+          case 'VENTAS_CRE': {
+            this.store.dispatch(
+              new fromActions.GenerarPolizas({ filter: command })
+            );
+            break;
+          }
+          default: {
             this.store.dispatch(
               new fromActions.CreatePoliza({ poliza: command })
             );
@@ -130,5 +153,9 @@ export class PolizasComponent implements OnInit, OnDestroy {
           this.store.dispatch(new fromActions.DeletePoliza({ poliza: event }));
         }
       });
+  }
+
+  onFilter(event: string) {
+    this.store.dispatch(new fromActions.SetPolizasSearchTerm({ term: event }));
   }
 }

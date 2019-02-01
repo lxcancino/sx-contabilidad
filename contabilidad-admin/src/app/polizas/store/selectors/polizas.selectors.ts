@@ -46,6 +46,11 @@ export const getPolizasFilter = createSelector(
   fromPolizas.getPolizasFilter
 );
 
+export const getPolizasSearchTerm = createSelector(
+  getPolizasState,
+  fromPolizas.getPolizasSearchTerm
+);
+
 export const getPolizasLoaded = createSelector(
   getPolizasState,
   fromPolizas.getPolizasLoaded
@@ -72,9 +77,9 @@ export const getCurrentPolizaGroup = createSelector(
 /**
  * Selector que para obtener el filtro de polizas vigente, esto es el grupo de polizas
  * (stipo y subtipo) y el periodo de las mismas (ejercicio, mes). El objeto es de tipo
- * PolizaFilter y es el que se observa en PolizaComponent para determinar el tipo de poliza
+ * PolizaFilter y es  para determinar el tipo de poliza
  * con el que se está interactuando. El estado que represneta Tipo,Subtipo,Ejercicio y Mes
- * es util muchos contenedores y API calls por lo que representa un enomre ahorro de ifra estructura
+ * es util en muchos contenedores y API calls por lo que representa un enomre ahorro de infra estructura
  * el poder agrupar las polizas de esta manera.
  */
 export const getCurrentPeriodoGrupo = createSelector(

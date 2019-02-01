@@ -8,8 +8,11 @@ import {
   ViewChild,
   Output,
   EventEmitter,
-  ChangeDetectorRef
+  ChangeDetectorRef,
+  LOCALE_ID,
+  Inject
 } from '@angular/core';
+import { formatDate, formatCurrency } from '@angular/common';
 
 import { SaldoPorCuentaContable } from '../../models';
 import {
@@ -82,7 +85,10 @@ export class SaldosTableComponent implements OnInit, OnChanges {
 
   localeText;
 
-  constructor(private cd: ChangeDetectorRef) {
+  constructor(
+    private cd: ChangeDetectorRef,
+    @Inject(LOCALE_ID) private locale: string
+  ) {
     this.gridOptions = <GridOptions>{};
     this.gridOptions.columnDefs = this.buildColsDef();
     this.defaultColDef = {
@@ -128,10 +134,12 @@ export class SaldosTableComponent implements OnInit, OnChanges {
       let haber = 0.0;
       let saldoFinal = 0.0;
       this.gridApi.forEachNodeAfterFilterAndSort((rowNode, index) => {
-        saldoInicial += rowNode.data.saldoInicial;
-        debe += rowNode.data.debe;
-        haber += rowNode.data.haber;
-        saldoFinal += rowNode.data.saldoFinal;
+        if (rowNode.data.nivel === 1) {
+          saldoInicial += rowNode.data.saldoInicial;
+          debe += rowNode.data.debe;
+          haber += rowNode.data.haber;
+          saldoFinal += rowNode.data.saldoFinal;
+        }
       });
       const totales = { saldoInicial, debe, haber, saldoFinal };
       this.totalesChanged.emit(totales);
@@ -170,40 +178,50 @@ export class SaldosTableComponent implements OnInit, OnChanges {
   private buildColsDef() {
     return [
       {
-        headerName: 'Clave',
+        headerName: 'Cuenta',
         field: 'clave',
         width: 170
       },
       {
-        headerName: 'Descripción',
+        headerName: 'Subcuenta De:',
+        field: 'padre',
+        width: 200
+      },
+      {
+        headerName: 'Descripción de la cuenta',
         field: 'descripcion',
         width: 400
       },
       {
         headerName: 'Nivel',
         field: 'nivel',
+        filter: 'agNumberColumnFilter',
         width: 90
       },
       {
         headerName: 'Saldo Inicial',
         field: 'saldoInicial',
         filter: 'agNumberColumnFilter',
+        cellRenderer: params => this.transformCurrency(params.value),
         width: 150
       },
       {
-        headerName: 'Debe',
+        headerName: 'Total de cargos',
         field: 'debe',
-        filter: 'agNumberColumnFilter'
+        filter: 'agNumberColumnFilter',
+        cellRenderer: params => this.transformCurrency(params.value)
       },
       {
-        headerName: 'Haber',
+        headerName: 'Total de abonos',
         field: 'haber',
-        filter: 'agNumberColumnFilter'
+        filter: 'agNumberColumnFilter',
+        cellRenderer: params => this.transformCurrency(params.value)
       },
       {
         headerName: 'Saldo final',
         field: 'saldoFinal',
         filter: 'agNumberColumnFilter',
+        cellRenderer: params => this.transformCurrency(params.value),
         width: 150
       }
     ];
@@ -233,5 +251,9 @@ export class SaldosTableComponent implements OnInit, OnChanges {
       endsWith: 'termina con',
       filters: 'filtros'
     };
+  }
+
+  transformCurrency(data) {
+    return formatCurrency(data, this.locale, '$');
   }
 }

@@ -11,20 +11,29 @@ export interface State extends EntityState<Poliza> {
   loaded: boolean;
   selectedId: number;
   filter: PolizasFilter;
+  searchTerm: string;
 }
 
-export const adapter: EntityAdapter<Poliza> = createEntityAdapter<Poliza>();
+function sortByFolio(e1: Poliza, e2: Poliza) {
+  return e2.folio - e1.folio;
+}
+
+export const adapter: EntityAdapter<Poliza> = createEntityAdapter<Poliza>({
+  sortComparer: sortByFolio
+});
 
 export const initialState: State = adapter.getInitialState({
   loading: false,
   loaded: false,
   selectedId: undefined,
-  filter: undefined
+  filter: undefined,
+  searchTerm: ''
 });
 
 export function reducer(state = initialState, action: PolizaActions): State {
   switch (action.type) {
     case PolizaActionTypes.CerrarPoliza:
+    case PolizaActionTypes.GenerarPolizas:
     case PolizaActionTypes.CreatePolizasEgreso:
     case PolizaActionTypes.RecalcularPoliza:
     case PolizaActionTypes.CreatePoliza:
@@ -37,6 +46,7 @@ export function reducer(state = initialState, action: PolizaActions): State {
       };
     }
 
+    case PolizaActionTypes.GenerarPolizasFail:
     case PolizaActionTypes.CerrarPolizaFail:
     case PolizaActionTypes.CreatePolizasEgresoFail:
     case PolizaActionTypes.RecalcularPolizaFail:
@@ -83,11 +93,19 @@ export function reducer(state = initialState, action: PolizaActions): State {
       };
     }
 
+    case PolizaActionTypes.GenerarPolizasSuccess:
     case PolizaActionTypes.CreatePolizasEgresoSuccess: {
-      return adapter.addAll(action.payload.polizas, {
+      return adapter.upsertMany(action.payload.polizas, {
         ...state,
         loading: false
       });
+    }
+
+    case PolizaActionTypes.SetPolizasSearchTerm: {
+      return {
+        ...state,
+        searchTerm: action.payload.term
+      };
     }
   }
   return state;
@@ -104,3 +122,4 @@ export const getPolizasLoaded = (state: State) => state.loaded;
 export const getPolizasLoading = (state: State) => state.loading;
 export const getSelectedPolizaId = (state: State) => state.selectedId;
 export const getPolizasFilter = (state: State) => state.filter;
+export const getPolizasSearchTerm = (state: State) => state.searchTerm;

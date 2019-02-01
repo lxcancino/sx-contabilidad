@@ -42,9 +42,12 @@ export const initialState: State = {
       new Grupo('TARJETA', 'Tarjeta', 'Pagos con tarjeta')
     ]),
     new Grupo('DIARIO', 'Diario', 'Pólizas de diario', [
-      new Grupo('VENTAS', 'Ventas', 'Pólizas de ventas'),
+      new Grupo('VENTAS_CON', 'Ventas CON', 'Contado'),
+      new Grupo('VENTAS_COD', 'Ventas COD', 'Contra entrega'),
+      new Grupo('VENTAS_CRE', 'Ventas CRE', 'Crédito'),
       new Grupo('CARGOS', 'Cargos diversos', 'Pólizas de notas de cargo'),
-      new Grupo('NOTAS_DE_CREDITO', 'Notas de crédito', ''),
+      new Grupo('NOTAS_DE_CREDITO_DEV', 'Devoluciones', ''),
+      new Grupo('NOTAS_DE_CREDITO_BON', 'Bonificaciones', ''),
       new Grupo('ANTICIPOS', 'Anticipos', ''),
       new Grupo('COMPRAS', 'Compras', ''),
       new Grupo('DESCUENTOS_COMPRAS', 'Descuentos en compras', ''),

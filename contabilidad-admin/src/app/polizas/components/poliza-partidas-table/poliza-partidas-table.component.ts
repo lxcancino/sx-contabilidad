@@ -8,10 +8,13 @@ import {
   ViewChild,
   Output,
   EventEmitter,
-  ChangeDetectorRef
+  ChangeDetectorRef,
+  LOCALE_ID,
+  Inject
 } from '@angular/core';
+import { formatDate, formatCurrency } from '@angular/common';
 
-import { PolizaDet } from '../../models';
+import { PolizaDet, Poliza } from '../../models';
 import {
   GridOptions,
   FilterChangedEvent,
@@ -81,7 +84,13 @@ export class PolizaPartidasTableComponent implements OnInit, OnChanges {
 
   localeText;
 
-  constructor(private cd: ChangeDetectorRef) {
+  pinnedBottomRowData;
+  frameworkComponents;
+
+  constructor(
+    private cd: ChangeDetectorRef,
+    @Inject(LOCALE_ID) private locale: string
+  ) {
     this.gridOptions = <GridOptions>{};
     this.gridOptions.columnDefs = this.buildColsDef();
     this.defaultColDef = {
@@ -89,7 +98,6 @@ export class PolizaPartidasTableComponent implements OnInit, OnChanges {
       editable: false,
       filter: 'agTextColumnFilter'
     };
-
     this.gridOptions.onFilterChanged = this.onFilter;
     this.buildLocalText();
   }
@@ -144,32 +152,53 @@ export class PolizaPartidasTableComponent implements OnInit, OnChanges {
     }, 8000);
   }
 
+  exportData(poliza: Poliza) {
+    const params = {
+      // skipHeader: getBooleanValue("#skipHeader"),
+      // columnGroups: getBooleanValue("#columnGroups"),
+      // skipFooters: getBooleanValue("#skipFooters"),
+      // skipGroups: getBooleanValue("#skipGroups"),
+      // skipPinnedTop: getBooleanValue("#skipPinnedTop"),
+      // skipPinnedBottom: getBooleanValue("#skipPinnedBottom"),
+      // allColumns: getBooleanValue("#allColumns"),
+      // onlySelected: getBooleanValue("#onlySelected"),
+      // suppressQuotes: getBooleanValue("#suppressQuotes"),
+      fileName: `POL_${poliza.subtipo}_${poliza.folio}_${poliza.ejercicio}_${
+        poliza.mes
+      }.csv`
+      // columnSeparator: document.querySelector("#columnSeparator").value
+    };
+    this.gridApi.exportDataAsCsv(params);
+  }
+
   private buildColsDef() {
     return [
       {
-        headerName: 'Clave',
+        headerName: 'Cuenta',
         field: 'clave',
         width: 170
       },
       {
-        headerName: 'Concepto',
+        headerName: 'Descripción de la cuenta',
         field: 'concepto',
         width: 200
       },
       {
-        headerName: 'Descripción',
+        headerName: 'Concepto',
         field: 'descripcion',
-        width: 250
+        width: 280
       },
       {
         headerName: 'Debe',
         field: 'debe',
-        filter: 'agNumberColumnFilter'
+        filter: 'agNumberColumnFilter',
+        cellRenderer: params => this.transformCurrency(params.value)
       },
       {
         headerName: 'Haber',
         field: 'haber',
-        filter: 'agNumberColumnFilter'
+        filter: 'agNumberColumnFilter',
+        cellRenderer: params => this.transformCurrency(params.value)
       },
       {
         headerName: 'Asiento',
@@ -240,5 +269,9 @@ export class PolizaPartidasTableComponent implements OnInit, OnChanges {
       endsWith: 'termina con',
       filters: 'filtros'
     };
+  }
+
+  transformCurrency(data) {
+    return formatCurrency(data, this.locale, '$');
   }
 }

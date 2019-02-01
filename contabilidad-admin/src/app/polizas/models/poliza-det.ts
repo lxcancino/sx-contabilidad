@@ -20,4 +20,6 @@ export interface PolizaDet {
   lastUpdated: string;
   updateUser: string;
   createUser: string;
+  nacionales?: any[];
+  extranjeros?: any[];
 }

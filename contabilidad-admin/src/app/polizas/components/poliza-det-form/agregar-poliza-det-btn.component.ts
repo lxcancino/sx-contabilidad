@@ -7,23 +7,28 @@ import {
   ChangeDetectionStrategy
 } from '@angular/core';
 import { MatDialog } from '@angular/material';
-import { Poliza } from 'app/polizas/models';
+import { PolizaDetComponent } from './poliza-det-form.component';
+import { PolizaDet, Poliza } from 'app/polizas/models';
 
 @Component({
   selector: 'sx-agregar-polizadet',
   template: `
-    <button mat-button type="button" (click)="openSelector()" [disabled]="isDisabled()">
-      <mat-icon>file_upload</mat-icon> {{label}}
-    </button>
+    <a
+      mat-fab
+      matTooltip="Agregar"
+      matTooltipPosition="before"
+      color="accent"
+      class="mat-fab-position-bottom-right z-3"
+      (click)="crearPartida()"
+    >
+      <mat-icon>add</mat-icon>
+    </a>
   `,
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class AgregarPolizadetBtnComponent implements OnInit {
-  @Input()
-  color = 'primary';
-
-  @Input()
-  label = 'Agregar partida';
+  @Output()
+  agregar = new EventEmitter();
 
   @Input()
   poliza: Poliza;
@@ -32,21 +37,15 @@ export class AgregarPolizadetBtnComponent implements OnInit {
 
   ngOnInit() {}
 
-  openSelector() {
-    /*
-    const ref = this.dialog.open(FacturaSelectorComponent, {
-      data: { facturas: this.facturas },
+  crearPartida() {
+    const ref = this.dialog.open(PolizaDetComponent, {
+      data: { poliza: this.poliza },
       width: '750px'
     });
-    ref.afterClosed().subscribe((selected: CuentaPorPagar[]) => {
-      if (selected) {
-        this.selected.emit(selected);
+    ref.afterClosed().subscribe((partida: PolizaDet) => {
+      if (partida) {
+        this.agregar.emit(partida);
       }
     });
-    */
-  }
-
-  isDisabled() {
-    return !this.poliza.cierre && !this.poliza.manual;
   }
 }

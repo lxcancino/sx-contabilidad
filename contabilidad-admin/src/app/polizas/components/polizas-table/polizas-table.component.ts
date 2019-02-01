@@ -60,6 +60,7 @@ export class PolizasTableComponent implements OnInit, OnChanges {
     'tipo',
     'subtipo',
     'concepto',
+    'sucursal',
     'fecha',
     'debe',
     'haber',

@@ -11,7 +11,7 @@ const routes: Routes = [
     children: [
       {
         path: 'ingreso',
-        canActivate: [fromGuards.PolizasGuard],
+        canActivate: [],
         component: fromContainers.PolizasComponent
       },
       {
@@ -21,7 +21,7 @@ const routes: Routes = [
       },
       {
         path: 'egreso',
-        canActivate: [fromGuards.PolizasGuard],
+        canActivate: [],
         component: fromContainers.PolizasComponent
       },
       {
@@ -31,7 +31,7 @@ const routes: Routes = [
       },
       {
         path: 'diario',
-        canActivate: [fromGuards.PolizasGuard],
+        canActivate: [],
         component: fromContainers.PolizasComponent
       },
       {

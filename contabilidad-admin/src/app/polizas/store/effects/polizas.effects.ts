@@ -193,6 +193,22 @@ export class PolizasEffects {
   );
 
   @Effect()
+  generarPolzias$ = this.actions$.pipe(
+    ofType<fromActions.GenerarPolizas>(
+      PolizaActionTypes.GenerarPolizas
+    ),
+    map(action => action.payload.filter),
+    switchMap(filter => {
+      return this.service.generarPolizas(filter).pipe(
+        map(polizas => new fromActions.GenerarPolizasSuccess({ polizas })),
+        catchError(response =>
+          of(new fromActions.GenerarPolizasFail({ response }))
+        )
+      );
+    })
+  );
+
+  @Effect()
   errorHandler$ = this.actions$.pipe(
     ofType<
       | fromActions.LoadPolizasFail
@@ -200,12 +216,14 @@ export class PolizasEffects {
       | fromActions.UpdatePolizaFail
       | fromActions.RecalcularPolizaFail
       | fromActions.CreatePolizasEgresoFail
+      | fromActions.GenerarPolizasFail
     >(
       PolizaActionTypes.LoadPolizasFail,
       PolizaActionTypes.CreatePolizaFail,
       PolizaActionTypes.UpdatePolizaFail,
       PolizaActionTypes.RecalcularPolizaFail,
-      PolizaActionTypes.CreatePolizasEgresoFail
+      PolizaActionTypes.CreatePolizasEgresoFail,
+      PolizaActionTypes.GenerarPolizasFail
     ),
     map(action => action.payload.response),
     map(response => new fromRoot.GlobalHttpError({ response }))

@@ -25,6 +25,7 @@ import { ReportService } from 'app/reportes/services/report.service';
         (delete)="onDelete($event)"
         (cerrar)="onCerrar($event)"
         (print)="onPrint($event)"
+        (comprobantes)="onComprobantes($event)"
         (toogleManual)="onManual($event)">
       </sx-poliza-form>
     </div>
@@ -43,8 +44,8 @@ export class PolizaComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.poliza$ = this.store.pipe(select(fromStore.getSelectedPoliza));
     this.loading$ = this.store.select(fromStore.getPolizasLoading);
+    this.poliza$ = this.store.pipe(select(fromStore.getSelectedPoliza));
   }
 
   onCancel(poliza: Poliza) {
@@ -87,43 +88,48 @@ export class PolizaComponent implements OnInit {
   }
 
   onCerrar(event: Poliza) {
-    if (!event.cierre) {
-      this.dialogService
-        .openConfirm({
-          title: `Cerrar Poliza ${event.folio}`,
-          message: `Cierrar poliza y actualizar saldos`,
-          acceptButton: 'Cerrar',
-          cancelButton: 'Cancelar'
-        })
-        .afterClosed()
-        .subscribe(res => {
-          if (res) {
-            const update = {
-              id: event.id,
-              changes: { cierre: new Date().toISOString() }
-            };
-            this.store.dispatch(
-              new fromStore.CerrarPoliza({ polizaId: event.id })
-            );
-          }
-        });
-    }
+    this.dialogService
+      .openConfirm({
+        title: `Cerrar Poliza ${event.folio}`,
+        message: `Cierrar poliza y actualizar saldos`,
+        acceptButton: 'Cerrar',
+        cancelButton: 'Cancelar'
+      })
+      .afterClosed()
+      .subscribe(res => {
+        if (res) {
+          const update = {
+            id: event.id,
+            changes: { cierre: new Date().toISOString() }
+          };
+          this.store.dispatch(
+            new fromStore.CerrarPoliza({ polizaId: event.id })
+          );
+        }
+      });
   }
 
   onManual(event: Poliza) {
     this.dialogService
       .openConfirm({
         title: 'Mantenimiento de la póliza',
-        message: `Cambiar a : ${event.manual ? 'MANUAL' : 'AUTOMATICA'}`,
+        message: `Cambiar a : ${!event.manual ? 'MANUAL' : 'AUTOMATICA'}`,
         acceptButton: 'ACEPTAR',
         cancelButton: 'CANCELAR'
       })
       .afterClosed()
       .subscribe(res => {
         if (res) {
-          const update = { id: event.id, changes: { manual: event.manual } };
+          const update = { id: event.id, changes: { manual: !event.manual } };
           this.store.dispatch(new fromStore.UpdatePoliza({ poliza: update }));
         }
       });
+  }
+
+  onComprobantes(event: { id: number; tipo: 'N' | 'E' }) {
+    this.reportService.runReport(
+      `contabilidad/polizas/printComprobantes/${event.id}`,
+      { tipo: event.tipo }
+    );
   }
 }

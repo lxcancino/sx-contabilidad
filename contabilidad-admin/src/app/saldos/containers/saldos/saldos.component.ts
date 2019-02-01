@@ -1,19 +1,17 @@
-import { Component, OnInit, OnDestroy, AfterViewInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 
 import { Store, select } from '@ngrx/store';
 import * as fromRoot from 'app/store';
 import * as fromStore from '../../store';
-import * as fromActions from '../../store/actions';
 
 import { Observable, Subject } from 'rxjs';
-import { switchMap, withLatestFrom, takeUntil } from 'rxjs/operators';
+import { takeUntil } from 'rxjs/operators';
 
 import { SaldoPorCuentaContable } from '../../models';
 import { ReportService } from 'app/reportes/services/report.service';
 
 import { MatDialog } from '@angular/material';
 import { TdDialogService } from '@covalent/core';
-import { ActivatedRoute } from '@angular/router';
 
 import { EjercicioMes } from '../../../models/ejercicio-mes';
 
@@ -23,7 +21,7 @@ import { EjercicioMes } from '../../../models/ejercicio-mes';
     <mat-card >
       <div layout layout-align="start center"  class="pad">
         <span class="push-left-sm">
-          <span class="mat-title">Saldos de cuenta</span>
+          <span class="mat-title">BALANZA DE COMPROBACION</span>
         </span>
         <span flex></span>
         <span class="info" *ngIf="totales">
@@ -55,26 +53,6 @@ import { EjercicioMes } from '../../../models/ejercicio-mes';
           </mat-menu>
         </span>
       </div>
-      <!--
-      <sx-search-title title="Saldos de cuenta" (search)="search = $event">
-        <span class="info" *ngIf="totales">
-          <span>Inicial: {{totales.saldoInicial | currency}}</span>
-          <span class="pad-left">Debe: {{totales.debe | currency}}</span>
-          <span class="pad-left">Haber: {{totales.haber | currency}}</span>
-          <span class="pad-left">Final: {{totales.saldoFinal | currency}}</span>
-        </span>
-        <button mat-menu-item class="actions" (click)="reload()"><mat-icon>refresh</mat-icon> Recargar</button>
-        <a mat-menu-item  color="accent" class="actions" (click)="onActualizar()">
-          <mat-icon>add</mat-icon> Actualizar saldos
-        </a>
-        <a mat-menu-item  color="accent" class="actions" (click)="onCierre()">
-          <mat-icon>fast_forward</mat-icon> Cierre mensual
-        </a>
-        <a mat-menu-item  color="accent" class="actions" (click)="onPolizaDeCierre()" *ngIf="filter.mes === 13">
-          <mat-icon>leak_remove</mat-icon> Poliza CIERRE ANUAL
-        </a>
-      </sx-search-title>
-      -->
       <mat-divider></mat-divider>
       <ng-template
     tdLoading
@@ -115,8 +93,7 @@ export class SaldosComponent implements OnInit, OnDestroy {
     private store: Store<fromStore.State>,
     private dialog: MatDialog,
     private reportService: ReportService,
-    private dialogService: TdDialogService,
-    private route: ActivatedRoute
+    private dialogService: TdDialogService
   ) {}
 
   ngOnInit() {
@@ -127,10 +104,6 @@ export class SaldosComponent implements OnInit, OnDestroy {
     this.config$
       .pipe(takeUntil(this.destroy$))
       .subscribe(filter => (this.filter = filter));
-
-    this.route.queryParamMap
-      .pipe(takeUntil(this.destroy$))
-      .subscribe(params => this.reload());
   }
 
   ngOnDestroy() {

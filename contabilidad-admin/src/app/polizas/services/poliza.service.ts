@@ -16,6 +16,7 @@ export class PolizaService {
   constructor(private http: HttpClient, private config: ConfigService) {}
 
   list(filter: PolizasFilter): Observable<Poliza[]> {
+    // console.log('Cargando: ', filter);
     const params = new HttpParams()
       .set('ejercicio', filter.ejercicio.toString())
       .set('mes', filter.mes.toString())
@@ -23,14 +24,6 @@ export class PolizaService {
       .set('subtipo', filter.subtipo.toString())
       .set('sort', 'folio')
       .set('order', 'asc');
-    /*
-    if (filter.tipo) {
-      params = params.set('tipo', filter.tipo.toString());
-    }
-    if (filter.subtipo) {
-      params = params.set('subtipo', filter.subtipo.toString());
-    }
-    */
     return this.http
       .get<Poliza[]>(this.apiUrl, { params: params })
       .pipe(catchError((error: any) => throwError(error)));
@@ -46,6 +39,17 @@ export class PolizaService {
   save(poliza: Partial<Poliza>): Observable<Poliza> {
     return this.http
       .post<Poliza>(this.apiUrl, poliza)
+      .pipe(catchError((error: any) => throwError(error)));
+  }
+
+  /**
+   * Cuando se genere mas de una poliza por dia
+   * @param command
+   */
+  generarPolizas(command: PolizasFilter): Observable<Poliza[]> {
+    const url = `${this.apiUrl}/generarPolizas`;
+    return this.http
+      .post<Poliza[]>(url, command)
       .pipe(catchError((error: any) => throwError(error)));
   }
 
