@@ -26,6 +26,7 @@ export function reducer(
   action: PolizasPeriodoActions
 ): State {
   switch (action.type) {
+    case PolizasPeriodoActionTypes.DeletePolizasPeriodo:
     case PolizasPeriodoActionTypes.GenerarPolizasPeriodo:
     case PolizasPeriodoActionTypes.LoadPolizasPeriodo: {
       return {
@@ -33,6 +34,7 @@ export function reducer(
         loading: true
       };
     }
+    case PolizasPeriodoActionTypes.DeletePolizasPeriodoFail:
     case PolizasPeriodoActionTypes.GenerarPolizasPeriodoFail:
     case PolizasPeriodoActionTypes.LoadPolizasPeriodoFail: {
       return {
@@ -57,6 +59,13 @@ export function reducer(
 
     case PolizasPeriodoActionTypes.GenerarPolizasPeriodoSuccess: {
       return adapter.upsertOne(action.payload.polizasPeriodo, {
+        ...state,
+        loading: false
+      });
+    }
+
+    case PolizasPeriodoActionTypes.DeletePolizasPeriodoSuccess: {
+      return adapter.removeOne(action.payload.polizasPeriodo.id, {
         ...state,
         loading: false
       });

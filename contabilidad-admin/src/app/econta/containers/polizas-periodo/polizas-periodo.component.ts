@@ -10,6 +10,7 @@ import { PolizasPeriodo } from '../../models';
 import { MatDialog } from '@angular/material';
 import { EjercicioMesDialogComponent } from 'app/_shared/components';
 import { buildCurrentPeriodo, EjercicioMes } from 'app/models/ejercicio-mes';
+import { TdDialogService } from '@covalent/core';
 
 @Component({
   selector: 'sx-polizas-periodo',
@@ -24,7 +25,8 @@ import { buildCurrentPeriodo, EjercicioMes } from 'app/models/ejercicio-mes';
       >
         <sx-polizas-periodo-table [polizasPeriodo]="polizasPeriodo$ | async"
           (select)="onSelect($event)"
-          (download)="onDownload($event)">
+          (download)="onDownload($event)"
+          (delete)="onDelete($event)">
         </sx-polizas-periodo-table>
       </ng-template>
       <a mat-fab matTooltip="Nuevo" matTooltipPosition="before" color="accent" class="mat-fab-position-bottom-right z-3"
@@ -53,7 +55,8 @@ export class PolizasPeriodoComponent implements OnInit {
 
   constructor(
     private store: Store<fromStore.State>,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private dialogService: TdDialogService
   ) {}
 
   ngOnInit() {
@@ -89,6 +92,24 @@ export class PolizasPeriodoComponent implements OnInit {
               ejercicio: res.ejercicio,
               mes: res.mes
             })
+          );
+        }
+      });
+  }
+
+  onDelete(event: PolizasPeriodo) {
+    this.dialogService
+      .openConfirm({
+        title: 'Eliminar Polizas del periodo',
+        message: `Periodo ${event.ejercicio} / ${event.mes} Id: ${event.id}`,
+        acceptButton: 'ELIMINAR',
+        cancelButton: 'CANCELAR'
+      })
+      .afterClosed()
+      .subscribe(res => {
+        if (res) {
+          this.store.dispatch(
+            new fromStore.DeletePolizasPeriodo({ polizaPeriodo: event })
           );
         }
       });

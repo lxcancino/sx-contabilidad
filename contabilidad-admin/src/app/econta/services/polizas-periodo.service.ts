@@ -41,8 +41,8 @@ export class PolizasPeriodoService {
       .pipe(catchError((error: any) => throwError(error)));
   }
 
-  delete(poliza: PolizasPeriodo) {
-    const url = `${this.apiUrl}/${poliza.id}`;
+  delete(id: number) {
+    const url = `${this.apiUrl}/${id}`;
     return this.http
       .delete<PolizasPeriodo>(url)
       .pipe(catchError((error: any) => throwError(error)));

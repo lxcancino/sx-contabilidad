@@ -81,6 +81,8 @@ export class PolizasPeriodoTableComponent implements OnInit, OnChanges {
 
   @Output()
   download = new EventEmitter();
+  @Output()
+  delete = new EventEmitter();
 
   constructor() {}
 
@@ -106,5 +108,10 @@ export class PolizasPeriodoTableComponent implements OnInit, OnChanges {
   onDowndload(event: Event, cat: PolizasPeriodo) {
     event.stopPropagation();
     this.download.emit(cat);
+  }
+
+  onDelete(event: Event, cat: PolizasPeriodo) {
+    event.stopPropagation();
+    this.delete.emit(cat);
   }
 }

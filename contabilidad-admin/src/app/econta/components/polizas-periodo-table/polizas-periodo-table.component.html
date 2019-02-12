@@ -59,6 +59,13 @@
           (click)="onDowndload($event, cfdi)"
           >file_download</mat-icon
         >
+        <mat-icon
+          color="warn"
+          matTooltip="Eliminar"
+          [fontIcon]="true"
+          (click)="onDelete($event, cfdi)"
+          >delete</mat-icon
+        >
       </span>
     </td>
   </ng-container>

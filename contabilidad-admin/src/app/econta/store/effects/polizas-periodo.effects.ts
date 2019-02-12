@@ -56,6 +56,41 @@ export class PolizasPeriodoEffects {
     )
   );
 
+  @Effect()
+  delete$ = this.actions$.pipe(
+    ofType<fromActions.DeletePolizasPeriodo>(
+      PolizasPeriodoActionTypes.DeletePolizasPeriodo
+    ),
+    map(action => action.payload.polizaPeriodo),
+    switchMap(p =>
+      this.service.delete(p.id).pipe(
+        map(
+          () =>
+            new fromActions.DeletePolizasPeriodoSuccess({ polizasPeriodo: p })
+        ),
+        catchError(error =>
+          of(new fromActions.DeletePolizasPeriodoFail({ response: error }))
+        )
+      )
+    )
+  );
+
+  @Effect({ dispatch: false })
+  deleteSucccess$ = this.actions$.pipe(
+    ofType<fromActions.DeletePolizasPeriodoSuccess>(
+      PolizasPeriodoActionTypes.DeletePolizasPeriodoSuccess
+    ),
+    tap(action => {
+      this.snackBar.open(
+        `PolizasDelPeriodo ${action.payload.polizasPeriodo.id} eliminada`,
+        'Cerrar',
+        {
+          duration: 8000
+        }
+      );
+    })
+  );
+
   @Effect({ dispatch: false })
   mostrarXml$ = this.actions$.pipe(
     ofType<fromActions.MostrarPolizasPeriodoXml>(
@@ -77,10 +112,13 @@ export class PolizasPeriodoEffects {
   @Effect()
   errorHandler$ = this.actions$.pipe(
     ofType<
-      fromActions.LoadPolizasPeriodoFail | fromActions.GenerarPolizasPeriodoFail
+      | fromActions.LoadPolizasPeriodoFail
+      | fromActions.GenerarPolizasPeriodoFail
+      | fromActions.DeletePolizasPeriodoFail
     >(
       PolizasPeriodoActionTypes.LoadPolizasPeriodoFail,
-      PolizasPeriodoActionTypes.GenerarPolizasPeriodoFail
+      PolizasPeriodoActionTypes.GenerarPolizasPeriodoFail,
+      PolizasPeriodoActionTypes.DeletePolizasPeriodoFail
     ),
     map(action => action.payload.response),
     map(response => new fromRoot.GlobalHttpError({ response }))

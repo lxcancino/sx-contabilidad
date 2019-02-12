@@ -13,7 +13,12 @@ export enum PolizasPeriodoActionTypes {
 
   UpsertPolizasPeriodo = '[PolizasPeriodo API] Upsert polizas periodo',
   MostrarPolizasPeriodoXml = '[PolizasPeriodo component] Mostrar polizas periodo XML',
-  DescargarPolizasPeriodoXml = '[PolizasPeriodo component] Descargar polizas periodo XML'
+  DescargarPolizasPeriodoXml = '[PolizasPeriodo component] Descargar polizas periodo XML',
+
+  // Delete poliza del periodo
+  DeletePolizasPeriodo = '[PolizasPeriodo component] Delete polizas periodo',
+  DeletePolizasPeriodoFail = '[PolizasPeriodo API] Delete polizas periodo fail',
+  DeletePolizasPeriodoSuccess = '[PolizasPeriodo API] Delete polizas periodo success'
 }
 
 // Load polizasPeriodos
@@ -60,6 +65,20 @@ export class DescargarPolizasPeriodoXml implements Action {
   constructor(public payload: { polizasPeriodo: Partial<PolizasPeriodo> }) {}
 }
 
+// Delete
+export class DeletePolizasPeriodo implements Action {
+  readonly type = PolizasPeriodoActionTypes.DeletePolizasPeriodo;
+  constructor(public payload: { polizaPeriodo: Partial<PolizasPeriodo> }) {}
+}
+export class DeletePolizasPeriodoFail implements Action {
+  readonly type = PolizasPeriodoActionTypes.DeletePolizasPeriodoFail;
+  constructor(public payload: { response: any }) {}
+}
+export class DeletePolizasPeriodoSuccess implements Action {
+  readonly type = PolizasPeriodoActionTypes.DeletePolizasPeriodoSuccess;
+  constructor(public payload: { polizasPeriodo: Partial<PolizasPeriodo> }) {}
+}
+
 export type PolizasPeriodoActions =
   | LoadPolizasPeriodo
   | LoadPolizasPeriodoFail
@@ -69,4 +88,7 @@ export type PolizasPeriodoActions =
   | GenerarPolizasPeriodoSuccess
   | UpsertPolizasPeriodo
   | MostrarPolizasPeriodoXml
-  | DescargarPolizasPeriodoXml;
+  | DescargarPolizasPeriodoXml
+  | DeletePolizasPeriodo
+  | DeletePolizasPeriodoFail
+  | DeletePolizasPeriodoSuccess;
