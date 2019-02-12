@@ -3,6 +3,7 @@ import { EntityState, EntityAdapter, createEntityAdapter } from '@ngrx/entity';
 import { PolizaActionTypes, PolizaActions } from '../actions/poliza.actions';
 
 import { Poliza, PolizasFilter } from '../../models';
+import { PolizasPeriodoActionTypes } from 'app/econta/store';
 
 // export const POLIZAS_STORAGE_KEY = 'contabilidad.polizas.period';
 
@@ -32,6 +33,8 @@ export const initialState: State = adapter.getInitialState({
 
 export function reducer(state = initialState, action: PolizaActions): State {
   switch (action.type) {
+    case PolizaActionTypes.GenerarComplementos:
+    case PolizaActionTypes.GenerarFolios:
     case PolizaActionTypes.CerrarPoliza:
     case PolizaActionTypes.GenerarPolizas:
     case PolizaActionTypes.CreatePolizasEgreso:
@@ -46,6 +49,8 @@ export function reducer(state = initialState, action: PolizaActions): State {
       };
     }
 
+    case PolizaActionTypes.GenerarComplementosFail:
+    case PolizaActionTypes.GenerarFoliosFail:
     case PolizaActionTypes.GenerarPolizasFail:
     case PolizaActionTypes.CerrarPolizaFail:
     case PolizaActionTypes.CreatePolizasEgresoFail:
@@ -93,6 +98,7 @@ export function reducer(state = initialState, action: PolizaActions): State {
       };
     }
 
+    case PolizaActionTypes.GenerarFoliosSuccess:
     case PolizaActionTypes.GenerarPolizasSuccess:
     case PolizaActionTypes.CreatePolizasEgresoSuccess: {
       return adapter.upsertMany(action.payload.polizas, {

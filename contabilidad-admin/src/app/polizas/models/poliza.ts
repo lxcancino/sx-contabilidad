@@ -21,6 +21,8 @@ export interface Poliza {
   partidas: Partial<PolizaDet>[];
   totalNacional?: number;
   totalExtranjero?: number;
+  satComplementos?: string;
+  satComprobantes?: string;
 }
 
 export interface PolizasFilter {

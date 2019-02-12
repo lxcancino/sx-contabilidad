@@ -194,9 +194,7 @@ export class PolizasEffects {
 
   @Effect()
   generarPolzias$ = this.actions$.pipe(
-    ofType<fromActions.GenerarPolizas>(
-      PolizaActionTypes.GenerarPolizas
-    ),
+    ofType<fromActions.GenerarPolizas>(PolizaActionTypes.GenerarPolizas),
     map(action => action.payload.filter),
     switchMap(filter => {
       return this.service.generarPolizas(filter).pipe(
@@ -209,6 +207,54 @@ export class PolizasEffects {
   );
 
   @Effect()
+  generarFolios$ = this.actions$.pipe(
+    ofType<fromActions.GenerarFolios>(PolizaActionTypes.GenerarFolios),
+    map(action => action.payload.filter),
+    switchMap(filter => {
+      return this.service.generarFolios(filter).pipe(
+        map(polizas => new fromActions.GenerarFoliosSuccess({ polizas })),
+        catchError(response =>
+          of(new fromActions.GenerarFoliosFail({ response }))
+        )
+      );
+    })
+  );
+
+  @Effect()
+  generarComplementos$ = this.actions$.pipe(
+    ofType<fromActions.GenerarComplementos>(
+      PolizaActionTypes.GenerarComplementos
+    ),
+    map(action => action.payload.polizaId),
+    switchMap(polizaId => {
+      return this.service.generarComplementos(polizaId).pipe(
+        map(poliza => new fromActions.UpsertPoliza({ poliza })),
+        catchError(response =>
+          of(new fromActions.GenerarComplementosFail({ response }))
+        )
+      );
+    })
+  );
+
+  @Effect({ dispatch: false })
+  generarFoliosSuccess$ = this.actions$.pipe(
+    ofType<fromActions.GenerarFoliosSuccess>(
+      PolizaActionTypes.GenerarFoliosSuccess
+    ),
+    map(action => action.payload.polizas),
+    tap(polizas =>
+      this.snackBar.open(
+        `Folios re generados para ${polizas.length} polizas `,
+        'Cerrar',
+        {
+          duration: 8000
+        }
+      )
+    )
+    // map(poliza => new fromRoot.Go({ path: ['/polizas', poliza.id] }))
+  );
+
+  @Effect()
   errorHandler$ = this.actions$.pipe(
     ofType<
       | fromActions.LoadPolizasFail
@@ -217,13 +263,17 @@ export class PolizasEffects {
       | fromActions.RecalcularPolizaFail
       | fromActions.CreatePolizasEgresoFail
       | fromActions.GenerarPolizasFail
+      | fromActions.GenerarFoliosFail
+      | fromActions.GenerarComplementosFail
     >(
       PolizaActionTypes.LoadPolizasFail,
       PolizaActionTypes.CreatePolizaFail,
       PolizaActionTypes.UpdatePolizaFail,
       PolizaActionTypes.RecalcularPolizaFail,
       PolizaActionTypes.CreatePolizasEgresoFail,
-      PolizaActionTypes.GenerarPolizasFail
+      PolizaActionTypes.GenerarPolizasFail,
+      PolizaActionTypes.GenerarFoliosFail,
+      PolizaActionTypes.GenerarComplementosFail
     ),
     map(action => action.payload.response),
     map(response => new fromRoot.GlobalHttpError({ response }))

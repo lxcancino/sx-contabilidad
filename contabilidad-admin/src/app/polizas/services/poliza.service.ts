@@ -88,6 +88,26 @@ export class PolizaService {
       .pipe(catchError((error: any) => throwError(error)));
   }
 
+  generarComplementos(polizaId: number): Observable<Poliza> {
+    const url = `${this.apiUrl}/generarComplementos/${polizaId}`;
+    return this.http
+      .put<Poliza>(url, {})
+      .pipe(catchError((error: any) => throwError(error)));
+  }
+
+  /**
+   * Cuando se genere mas de una poliza por dia
+   * @param cmd
+   */
+  generarFolios(cmd: PolizasFilter): Observable<Poliza[]> {
+    const url = `${this.apiUrl}/generarFolios/${cmd.subtipo}/${cmd.ejercicio}/${
+      cmd.mes
+    }`;
+    return this.http
+      .put<Poliza[]>(url, cmd)
+      .pipe(catchError((error: any) => throwError(error)));
+  }
+
   get apiUrl() {
     if (!this._apiUrl) {
       this._apiUrl = this.config.buildApiUrl('contabilidad/polizas');

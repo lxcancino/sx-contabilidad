@@ -26,7 +26,8 @@ import { ReportService } from 'app/reportes/services/report.service';
         (cerrar)="onCerrar($event)"
         (print)="onPrint($event)"
         (comprobantes)="onComprobantes($event)"
-        (toogleManual)="onManual($event)">
+        (toogleManual)="onManual($event)"
+        (generarComplementosDePago)="onGenerarComplementosDePago($event)">
       </sx-poliza-form>
     </div>
   </ng-template>
@@ -126,10 +127,28 @@ export class PolizaComponent implements OnInit {
       });
   }
 
-  onComprobantes(event: { id: number; tipo: 'N' | 'E' }) {
+  onComprobantes(event: { id: number; tipo: 'N' | 'E' | 'P'}) {
     this.reportService.runReport(
       `contabilidad/polizas/printComprobantes/${event.id}`,
       { tipo: event.tipo }
     );
+  }
+
+  onGenerarComplementosDePago(event: Poliza) {
+    this.dialogService
+      .openConfirm({
+        title: 'COMPLEMENTOS DE PAGO',
+        message: 'GENERAR COMPLEMENTOS DE PAGO',
+        acceptButton: 'ACEPTAR',
+        cancelButton: 'CANCELAR'
+      })
+      .afterClosed()
+      .subscribe(res => {
+        if (res) {
+          this.store.dispatch(
+            new fromStore.GenerarComplementos({ polizaId: event.id })
+          );
+        }
+      });
   }
 }

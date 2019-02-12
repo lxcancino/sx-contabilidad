@@ -72,6 +72,9 @@ export class PolizaFormComponent implements OnInit, OnDestroy, OnChanges {
   @Output()
   toogleManual = new EventEmitter();
 
+  @Output()
+  generarComplementosDePago = new EventEmitter();
+
   subscription: Subscription;
 
   form: FormGroup;
@@ -107,7 +110,7 @@ export class PolizaFormComponent implements OnInit, OnDestroy, OnChanges {
     if (changes.poliza && changes.poliza.currentValue) {
       this.setPoliza();
       this.chr.detectChanges();
-      // console.log('Poliza: ', this.poliza);
+      console.log('Poliza: ', this.poliza);
     }
   }
 

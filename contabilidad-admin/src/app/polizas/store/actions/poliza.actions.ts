@@ -42,7 +42,16 @@ export enum PolizaActionTypes {
   CerrarPolizaSuccess = '[Poliza API] Cerrar Poliza Success',
 
   UpsertPoliza = '[Poliza exists guard] Upsert poliza',
-  SetPolizasSearchTerm = '[Polizas component] Set polizas search term'
+  SetPolizasSearchTerm = '[Polizas component] Set polizas search term',
+
+  // Refoliar
+  GenerarFolios = '[Polizas Component] Generar Folios',
+  GenerarFoliosFail = '[Polizas API] Generar Folios Fail',
+  GenerarFoliosSuccess = '[Polizas API] Generar Folios Success',
+
+  // Generar complementos
+  GenerarComplementos = '[Poliza Component] GenerarComplementos Poliza',
+  GenerarComplementosFail = '[Poliza API] GenerarComplementos Poliza Fail'
 }
 
 // Set
@@ -180,6 +189,30 @@ export class UpdatePolizaSuccess implements Action {
   constructor(public payload: { poliza: Poliza }) {}
 }
 
+// Generar folios
+export class GenerarFolios implements Action {
+  readonly type = PolizaActionTypes.GenerarFolios;
+  constructor(public payload: { filter: PolizasFilter }) {}
+}
+export class GenerarFoliosFail implements Action {
+  readonly type = PolizaActionTypes.GenerarFoliosFail;
+  constructor(public payload: { response: any }) {}
+}
+export class GenerarFoliosSuccess implements Action {
+  readonly type = PolizaActionTypes.GenerarFoliosSuccess;
+  constructor(public payload: { polizas: Poliza[] }) {}
+}
+
+// Generar complementos
+export class GenerarComplementos implements Action {
+  readonly type = PolizaActionTypes.GenerarComplementos;
+  constructor(public payload: { polizaId: number }) {}
+}
+export class GenerarComplementosFail implements Action {
+  readonly type = PolizaActionTypes.GenerarComplementosFail;
+  constructor(public payload: { response: any }) {}
+}
+
 export type PolizaActions =
   | LoadPolizas
   | LoadPolizasFail
@@ -207,4 +240,9 @@ export type PolizaActions =
   | CerrarPolizaSuccess
   | GenerarPolizas
   | GenerarPolizasFail
-  | GenerarPolizasSuccess;
+  | GenerarPolizasSuccess
+  | GenerarFolios
+  | GenerarFoliosFail
+  | GenerarFoliosSuccess
+  | GenerarComplementos
+  | GenerarComplementosFail;

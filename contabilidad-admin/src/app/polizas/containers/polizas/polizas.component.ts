@@ -27,6 +27,9 @@ import { PolizaCreateComponent } from 'app/polizas/components';
         <a mat-menu-item  color="accent" class="actions" (click)="onCreate(config) ">
           <mat-icon>add</mat-icon> Nueva póliza
         </a>
+        <button class="actions" mat-menu-item (click)="regenerarFolios(config)">
+          <mat-icon>format_list_numbered</mat-icon> Regenerar folios
+        </button>
       </sx-search-title>
       <mat-divider></mat-divider>
         <ng-template tdLoading [tdLoadingUntil]="!(loading$ | async)"  tdLoadingStrategy="overlay" >
@@ -157,5 +160,21 @@ export class PolizasComponent implements OnInit, OnDestroy {
 
   onFilter(event: string) {
     this.store.dispatch(new fromActions.SetPolizasSearchTerm({ term: event }));
+  }
+
+  regenerarFolios(event: PolizasFilter) {
+    this.dialogService
+      .openConfirm({
+        title: 'Regenera folios',
+        message: `${event.subtipo} (${event.ejercicio} - ${event.mes})`,
+        acceptButton: 'ACEPTAR',
+        cancelButton: 'CANCELAR'
+      })
+      .afterClosed()
+      .subscribe(res => {
+        if (res) {
+          this.store.dispatch(new fromStore.GenerarFolios({ filter: event }));
+        }
+      });
   }
 }
