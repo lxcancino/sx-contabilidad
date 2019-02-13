@@ -35,9 +35,9 @@ export class PolizasPeriodoService {
       .pipe(catchError((error: any) => throwError(error)));
   }
 
-  generar(ejercicio: number, mes: number): Observable<PolizasPeriodo> {
+  generar(polizasPeriodo: Partial<PolizasPeriodo>): Observable<PolizasPeriodo> {
     return this.http
-      .post<PolizasPeriodo>(this.apiUrl, { ejercicio, mes })
+      .post<PolizasPeriodo>(this.apiUrl, polizasPeriodo)
       .pipe(catchError((error: any) => throwError(error)));
   }
 

@@ -38,7 +38,15 @@ import { ReportService } from '../../../reportes/services/report.service';
     <div *ngIf="selected$ | async as selected">
       <sx-analisis-costo [costo]="selected" (close)="closeAnalisis()"></sx-analisis-costo>
     </div>
-  `
+  `,
+  styles: [
+    `
+      .mat-card {
+        width: calc(100% - 15px);
+        height: calc(100% - 75px);
+      }
+    `
+  ]
 })
 export class CostosPromedioComponent implements OnInit {
   costos$: Observable<CostoPromedio[]>;

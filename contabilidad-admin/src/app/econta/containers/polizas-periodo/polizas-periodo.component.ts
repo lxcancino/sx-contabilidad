@@ -11,6 +11,7 @@ import { MatDialog } from '@angular/material';
 import { EjercicioMesDialogComponent } from 'app/_shared/components';
 import { buildCurrentPeriodo, EjercicioMes } from 'app/models/ejercicio-mes';
 import { TdDialogService } from '@covalent/core';
+import { PolizasPorPeriodoCreateDialogComponent } from 'app/econta/components';
 
 @Component({
   selector: 'sx-polizas-periodo',
@@ -78,19 +79,18 @@ export class PolizasPeriodoComponent implements OnInit {
 
   onCreate() {
     this.dialog
-      .open(EjercicioMesDialogComponent, {
+      .open(PolizasPorPeriodoCreateDialogComponent, {
         data: {
-          title: 'Periodo para la polizas',
+          title: 'Generar documento de Polizas del periodo',
           periodo: buildCurrentPeriodo()
         }
       })
       .afterClosed()
-      .subscribe((res: EjercicioMes) => {
+      .subscribe((res: Partial<PolizasPeriodo>) => {
         if (res) {
           this.store.dispatch(
             new fromStore.GenerarPolizasPeriodo({
-              ejercicio: res.ejercicio,
-              mes: res.mes
+              polizasPeriodo: res
             })
           );
         }

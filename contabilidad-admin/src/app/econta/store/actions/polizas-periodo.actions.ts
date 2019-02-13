@@ -37,7 +37,7 @@ export class LoadPolizasPeriodoSuccess implements Action {
 
 export class GenerarPolizasPeriodo implements Action {
   readonly type = PolizasPeriodoActionTypes.GenerarPolizasPeriodo;
-  constructor(public payload: { ejercicio: number; mes: number }) {}
+  constructor(public payload: { polizasPeriodo: Partial<PolizasPeriodo> }) {}
 }
 export class GenerarPolizasPeriodoFail implements Action {
   readonly type = PolizasPeriodoActionTypes.GenerarPolizasPeriodoFail;

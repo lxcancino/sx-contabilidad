@@ -39,7 +39,7 @@ export const PRODUCTO_LOOKUPFIELD_VALUE_ACCESSOR: any = {
 
   <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
     <mat-option *ngFor="let producto of productos$ | async" [value]="producto">
-      {{ producto.clave }} {{producto.descripcion}} ({{producto.unidad}})
+      {{ producto.clave }} {{producto.descripcion}} ({{producto.unidad}}) {{producto.activo ? '' : '* SUSPENDIDO *'}}
     </mat-option>
   </mat-autocomplete>
   `,
@@ -59,7 +59,7 @@ export class ProductoFieldComponent implements OnInit, ControlValueAccessor {
   @Input()
   required = false;
   @Input()
-  activos = true;
+  activos = false;
 
   productos$: Observable<Producto[]>;
 
@@ -106,7 +106,8 @@ export class ProductoFieldComponent implements OnInit, ControlValueAccessor {
     if (!producto) {
       return '';
     }
-    return `${producto.clave} ${producto.descripcion} (${producto.unidad})`;
+    return `${producto.clave} ${producto.descripcion}
+      (${producto.unidad}) ${producto.activo ? '' : 'SUSPENDIDO'}`;
   }
 
   writeValue(obj: any): void {

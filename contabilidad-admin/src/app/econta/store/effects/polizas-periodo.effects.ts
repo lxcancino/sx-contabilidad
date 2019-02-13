@@ -42,9 +42,9 @@ export class PolizasPeriodoEffects {
     ofType<fromActions.GenerarPolizasPeriodo>(
       PolizasPeriodoActionTypes.GenerarPolizasPeriodo
     ),
-    map(action => action.payload),
-    switchMap(periodo =>
-      this.service.generar(periodo.ejercicio, periodo.mes).pipe(
+    map(action => action.payload.polizasPeriodo),
+    switchMap(command =>
+      this.service.generar(command).pipe(
         map(
           polizasPeriodo =>
             new fromActions.GenerarPolizasPeriodoSuccess({ polizasPeriodo })
