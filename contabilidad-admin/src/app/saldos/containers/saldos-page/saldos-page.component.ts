@@ -28,6 +28,12 @@ export class SaldosPageComponent implements OnInit {
       title: 'BALANZA',
       description: 'Balanza de comprobación',
       icon: 'filter_1'
+    },
+    {
+      route: 'auxiliar',
+      title: 'Auxiliar',
+      description: 'Consulta de auxiliar',
+      icon: 'layers'
     }
   ];
 

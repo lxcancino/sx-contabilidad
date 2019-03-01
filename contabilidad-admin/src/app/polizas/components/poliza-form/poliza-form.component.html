@@ -51,25 +51,9 @@
           >
             <mat-icon>print</mat-icon><span> Comp. Nacionales </span>
           </button>
-          <!-- <button
-            (click)="mostrarComprobantes(poliza, 'EXTRANJEROS')"
-            mat-menu-item
-          >
-            <mat-icon>laptop_mac</mat-icon>
-            <span>Comprobantes extranjeros</span>
-          </button> -->
-
-          <button
-            (click)="generarComplementosDePago.emit(poliza)"
-            mat-menu-item
-          >
-            <mat-icon>local_parking</mat-icon>
-            <span> Complementos Pago</span>
-          </button>
           <button
             (click)="comprobantes.emit({ id: poliza.id, tipo: 'P' })"
             mat-menu-item
-            *ngIf="poliza.satComplementos"
           >
             <mat-icon>print</mat-icon><span> Comp. Pagos </span>
           </button>
@@ -83,11 +67,7 @@
         Cuadre: {{ poliza.debe - poliza.haber | currency }}
       </span>
       <span flex></span>
-      <span *ngIf="poliza.satComplementos">
-        <span class="tc-indigo-800 pad-left pad-right"
-          >Complementos: {{ poliza.satComplementos | date: 'dd/MM/yyyy' }}</span
-        >
-      </span>
+      
       <span>Actualizó: {{ poliza.updateUser }}</span>
     </div>
 

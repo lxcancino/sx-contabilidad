@@ -20,6 +20,7 @@ import { ProductoFieldComponent } from './producto-field/producto-field.componen
 import { ProveedorFieldComponent } from './proveedor-field/proveedor-field.component';
 import { EjercicioMesDialogComponent } from './ejercicio-mes-dialog/ejercicio-mes-dialog.component';
 import { EjercicioMesBtnComponent } from './ejercicio-mes-dialog/ejercicio-mes-btn.component';
+import { CuentaContableFieldComponent } from './cuenta-contable-field/cuenta-contable-field.componet';
 
 export const components = [
   DireccionComponent,
@@ -43,7 +44,8 @@ export const components = [
   ProductoFieldComponent,
   ProveedorFieldComponent,
   EjercicioMesDialogComponent,
-  EjercicioMesBtnComponent
+  EjercicioMesBtnComponent,
+  CuentaContableFieldComponent
 ];
 
 export const entyComponents: any[] = [
@@ -73,3 +75,4 @@ export * from './producto-field/producto-field.component';
 export * from './proveedor-field/proveedor-field.component';
 export * from './ejercicio-mes-dialog/ejercicio-mes-dialog.component';
 export * from './ejercicio-mes-dialog/ejercicio-mes-btn.component';
+export * from './cuenta-contable-field/cuenta-contable-field.componet';

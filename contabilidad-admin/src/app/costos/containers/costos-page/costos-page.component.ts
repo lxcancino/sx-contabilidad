@@ -16,7 +16,10 @@ import {
   ReportMovsCosteadosDetComponent
 } from '../../components';
 import { ReportService } from '../../../reportes/services/report.service';
-import { KardexReportComponent } from '../../../reportes/components';
+import {
+  KardexReportComponent,
+  VentasDiariasDialogComponent
+} from '../../../reportes/components';
 import { Periodo } from '../../../_core/models/periodo';
 import { PeriodoDialogComponent } from '../../../_shared/components';
 
@@ -195,6 +198,18 @@ export class CostosPageComponent implements OnInit {
             `costos/movimientosCosteadosDet`,
             params
           );
+        }
+      });
+  }
+
+  ventasDiarias(event: { ejercicio: number; mes: number }) {
+    const periodo = Periodo.toPeriodo(event.ejercicio, event.mes);
+    this.dialog
+      .open(VentasDiariasDialogComponent, { data: { periodo } })
+      .afterClosed()
+      .subscribe(res => {
+        if (res) {
+          this.reportService.runReport(`inventario/ventasDiarias`, res);
         }
       });
   }

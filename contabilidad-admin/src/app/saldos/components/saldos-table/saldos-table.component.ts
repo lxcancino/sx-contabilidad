@@ -19,7 +19,8 @@ import {
   GridOptions,
   FilterChangedEvent,
   GridReadyEvent,
-  GridApi
+  GridApi,
+  RowDoubleClickedEvent
 } from 'ag-grid-community';
 
 @Component({
@@ -68,10 +69,7 @@ export class SaldosTableComponent implements OnInit, OnChanges {
   defaultColDef;
 
   @Output()
-  select = new EventEmitter();
-
-  @Output()
-  edit = new EventEmitter();
+  drillData = new EventEmitter<SaldoPorCuentaContable>();
 
   @Output()
   totalesChanged = new EventEmitter<{
@@ -98,6 +96,9 @@ export class SaldosTableComponent implements OnInit, OnChanges {
     };
 
     this.gridOptions.onFilterChanged = this.onFilter;
+    this.gridOptions.onRowDoubleClicked = (event: RowDoubleClickedEvent) => {
+      this.drillData.emit(event.data);
+    };
     this.buildLocalText();
   }
 

@@ -14,6 +14,7 @@ import { MatDialog } from '@angular/material';
 import { TdDialogService } from '@covalent/core';
 
 import { EjercicioMes } from '../../../models/ejercicio-mes';
+import { AuxiliarContableDialogComponent } from 'app/saldos/components';
 
 @Component({
   selector: 'sx-saldos',
@@ -41,6 +42,9 @@ import { EjercicioMes } from '../../../models/ejercicio-mes';
           </button>
           <mat-menu #toolbarMenu="matMenu">
             <button mat-menu-item class="actions" (click)="reload()"><mat-icon>refresh</mat-icon> Recargar</button>
+            <button mat-menu-item class="actuibs" (click)="printAuxiliar()">
+             <mat-icon>print</mat-icon> Auxiliar contables
+            </button>
             <a mat-menu-item  color="accent" class="actions" (click)="onActualizar()">
               <mat-icon>add</mat-icon> Actualizar saldos
             </a>
@@ -62,7 +66,8 @@ import { EjercicioMes } from '../../../models/ejercicio-mes';
     </ng-template>
     <sx-saldos-table [saldos]="saldos$ | async" #grid
       (select)="onSelect($event)"
-      (totalesChanged)="onFilter($event)">
+      (totalesChanged)="onFilter($event)"
+      (drillData)="onDrill($event)">
     </sx-saldos-table>
       <mat-card-footer>
 
@@ -171,5 +176,29 @@ export class SaldosComponent implements OnInit, OnDestroy {
           this.store.dispatch(new fromStore.CierreAnual());
         }
       });
+  }
+
+  printAuxiliar() {
+    this.dialog
+      .open(AuxiliarContableDialogComponent, {
+        data: {
+          periodo: this.filter
+        },
+        width: '750px'
+      })
+      .afterClosed()
+      .subscribe(res => {
+        if (res) {
+          this.reportService.runReport(
+            `contabilidad/saldos/printAuxiliar`,
+            res
+          );
+        }
+      });
+  }
+
+  onDrill(saldo: SaldoPorCuentaContable) {
+    console.log('Drill down: ', saldo);
+    this.store.dispatch(new fromRoot.Go({ path: ['saldos/mayor', saldo.id] }));
   }
 }

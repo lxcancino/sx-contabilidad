@@ -67,7 +67,7 @@ export class PolizaFormComponent implements OnInit, OnDestroy, OnChanges {
   print = new EventEmitter();
 
   @Output()
-  comprobantes = new EventEmitter<{ id: number; tipo: 'N' | 'S' }>();
+  comprobantes = new EventEmitter<{ id: number; tipo: 'N' | 'S' | 'P' }>();
 
   @Output()
   toogleManual = new EventEmitter();

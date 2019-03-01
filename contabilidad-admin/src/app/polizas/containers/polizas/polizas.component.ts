@@ -120,6 +120,9 @@ export class PolizasComponent implements OnInit, OnDestroy {
             );
             break;
           }
+          case 'CHEQUE':
+          case 'TRANSFERENCIA':
+          case 'TARJETA':
           // case 'NOTAS_DE_CREDITO_DEV':
           // case 'NOTAS_DE_CREDITO_BON':
           case 'COBRANZA_CON':
