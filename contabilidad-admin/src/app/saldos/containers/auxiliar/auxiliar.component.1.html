@@ -1,0 +1,35 @@
+<div layout class="container">
+  <mat-card flex>
+    <div layout layout-align="start center" class="pad-top pad-left pad-right">
+      <sx-cuenta-contable-field [formControl]="control" [required]="false" flex>
+      </sx-cuenta-contable-field>
+    </div>
+    <mat-divider></mat-divider>
+
+    <div class="table-container" layout>
+      <ng-container *ngIf="!selected">
+        <td-data-table
+          [data]="data"
+          [columns]="displayColumns"
+          flex="50"
+          [clickable]="true"
+          (rowClick)="drillDown($event)"
+        >
+          <ng-template tdDataTableTemplate="fecha" let-value="value">
+            <span>{{ value | date: 'dd/MM/yyyy' }}</span>
+          </ng-template>
+          <ng-template tdDataTableTemplate="debe" let-value="value">
+            <span>{{ value | currency }}</span>
+          </ng-template>
+          <ng-template tdDataTableTemplate="haber" let-value="value">
+            <span>{{ value | currency }}</span>
+          </ng-template>
+        </td-data-table>
+      </ng-container>
+
+      <ng-container *ngIf="selected">
+        <button (click)="selected = undefined">KOOL</button>
+      </ng-container>
+    </div>
+  </mat-card>
+</div>

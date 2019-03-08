@@ -58,6 +58,7 @@ export const initialState: State = {
       new Grupo('DEPOSITOS_EN_TRANSITO', 'Depósitos en tránsito', ''),
       new Grupo('TESORERIA', 'Tesorería', ''),
       new Grupo('PROVISION_DE_GASTOS', 'Provisión de gastos', ''),
+      new Grupo('PROVISION_NOMINA', 'Provisión de nómina', ''),
       new Grupo('PROVISION_DE_CARGA_SOCIAL', 'Provisión de carga social', ''),
       new Grupo('CIERRE_ANUAL', 'Cierre anual', '')
     ])

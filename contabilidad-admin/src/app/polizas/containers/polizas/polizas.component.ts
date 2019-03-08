@@ -120,6 +120,7 @@ export class PolizasComponent implements OnInit, OnDestroy {
             );
             break;
           }
+          case 'PROVISION_NOMINA':
           case 'CHEQUE':
           case 'TRANSFERENCIA':
           case 'TARJETA':

@@ -1,0 +1,69 @@
+<div layout class="container">
+  <mat-card flex>
+    <div layout layout-align="start center" class="pad-top pad-left pad-right">
+      <sx-cuenta-contable-field [formControl]="control" [required]="false" flex>
+      </sx-cuenta-contable-field>
+    </div>
+
+    <mat-divider></mat-divider>
+    <mat-card-content>
+      <div layout>
+        <span flex>Saldo inicial: {{ saldo?.saldoInicial | currency }}</span>
+        <span flex>Debe: {{ saldo?.debe | currency }}</span>
+        <span flex>Haber: {{ saldo?.saldoInicial | currency }}</span>
+        <span flex>Saldo final: {{ saldo?.saldoFinal | currency }}</span>
+      </div>
+    </mat-card-content>
+    <div class="table-container" layout>
+      <ng-container *ngIf="!selected">
+        <td-data-table
+          [data]="data"
+          [columns]="displayColumns"
+          flex="50"
+          [clickable]="true"
+          (rowClick)="drillDown($event)"
+        >
+          <ng-template tdDataTableTemplate="fecha" let-value="value">
+            <span>{{ value | date: 'dd/MM/yyyy' }}</span>
+          </ng-template>
+          <ng-template tdDataTableTemplate="debe" let-value="value">
+            <span>{{ value | currency }}</span>
+          </ng-template>
+          <ng-template tdDataTableTemplate="haber" let-value="value">
+            <span>{{ value | currency }}</span>
+          </ng-template>
+        </td-data-table>
+      </ng-container>
+    </div>
+
+    <div>
+      <ng-container *ngIf="selected">
+        <td-data-table
+          [data]="selected.data"
+          [columns]="detailColumns"
+          [selectable]="true"
+          [multiple]="true"
+          [clickable]="false"
+          [(ngModel)]="selectedRows"
+          (onRowSelect)="onDetailSelected($event)"
+          (onSelectAll)="onAllDetailSelected($event)"
+          flex="50"
+        >
+          <ng-template tdDataTableTemplate="fecha" let-value="value">
+            <span>{{ value | date: 'dd/MM/yyyy' }}</span>
+          </ng-template>
+          <ng-template tdDataTableTemplate="debe" let-value="value">
+            <span>{{ value | currency }}</span>
+          </ng-template>
+          <ng-template tdDataTableTemplate="haber" let-value="value">
+            <span>{{ value | currency }}</span>
+          </ng-template>
+        </td-data-table>
+        <div layout>
+          <button mat-button (click)="selected = null">Regresar</button>
+          <button mat-button (click)="loadDetalle()">Detalle</button>
+        </div>
+      </ng-container>
+    </div>
+  </mat-card>
+</div>

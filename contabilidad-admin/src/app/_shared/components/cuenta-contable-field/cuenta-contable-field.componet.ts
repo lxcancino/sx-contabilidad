@@ -77,6 +77,7 @@ export class CuentaContableFieldComponent
 
   ngOnInit() {
     this.cuentas$ = this.searchControl.valueChanges.pipe(
+      filter(term => !_.isObject(term)),
       switchMap(term => this.lookupCuentas(term))
     );
     this.prepareControl();
