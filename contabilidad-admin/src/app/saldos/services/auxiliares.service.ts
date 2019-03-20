@@ -27,6 +27,19 @@ export class AuxiliaresService {
       .pipe(catchError((error: any) => throwError(error)));
   }
 
+  drillSubtipo(command: {
+    cuenta: number;
+    ejercicio: number;
+    mes: number;
+    subtipos: string[];
+    fecha?: string;
+  }): Observable<any> {
+    const url = `${this.apiUrl}/drillSubtipo`;
+    return this.http
+      .post<any[]>(url, command)
+      .pipe(catchError((error: any) => throwError(error)));
+  }
+
   drillDia(cuentaId: number, fecha: string): Observable<any> {
     const url = `${this.apiUrl}/drillFecha`;
     const params = new HttpParams()
