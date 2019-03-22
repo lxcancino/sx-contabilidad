@@ -43,6 +43,11 @@ export class MainPageComponent implements OnInit, OnDestroy {
       icon: 'settings_input_antenna',
       route: '/econta',
       title: 'Contabilidad SAT'
+    },
+    {
+      icon: 'build',
+      route: '/ajustes',
+      title: 'Mantenimientos al SIIPAPX'
     }
   ];
 

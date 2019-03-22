@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Inject } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MatDialogRef } from '@angular/material';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 
 import * as moment from 'moment';
 
@@ -9,7 +9,7 @@ import * as moment from 'moment';
   template: `
     <form [formGroup]="form" novalidate (ngSubmit)="doAccept()">
       <h4 mat-dialog-title>
-        Reporte de ventas diarias
+        {{title}}
       </h4>
       <div layout="column" class="selector-form">
 
@@ -39,11 +39,15 @@ import * as moment from 'moment';
 })
 export class VentasDiariasDialogComponent implements OnInit {
   form: FormGroup;
+  title: string;
 
   constructor(
     private fb: FormBuilder,
-    public dialogRef: MatDialogRef<VentasDiariasDialogComponent>
-  ) {}
+    public dialogRef: MatDialogRef<VentasDiariasDialogComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: any
+  ) {
+    this.title = data.title || 'Reporte de ventas diarias';
+  }
 
   ngOnInit() {
     this.form = this.fb.group({

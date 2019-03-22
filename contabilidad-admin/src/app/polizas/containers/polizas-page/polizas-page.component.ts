@@ -8,6 +8,12 @@ import * as fromStore from '../../store';
 import { Observable } from 'rxjs';
 import { Grupo } from 'app/polizas/store/reducers/ui-context.reducre';
 import { EjercicioMes } from '../../../models/ejercicio-mes';
+import { ReportService } from 'app/reportes/services/report.service';
+import { MatDialog } from '@angular/material';
+import {
+  SucursalFechaDialogComponent,
+  VentasDiariasDialogComponent
+} from 'app/reportes/components';
 
 @Component({
   selector: 'sx-polizas-page',
@@ -50,7 +56,9 @@ export class PolizasPageComponent implements OnInit {
 
   constructor(
     public media: TdMediaService,
-    private store: Store<fromStore.State>
+    private store: Store<fromStore.State>,
+    private reportService: ReportService,
+    private dialog: MatDialog
   ) {}
 
   ngOnInit() {
@@ -60,5 +68,47 @@ export class PolizasPageComponent implements OnInit {
 
   onCambiarPeriodo(event: EjercicioMes) {
     this.store.dispatch(new fromStore.SetPeriodoDePoliza({ periodo: event }));
+  }
+
+  reporteCobranzaCON() {
+    this.dialog
+      .open(SucursalFechaDialogComponent, {
+        data: { title: 'Cobranza CONTADO', storeKey: 'sx.cobranza.con.last' }
+      })
+      .afterClosed()
+      .subscribe(res => {
+        if (res) {
+          this.reportService.runReport('cxc/cobro/reporteDeCobranzaCON', res);
+        }
+      });
+  }
+
+  reporteCobranzaCOD() {
+    this.dialog
+      .open(SucursalFechaDialogComponent, {
+        data: { title: 'Cobranza COD', storeKey: 'sx.cobranza.cod.last' }
+      })
+      .afterClosed()
+      .subscribe(res => {
+        if (res) {
+          this.reportService.runReport('cxc/cobro/reporteDeCobranzaCOD', res);
+        }
+      });
+  }
+
+  reporteCobranzaCRE() {
+    this.dialog
+      .open(VentasDiariasDialogComponent, {
+        data: {
+          title: 'Cobranza CRE',
+          storeKey: 'sx.reports.sucursal-dialog-last'
+        }
+      })
+      .afterClosed()
+      .subscribe(res => {
+        if (res) {
+          this.reportService.runReport('cxc/cobro/reporteDeCobranza', res);
+        }
+      });
   }
 }

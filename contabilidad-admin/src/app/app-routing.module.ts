@@ -31,6 +31,10 @@ const routes: Routes = [
       {
         path: 'econta',
         loadChildren: './econta/econta.module#EcontaModule'
+      },
+      {
+        path: 'ajustes',
+        loadChildren: './mantenimientos/mantenimientos.module#MantenimientosModule'
       }
     ]
   }

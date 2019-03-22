@@ -28,6 +28,7 @@ import { CuentasModule } from './cuentas/cuentas.module';
 import { AppComponent } from './app.component';
 
 import { NgxMaskModule } from 'ngx-mask';
+import { MantenimientosPageComponent } from './mantenimiento/components/mantenimientos-page/mantenimientos-page.component';
 
 export const metaReducers: MetaReducer<any>[] = !environment.production
   ? [storeFreeze]
@@ -68,7 +69,7 @@ export function onAppInit(configService: ConfigService): () => Promise<any> {
     },
     { provide: RouterStateSerializer, useClass: CustomSerializer }
   ],
-  declarations: [AppComponent],
+  declarations: [AppComponent, MantenimientosPageComponent],
   bootstrap: [AppComponent]
 })
 export class AppModule {}
