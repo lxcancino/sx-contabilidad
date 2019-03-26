@@ -15,6 +15,7 @@ import { getFichasFilter } from './ficha.selectors';
 import { FichasSupportService } from '../services/fichas-support.service';
 
 import { MatSnackBar } from '@angular/material';
+import { storeFichaFilter } from '../models/ficha';
 
 @Injectable()
 export class FichaEffects {
@@ -28,7 +29,9 @@ export class FichaEffects {
   @Effect()
   changeFilter$ = this.actions$.pipe(
     ofType<fromActions.SetFichasFilter>(FichaActionTypes.SetFichasFilter),
-    map(action => new fromActions.LoadFichas())
+    map(action => action.payload.filter),
+    tap(filter => storeFichaFilter(filter)),
+    map(() => new fromActions.LoadFichas())
   );
 
   @Effect()

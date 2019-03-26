@@ -1,4 +1,8 @@
-import { ActionReducerMap, createFeatureSelector } from '@ngrx/store';
+import {
+  ActionReducerMap,
+  createFeatureSelector,
+  createSelector
+} from '@ngrx/store';
 
 import * as fromFichas from './ficha.reducer';
 
@@ -11,3 +15,14 @@ export const reducers: ActionReducerMap<State> = {
 };
 
 export const getState = createFeatureSelector<State>('fichas');
+/*
+export const getFichasState = createSelector(
+  getState,
+  (state: State) => state.fichas
+);
+
+export const getFichasEntities = createSelector(
+  getFichasState,
+  fromFichas.selectEntities
+);
+*/

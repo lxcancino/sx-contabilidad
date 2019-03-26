@@ -29,7 +29,7 @@ export class FichasSupportService {
       .set('tipo', filter.tipo)
       .set('fecha', filter.fecha.toISOString());
     if (filter.sucursal) {
-      params = params.set('sucursal', filter.sucursal.id);
+      params = params.set('sucursal', filter.sucursal);
     }
 
     return this.http
@@ -38,9 +38,15 @@ export class FichasSupportService {
   }
 
   update(update: Update<Ficha>): Observable<Ficha> {
+    const url = `${this.apiUrl}/${update.id}`;
     return this.http
-      .put<Ficha>(this.apiUrl, update)
+      .put<Ficha>(url, update.changes)
       .pipe(catchError((error: any) => throwError(error)));
+  }
+
+  cheques(id: string): Observable<any> {
+    const url = `${this.apiUrl}/${id}/cheques`;
+    return this.http.get<any>(url);
   }
 
   ajustarFicha(id: string, command: AjusteDeFicha): Observable<any> {

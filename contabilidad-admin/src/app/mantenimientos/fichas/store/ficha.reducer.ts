@@ -1,6 +1,11 @@
 import { EntityState, EntityAdapter, createEntityAdapter } from '@ngrx/entity';
 
-import { Ficha, FichaFilter, buildFichasFilter } from '../models/ficha';
+import {
+  Ficha,
+  FichaFilter,
+  buildFichasFilter,
+  readFichaFilterFromStorage
+} from '../models/ficha';
 import { FichaActions, FichaActionTypes } from './ficha.actions';
 
 import * as moment from 'moment';
@@ -24,7 +29,7 @@ export const adapter: EntityAdapter<Ficha> = createEntityAdapter<Ficha>({
 export const initialState: State = adapter.getInitialState({
   loading: false,
   loaded: false,
-  filter: buildFichasFilter()
+  filter: readFichaFilterFromStorage() || buildFichasFilter()
 });
 
 export function reducer(state = initialState, action: FichaActions): State {

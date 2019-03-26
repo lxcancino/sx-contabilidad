@@ -1,4 +1,4 @@
-import { createSelector } from '@ngrx/store';
+import { createSelector, createFeatureSelector } from '@ngrx/store';
 
 import * as fromRoot from 'app/store';
 import * as fromFeature from './';
@@ -6,10 +6,7 @@ import * as fromFichas from './ficha.reducer';
 
 import { Ficha } from '../models/ficha';
 
-export const getFichasState = createSelector(
-  fromFeature.getState,
-  (state: fromFeature.State) => state.fichas
-);
+export const getFichasState = createFeatureSelector<fromFichas.State>('fichas');
 
 export const getFichasEntities = createSelector(
   getFichasState,

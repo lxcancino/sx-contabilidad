@@ -25,7 +25,7 @@ export interface Ficha {
 export class FichaFilter {
   fecha: Date;
   tipo: string;
-  sucursal: Sucursal;
+  sucursal: string;
 }
 
 export function buildFichasFilter(): FichaFilter {
@@ -43,4 +43,18 @@ export interface FichaBuildCommand {
   formaDePago: string;
   tipo: string;
   cuenta: string;
+}
+
+export const FICHA_FILTER_STORE_KEY = 'sx.conta.fichas.filter.key';
+
+export function readFichaFilterFromStorage(): FichaFilter {
+  const value = JSON.parse(localStorage.getItem(FICHA_FILTER_STORE_KEY));
+  if (value && value.fecha) {
+    value.fecha = moment(value.fecha).toDate();
+  }
+  return value;
+}
+
+export function storeFichaFilter(filter: FichaFilter) {
+  localStorage.setItem(FICHA_FILTER_STORE_KEY, JSON.stringify(filter));
 }
