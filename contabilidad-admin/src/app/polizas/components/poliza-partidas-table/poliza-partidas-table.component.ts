@@ -19,7 +19,8 @@ import {
   GridOptions,
   FilterChangedEvent,
   GridReadyEvent,
-  GridApi
+  GridApi,
+  RowDoubleClickedEvent
 } from 'ag-grid-community';
 
 @Component({
@@ -78,6 +79,9 @@ export class PolizaPartidasTableComponent implements OnInit, OnChanges {
   edit = new EventEmitter();
 
   @Output()
+  doubleClick = new EventEmitter();
+
+  @Output()
   totalesChanged = new EventEmitter<{ debe: number; haber: number }>();
 
   printFriendly = false;
@@ -99,6 +103,7 @@ export class PolizaPartidasTableComponent implements OnInit, OnChanges {
       filter: 'agTextColumnFilter'
     };
     this.gridOptions.onFilterChanged = this.onFilter;
+    this.gridOptions.onRowDoubleClicked = this.onDoubleClick.bind(this);
     this.buildLocalText();
   }
 
@@ -127,6 +132,10 @@ export class PolizaPartidasTableComponent implements OnInit, OnChanges {
   }
 
   onFilter(event: FilterChangedEvent) {}
+
+  onDoubleClick(event: RowDoubleClickedEvent) {
+    this.doubleClick.emit(event.data);
+  }
 
   actualizarTotales() {
     if (this.gridApi) {

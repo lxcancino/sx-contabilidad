@@ -67,7 +67,7 @@
         Cuadre: {{ poliza.debe - poliza.haber | currency }}
       </span>
       <span flex></span>
-      
+
       <span>Actualizó: {{ poliza.updateUser }}</span>
     </div>
 
@@ -78,6 +78,7 @@
         #partidasGrid
         [partidas]="poliza.partidas"
         (totalesChanged)="onTotales($event)"
+        (doubleClick)="doubleClick($event)"
       ></sx-poliza-partidas-table>
       <sx-agregar-polizadet [poliza]="poliza"></sx-agregar-polizadet>
     </div>

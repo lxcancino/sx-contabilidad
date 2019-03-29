@@ -75,6 +75,9 @@ export class PolizaFormComponent implements OnInit, OnDestroy, OnChanges {
   @Output()
   generarComplementosDePago = new EventEmitter();
 
+  @Output()
+  cambiarFormaDePago = new EventEmitter();
+
   subscription: Subscription;
 
   form: FormGroup;
@@ -241,5 +244,44 @@ export class PolizaFormComponent implements OnInit, OnDestroy, OnChanges {
       })
       .afterClosed()
       .subscribe(res => {});
+  }
+
+  doubleClick(data: any) {
+    const clave: string = data.clave;
+    if (clave.startsWith('105')) {
+      const asiento: string = data.asiento;
+      if (asiento.includes('OGST') || asiento.includes('FICHA_EFE')) {
+        if (data.haber >= 0.01 && data.haber <= 1.0) {
+          let tipo = '';
+          let nvoTipo = '';
+          if (asiento.includes('OGST')) {
+            tipo = 'PAGO_DIF';
+            nvoTipo = 'EFECTIVO';
+          } else {
+            tipo = 'EFECTIVO';
+            nvoTipo = 'PAGO_DIF';
+          }
+
+          const msg = `CAMBIAR EL COBRO A TIPO: ${nvoTipo}`;
+          this.dialogService
+            .openConfirm({
+              title: 'CAMBIO DE FORMA DE PAGO',
+              message: msg,
+              cancelButton: 'CANCELAR',
+              acceptButton: 'ACEPTAR',
+              width: '600px'
+            })
+            .afterClosed()
+            .subscribe(res => {
+              if (res) {
+                this.cambiarFormaDePago.emit({
+                  id: data.origen,
+                  formaDePago: nvoTipo
+                });
+              }
+            });
+        }
+      }
+    }
   }
 }

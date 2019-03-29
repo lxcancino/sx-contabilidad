@@ -21,6 +21,7 @@ import { ConfigService } from 'app/utils/config.service';
 
 export const CAJERA_LOOKUPFIELD_VALUE_ACCESSOR: any = {
   provide: NG_VALUE_ACCESSOR,
+// tslint:disable-next-line: no-use-before-declare
   useExisting: forwardRef(() => CajeraFieldComponent),
   multi: true
 };
