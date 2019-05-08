@@ -9,8 +9,11 @@ import { ConfigService } from 'app/utils/config.service';
 import { SaldoPorCuentaContable } from '../models';
 import { Update } from '@ngrx/entity';
 import { EjercicioMes } from '../../models/ejercicio-mes';
+import { CuentaContable } from 'app/cuentas/models';
+import { Periodo } from 'app/_core/models/periodo';
+import { PolizaDet } from 'app/polizas/models';
 
-@Injectable()
+@Injectable({ providedIn: 'root' })
 export class SaldosService {
   private _apiUrl: string;
 
@@ -54,6 +57,20 @@ export class SaldosService {
     const url = `${this.apiUrl}/cierreAnual/${periodo.ejercicio}`;
     return this.http
       .put(url, {})
+      .pipe(catchError((error: any) => throwError(error)));
+  }
+
+  loadMovimientos(
+    cuenta: Partial<CuentaContable>,
+    periodo: Periodo
+  ): Observable<PolizaDet[]> {
+    const url = `${this.apiUrl}/loadMovimientos`;
+    const params = new HttpParams()
+      .set('cuenta', cuenta.id.toString())
+      .set('fechaInicial', periodo.fechaInicial.toISOString())
+      .set('fechaFinal', periodo.fechaFinal.toISOString());
+    return this.http
+      .get<PolizaDet[]>(url, { params: params })
       .pipe(catchError((error: any) => throwError(error)));
   }
 

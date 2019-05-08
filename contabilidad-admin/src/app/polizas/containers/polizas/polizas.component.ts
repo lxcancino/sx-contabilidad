@@ -113,34 +113,34 @@ export class PolizasComponent implements OnInit, OnDestroy {
       })
       .afterClosed()
       .subscribe(command => {
-        switch (command.subtipo) {
-          case 'EGRESO': {
-            this.store.dispatch(
-              new fromActions.CreatePolizasEgreso({ filter: command })
-            );
-            break;
-          }
-          case 'PROVISION_NOMINA':
-          case 'CHEQUE':
-          case 'TRANSFERENCIA':
-          case 'TARJETA':
-          // case 'NOTAS_DE_CREDITO_DEV':
-          // case 'NOTAS_DE_CREDITO_BON':
-          case 'COBRANZA_CON':
-          case 'COBRANZA_COD':
-          case 'COBRANZA_CRE':
-          case 'VENTAS_CON':
-          case 'VENTAS_COD':
-          case 'VENTAS_CRE': {
-            this.store.dispatch(
-              new fromActions.GenerarPolizas({ filter: command })
-            );
-            break;
-          }
-          default: {
-            this.store.dispatch(
-              new fromActions.CreatePoliza({ poliza: command })
-            );
+        if (command) {
+          switch (command.subtipo) {
+            case 'EGRESO': {
+              this.store.dispatch(
+                new fromActions.CreatePolizasEgreso({ filter: command })
+              );
+              break;
+            }
+            case 'PROVISION_NOMINA':
+            case 'CHEQUE':
+            case 'TRANSFERENCIA':
+            case 'TARJETA':
+            case 'COBRANZA_CON':
+            case 'COBRANZA_COD':
+            case 'COBRANZA_CRE':
+            case 'VENTAS_CON':
+            case 'VENTAS_COD':
+            case 'VENTAS_CRE': {
+              this.store.dispatch(
+                new fromActions.GenerarPolizas({ filter: command })
+              );
+              break;
+            }
+            default: {
+              this.store.dispatch(
+                new fromActions.CreatePoliza({ poliza: command })
+              );
+            }
           }
         }
       });

@@ -113,7 +113,7 @@ export class PolizaFormComponent implements OnInit, OnDestroy, OnChanges {
     if (changes.poliza && changes.poliza.currentValue) {
       this.setPoliza();
       this.chr.detectChanges();
-      console.log('Poliza: ', this.poliza);
+      // console.log('Poliza: ', this.poliza);
     }
   }
 

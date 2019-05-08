@@ -21,7 +21,7 @@ import * as moment from 'moment';
         <sx-sucursal-field [parent]="form"></sx-sucursal-field>
         <mat-form-field>
           <mat-select placeholder="Tipo" formControlName="origen">
-            <mat-option *ngFor="let tipo of ['CRE','CON','COD', 'TODAS']" [value]="tipo">
+            <mat-option *ngFor="let tipo of carteras" [value]="tipo">
               {{tipo}}
             </mat-option>
           </mat-select>
@@ -40,6 +40,7 @@ import * as moment from 'moment';
 export class VentasDiariasDialogComponent implements OnInit {
   form: FormGroup;
   title: string;
+  carteras: string[];
 
   constructor(
     private fb: FormBuilder,
@@ -47,6 +48,14 @@ export class VentasDiariasDialogComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {
     this.title = data.title || 'Reporte de ventas diarias';
+    this.carteras = data.carteras || [
+      'CRE',
+      'CON',
+      'COD',
+      'CHE',
+      'JUR',
+      'TODAS'
+    ];
   }
 
   ngOnInit() {

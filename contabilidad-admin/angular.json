@@ -129,7 +129,6 @@
     }
   },
   "cli": {
-    "defaultCollection": "@ngrx/schematics",
     "packageManager": "npm"
   }
 }

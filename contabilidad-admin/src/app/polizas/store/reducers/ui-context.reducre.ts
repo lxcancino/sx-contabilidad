@@ -39,19 +39,29 @@ export const initialState: State = {
     new Grupo('EGRESO', 'Egreso', 'Pólizas de egresos', [
       new Grupo('CHEQUE', 'Cheques', 'Pagos con cheque'),
       new Grupo('TRANSFERENCIA', 'Transferencias', 'Pagos con transferencia'),
-      new Grupo('TARJETA', 'Tarjeta', 'Pagos con tarjeta')
+      new Grupo('TARJETA', 'Tarjeta', 'Pagos con tarjeta'),
+      new Grupo('COMISIONES_TARJETA', 'Comisiones Tarjeta', 'Comisiones')
     ]),
     new Grupo('DIARIO', 'Diario', 'Pólizas de diario', [
       new Grupo('VENTAS_CON', 'Ventas CON', 'Contado'),
       new Grupo('VENTAS_COD', 'Ventas COD', 'Contra entrega'),
       new Grupo('VENTAS_CRE', 'Ventas CRE', 'Crédito'),
-      new Grupo('COMISIONES_TARJETA', 'Comisiones Tarjeta', 'Comisiones'),
-      new Grupo('CARGOS', 'Cargos diversos', 'Pólizas de notas de cargo'),
+      new Grupo(
+        'NOTAS_DE_CARGO',
+        'Notas de cargos',
+        'Pólizas de notas de cargo'
+      ),
+      new Grupo('TRASPASOS_CXC', 'Traspasos de CxC', 'Traspaso de CxC'),
+
       new Grupo('NOTAS_DE_CREDITO_DEV', 'Devoluciones', ''),
       new Grupo('NOTAS_DE_CREDITO_BON', 'Bonificaciones', ''),
       new Grupo('ANTICIPOS', 'Anticipos', ''),
       new Grupo('COMPRAS', 'Compras', ''),
-      new Grupo('DESCUENTOS_COMPRAS', 'Descuentos en compras', 'Notas de credito CXP'),
+      new Grupo(
+        'DESCUENTOS_COMPRAS',
+        'Descuentos en compras',
+        'Notas de credito CXP'
+      ),
       new Grupo('INVENTARIOS', 'Inventarios', ''),
       new Grupo('ACTIVO_FIJO', 'Activo fijo', ''),
       new Grupo('CHEQUES_EN_TRANSITO', 'Cheques en transito', ''),

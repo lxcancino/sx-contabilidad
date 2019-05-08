@@ -1,13 +1,13 @@
 import { Injectable } from '@angular/core';
 import { CanActivate } from '@angular/router';
 
-import { Store } from '@ngrx/store';
+import { Store, select } from '@ngrx/store';
 import { Observable, of } from 'rxjs';
 import { tap, filter, take, switchMap, catchError } from 'rxjs/operators';
 
 import * as fromStore from '../store';
 
-@Injectable()
+@Injectable({ providedIn: 'root' })
 export class SaldosGuard implements CanActivate {
   constructor(private store: Store<fromStore.State>) {}
 
@@ -19,7 +19,8 @@ export class SaldosGuard implements CanActivate {
   }
 
   checkStore(): Observable<boolean> {
-    return this.store.select(fromStore.getSaldosLoaded).pipe(
+    return this.store.pipe(
+      select(fromStore.getSaldosLoaded),
       tap(loaded => {
         if (!loaded) {
           this.store.dispatch(new fromStore.LoadSaldos());

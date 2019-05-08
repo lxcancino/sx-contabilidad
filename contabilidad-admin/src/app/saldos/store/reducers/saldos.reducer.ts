@@ -80,6 +80,11 @@ export function reducer(state = initialState, action: SaldosActions): State {
         loading: false
       };
     }
+    case SaldosActionTypes.UpsertSaldo: {
+      return adapter.upsertOne(action.payload.saldo, {
+        ...state
+      });
+    }
   }
   return state;
 }

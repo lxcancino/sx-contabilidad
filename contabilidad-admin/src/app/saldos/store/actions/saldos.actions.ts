@@ -23,7 +23,10 @@ export enum SaldosActionTypes {
   // Cierre anual
   CierreAnual = '[Saldos Component] CierreAnual de Saldos',
   CierreAnualFail = '[Saldos API] CierreAnual de Saldos Fail',
-  CierreAnualSuccess = '[Saldos API] CierreAnual de Saldos Success'
+  CierreAnualSuccess = '[Saldos API] CierreAnual de Saldos Success',
+
+  // Updsert saldo
+  UpsertSaldo = '[Saldo exists guard] Upsert saldo'
 }
 
 export class SetSaldosPeriodo implements Action {
@@ -85,6 +88,11 @@ export class CierreAnualSuccess implements Action {
   readonly type = SaldosActionTypes.CierreAnualSuccess;
 }
 
+export class UpsertSaldo implements Action {
+  readonly type = SaldosActionTypes.UpsertSaldo;
+  constructor(public payload: { saldo: SaldoPorCuentaContable }) {}
+}
+
 export type SaldosActions =
   | SetSaldosPeriodo
   | LoadSaldos
@@ -98,4 +106,5 @@ export type SaldosActions =
   | CierreMensualSuccess
   | CierreAnual
   | CierreAnualFail
-  | CierreAnualSuccess;
+  | CierreAnualSuccess
+  | UpsertSaldo;

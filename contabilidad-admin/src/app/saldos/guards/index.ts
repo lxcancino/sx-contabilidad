@@ -1,7 +1,7 @@
 import { SaldosGuard } from './saldos.guard';
-import { SaldoResolver } from './saldo.resolver';
+import { SaldoExistsGuard } from './saldo-exists.guard';
 
-export const guards: any[] = [SaldosGuard, SaldoResolver];
+export const guards: any[] = [SaldosGuard, +SaldoExistsGuard];
 
 export * from './saldos.guard';
-export * from './saldo.resolver';
+export * from './saldo-exists.guard';

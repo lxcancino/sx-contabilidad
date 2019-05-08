@@ -98,16 +98,37 @@ export class PolizasPageComponent implements OnInit {
 
   reporteCobranzaCRE() {
     this.dialog
-      .open(VentasDiariasDialogComponent, {
+      .open(SucursalFechaDialogComponent, {
         data: {
           title: 'Cobranza CRE',
+          sucursalOpcional: true,
+          storeKey: 'sx.reports.sucursal-dialog-last',
+          carteras: ['CRE']
+        }
+      })
+      .afterClosed()
+      .subscribe(res => {
+        if (res) {
+          // console.log('Params: ', res);
+          this.reportService.runReport('cxc/cobro/reporteDeCobranza', res);
+        }
+      });
+  }
+
+  comisionesDeTarjeta() {
+    this.dialog
+      .open(SucursalFechaDialogComponent, {
+        data: {
           storeKey: 'sx.reports.sucursal-dialog-last'
         }
       })
       .afterClosed()
       .subscribe(res => {
         if (res) {
-          this.reportService.runReport('cxc/cobro/reporteDeCobranza', res);
+          this.reportService.runReport(
+            'cxc/cobro/reporteComisionTarjetas',
+            res
+          );
         }
       });
   }

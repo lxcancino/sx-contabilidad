@@ -10,7 +10,7 @@ import { SaldoPorCuentaContable } from '../models';
 import { Update } from '@ngrx/entity';
 import { EjercicioMes } from '../../models/ejercicio-mes';
 
-@Injectable()
+@Injectable({ providedIn: 'root' })
 export class AuxiliaresService {
   private _apiUrl: string;
 

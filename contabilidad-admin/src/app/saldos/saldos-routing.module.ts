@@ -15,9 +15,9 @@ const routes: Routes = [
         component: fromContainers.SaldosComponent
       },
       {
-        path: 'mayor/:id',
-        component: fromContainers.SaldoDrillDownComponent,
-        resolve: { saldo: fromGuards.SaldoResolver }
+        path: 'mayor/:saldoId',
+        component: fromContainers.MovimientosPorCuentaComponent,
+        canActivate: [fromGuards.SaldoExistsGuard]
       },
       {
         path: 'auxiliar',

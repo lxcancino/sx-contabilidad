@@ -10,12 +10,15 @@ import { Observable } from 'rxjs';
 import { SaldoPorCuentaContable } from '../models';
 import { SaldosService } from '../services';
 
-@Injectable()
+@Injectable({ providedIn: 'root' })
 export class SaldoResolver implements Resolve<SaldoPorCuentaContable> {
   constructor(private service: SaldosService) {}
 
-  resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<SaldoPorCuentaContable> {
-    const id = route.paramMap.get('id');
+  resolve(
+    route: ActivatedRouteSnapshot,
+    state: RouterStateSnapshot
+  ): Observable<SaldoPorCuentaContable> {
+    const id = route.paramMap.get('saldoId');
     return this.service.get(id);
   }
 }
