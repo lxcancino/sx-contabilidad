@@ -56,6 +56,12 @@ export class MantenimientosPageComponent implements OnInit {
       title: 'Fichas',
       description: 'Ajuste de fichas',
       icon: 'storage'
+    },
+    {
+      route: 'comisiones',
+      title: 'Comisiones',
+      description: 'Ajustes a comisiones de tarjeta',
+      icon: 'build'
     }
   ];
 

@@ -7,7 +7,11 @@ const routes: Routes = [
     path: '',
     component: MantenimientosPageComponent,
     children: [
-      { path: 'fichas', loadChildren: './fichas/fichas.module#FichasModule' }
+      { path: 'fichas', loadChildren: './fichas/fichas.module#FichasModule' },
+      {
+        path: 'comisiones',
+        loadChildren: './comisiones/comisiones.module#ComisionesModule'
+      }
     ]
   }
 ];

@@ -120,7 +120,7 @@
   "defaultProject": "contabilidad-admin",
   "schematics": {
     "@schematics/angular:component": {
-      "inlineStyle": true,
+      "inlineStyle": false,
       "prefix": "sx",
       "styleext": "scss"
     },
