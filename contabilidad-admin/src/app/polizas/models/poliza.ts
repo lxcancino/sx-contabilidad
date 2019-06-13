@@ -23,6 +23,7 @@ export interface Poliza {
   totalExtranjero?: number;
   satComplementos?: string;
   satComprobantes?: string;
+  banco?: string;
 }
 
 export interface PolizasFilter {
