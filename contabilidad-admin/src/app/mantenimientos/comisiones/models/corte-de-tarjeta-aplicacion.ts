@@ -5,4 +5,5 @@ export interface CorteDeTarjetaAplicacion {
   sucursal: string;
   folio: number;
   fecha: string;
+  fechaDeposito?: Date;
 }

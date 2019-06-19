@@ -33,7 +33,8 @@ export class AplicacionesTableComponent implements OnInit, OnChanges {
     'importe',
     'modificado',
     'usuario',
-    'operaciones'
+    'operaciones',
+    'fechaDeposito'
   ];
 
   @ViewChild(MatSort)
@@ -77,5 +78,9 @@ export class AplicacionesTableComponent implements OnInit, OnChanges {
 
   isEditable(row: CorteDeTarjetaAplicacion) {
     return !row.tipo.includes('INGRESO');
+  }
+
+  isIngreso(row: CorteDeTarjetaAplicacion) {
+    return row.tipo.includes('INGRESO');
   }
 }

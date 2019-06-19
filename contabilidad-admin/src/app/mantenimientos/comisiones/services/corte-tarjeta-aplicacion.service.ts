@@ -36,4 +36,25 @@ export class CorteTarjetaAplicacionService {
       .put<CorteDeTarjetaAplicacion>(url, update.changes)
       .pipe(catchError((error: any) => throwError(error)));
   }
+
+  actualizarDeposito(update) {
+    const url = this.config.buildApiUrl('tesoreria/updateDeposito');
+      const params = new HttpParams()
+      .set('fechaDeposito', update.changes.fechaDeposito)
+      .set('id', update.id.toString());
+     return this.http
+    .get<CorteDeTarjetaAplicacion>(url, { params: params })
+    .pipe(catchError((error: any) => throwError(error)));
+  }
+
+  /*
+  actualizarDeposito(update: Update<CorteDeTarjetaAplicacion>, fechaDeposito): Observable<CorteDeTarjetaAplicacion> {
+    const params = new HttpParams()
+      .set('fechaDeposito', fechaDeposito.toISOString())
+      .set('id', update.id.toString());
+     return this.http
+    .get<CorteDeTarjetaAplicacion>('tesoreria', { params: params })
+    .pipe(catchError((error: any) => throwError(error)));
+  }
+*/
 }

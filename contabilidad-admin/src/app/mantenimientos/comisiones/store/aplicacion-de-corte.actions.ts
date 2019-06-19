@@ -11,7 +11,11 @@ export enum AplicacionDeCorteActionTypes {
 
   UpdateAplicacionDeCorte = '[AplicacionesDeCorte component] Update ficha',
   UpdateAplicacionDeCorteFail = '[AplicacionesDeCorte API] Update ficha fail',
-  UpdateAplicacionDeCorteSuccess = '[AplicacionesDeCorte API] Update ficha success'
+  UpdateAplicacionDeCorteSuccess = '[AplicacionesDeCorte API] Update ficha success',
+
+  UpdateFechaCorte = '[AplicacionesDeCorte component] Update fecha corte',
+  UpdateFechaCorteFail = '[AplicacionesDeCorte API] Update fecha corte fail',
+  UpdateFechaCorteSuccess = '[AplicacionesDeCorte API] Update fecha corte success'
 }
 
 // Load actions
@@ -43,6 +47,20 @@ export class UpdateAplicacionDeCorteSuccess implements Action {
 
   constructor(public payload: { aplicacion: CorteDeTarjetaAplicacion }) {}
 }
+// Update Fecha Corte
+export class UpdateFechaCorte implements Action {
+  readonly type = AplicacionDeCorteActionTypes.UpdateFechaCorte;
+  constructor(public payload: { update: Update<any> }) {}
+}
+export class UpdateFechaCorteFail implements Action {
+  readonly type = AplicacionDeCorteActionTypes.UpdateFechaCorteFail;
+  constructor(public payload: { response: any }) {}
+}
+export class UpdateFechaCorteSuccess implements Action {
+  readonly type = AplicacionDeCorteActionTypes.UpdateFechaCorteSuccess;
+
+  constructor(public payload: { aplicacion: CorteDeTarjetaAplicacion }) {}
+}
 
 export type AplicacionDeCorteActions =
   | LoadAplicacionesDeCorte
@@ -50,4 +68,7 @@ export type AplicacionDeCorteActions =
   | LoadAplicacionesDeCorteSuccess
   | UpdateAplicacionDeCorte
   | UpdateAplicacionDeCorteFial
-  | UpdateAplicacionDeCorteSuccess;
+  | UpdateAplicacionDeCorteSuccess
+  | UpdateFechaCorte
+  | UpdateFechaCorteFail
+  | UpdateFechaCorteSuccess;

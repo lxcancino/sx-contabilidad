@@ -21,6 +21,8 @@ import { CorteDeTarjetaAplicacion } from '../../models';
 import { Periodo } from 'app/_core/models/periodo';
 import { AplicacionFormComponent } from '../aplicacion-form/aplicacion-form.component';
 import { PeriodoDialogComponent } from 'app/_shared/components';
+import { FechaDialogComponent } from '../../../../_shared/components/fecha-dilog/fecha.dialog.component';
+import { UpdateFechaCorte } from '../../store/aplicacion-de-corte.actions';
 
 @Component({
   selector: 'sx-aplicaciones-page',
@@ -75,6 +77,22 @@ export class AplicacionesPageComponent implements OnInit {
           }
         });
     }
+    if (event.tipo.includes('INGRESO')) {
+      this.dialog
+      .open(FechaDialogComponent, {
+        data: { fecha: event.fecha }
+      })
+      .afterClosed()
+      .subscribe((res: Date) => {
+        if (res) {
+          const aplicacion = {
+            id: event.id,
+            changes: { fechaDeposito: res.toISOString() }
+          };
+          this.store.dispatch(new UpdateFechaCorte({update: aplicacion}));
+        }
+      });
+    }
   }
 
   onSearch(event: string) {
@@ -100,6 +118,8 @@ export class AplicacionesPageComponent implements OnInit {
         }
       });
   }
+
+
 
   reporteDeCortes() {
     /*

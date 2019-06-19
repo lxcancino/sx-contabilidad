@@ -11,6 +11,10 @@ const routes: Routes = [
       {
         path: 'comisiones',
         loadChildren: './comisiones/comisiones.module#ComisionesModule'
+      },
+      {
+        path: 'cheques',
+        loadChildren: './cheques/cheques.module#ChequesModule'
       }
     ]
   }

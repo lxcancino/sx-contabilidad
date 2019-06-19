@@ -59,6 +59,26 @@ export class AplicacionDeCorteEffects {
     })
   );
 
+
+  @Effect()
+  updateFechaCorte$ = this.actions$.pipe(
+    ofType<fromActions.UpdateFechaCorte>(
+      AplicacionDeCorteActionTypes.UpdateFechaCorte
+    ),
+    map(action => action.payload.update),
+    switchMap(command => {
+      return this.service.actualizarDeposito(command).pipe(
+        map(
+          aplicacion =>
+            new fromActions.UpdateAplicacionDeCorteSuccess({ aplicacion })
+        ),
+        catchError(error =>
+          of(new fromActions.UpdateAplicacionDeCorteFial({ response: error }))
+        )
+      );
+    })
+  );
+
   @Effect({ dispatch: false })
   success$ = this.actions$.pipe(
     ofType<fromActions.UpdateAplicacionDeCorteSuccess>(

@@ -62,7 +62,13 @@ export class MantenimientosPageComponent implements OnInit {
       title: 'Comisiones',
       description: 'Ajustes a comisiones de tarjeta',
       icon: 'build'
-    }
+    },
+    {
+      route: 'cheques',
+      title: 'Cheques',
+      description: 'Registro de Cheques en Transito',
+      icon: 'receipt'
+    },
   ];
 
   constructor(public media: TdMediaService) {}

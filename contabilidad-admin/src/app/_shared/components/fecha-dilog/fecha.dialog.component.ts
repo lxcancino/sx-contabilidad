@@ -13,7 +13,7 @@ import { MAT_DIALOG_DATA } from '@angular/material';
       </mat-form-field>
     </mat-dialog-content>
   <mat-dialog-actions>
-    <button mat-button mat-dialog-close>Canelar</button>
+    <button mat-button mat-dialog-close>Cancelar</button>
     <button mat-button [mat-dialog-close]="fecha">Aceptar</button>
   </mat-dialog-actions>
 `
