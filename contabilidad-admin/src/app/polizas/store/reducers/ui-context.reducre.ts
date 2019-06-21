@@ -40,12 +40,16 @@ export const initialState: State = {
       new Grupo('CHEQUE', 'Cheques', 'Pagos con cheque'),
       new Grupo('TRANSFERENCIA', 'Transferencias', 'Pagos con transferencia'),
       new Grupo('TARJETA', 'Tarjeta', 'Pagos con tarjeta'),
-      new Grupo('COMISIONES_TARJETA', 'Comisiones Tarjeta', 'Comisiones')
+      new Grupo('COMISIONES_TARJETA', 'Comisiones Tarjeta', 'Comisiones'),
+      new Grupo('COMISIONES_TESORERIA', 'Comisiones Tesoreria', 'Comisiones'),
+      new Grupo('DOTACION_MORRALLA', 'Dotacion Morralla', 'Morralla')
     ]),
     new Grupo('DIARIO', 'Diario', 'Pólizas de diario', [
       new Grupo('VENTAS_CON', 'Ventas CON', 'Contado'),
       new Grupo('VENTAS_COD', 'Ventas COD', 'Contra entrega'),
       new Grupo('VENTAS_CRE', 'Ventas CRE', 'Crédito'),
+      new Grupo('VENTAS_ACF', 'Ventas ACF', 'Activo Fijo'),
+      new Grupo('VENTAS_OTR', 'Ventas OTR', 'Otros'),
       new Grupo(
         'NOTAS_DE_CARGO',
         'Notas de cargos',
@@ -70,7 +74,8 @@ export const initialState: State = {
       new Grupo('PROVISION_DE_GASTOS', 'Provisión de gastos', ''),
       new Grupo('PROVISION_NOMINA', 'Provisión de nómina', ''),
       new Grupo('PROVISION_DE_CARGA_SOCIAL', 'Provisión de carga social', ''),
-      new Grupo('CIERRE_ANUAL', 'Cierre anual', '')
+      new Grupo('CIERRE_ANUAL', 'Cierre anual', ''),
+      new Grupo('TRASPASO_E_INVERSIONES', 'Traspaso e inversiones', '')
     ])
   ]
 };
