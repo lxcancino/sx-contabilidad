@@ -40,6 +40,11 @@ export class MainPageComponent implements OnInit, OnDestroy {
       title: 'Costos'
     },
     {
+      icon: 'business',
+      route: '/activo',
+      title: 'Activo Fijo'
+    },
+    {
       icon: 'settings_input_antenna',
       route: '/econta',
       title: 'Contabilidad SAT'
