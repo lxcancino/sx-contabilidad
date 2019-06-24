@@ -72,10 +72,13 @@ export const initialState: State = {
       new Grupo('DEPOSITOS_EN_TRANSITO', 'Depósitos en tránsito', ''),
       new Grupo('TESORERIA', 'Tesorería', ''),
       new Grupo('PROVISION_DE_GASTOS', 'Provisión de gastos', ''),
+      new Grupo('PROVISION_DE_FLETES', 'Provisión de fletes', ''),
+      new Grupo('PROVISION_DE_SEGUROS', 'Provisión de seguros', ''),
       new Grupo('PROVISION_NOMINA', 'Provisión de nómina', ''),
       new Grupo('PROVISION_DE_CARGA_SOCIAL', 'Provisión de carga social', ''),
       new Grupo('CIERRE_ANUAL', 'Cierre anual', ''),
-      new Grupo('TRASPASO_E_INVERSIONES', 'Traspaso e inversiones', '')
+      new Grupo('TRASPASO_E_INVERSIONES', 'Traspaso e inversiones', ''),
+      new Grupo('VARIACION_CAMBIARIA', 'Variacion Cambiaria', ''),
     ])
   ]
 };
