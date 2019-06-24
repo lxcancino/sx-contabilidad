@@ -6,6 +6,7 @@ import { PolizaPartidasTableComponent } from './poliza-partidas-table/poliza-par
 import { PolizaDetComponent } from './poliza-det-form/poliza-det-form.component';
 import { ComprobantesDialogComponent } from './comprobantes-dialog/comprobantes-dialog.component';
 import { AjusteCobranzaComponent } from './ajuste-cobranza/ajuste-cobranza.component';
+import { ReclasificarModalComponent } from './reclasificar/reclasificar-modal.component';
 
 export const components: any[] = [
   PolizasTableComponent,
@@ -15,14 +16,16 @@ export const components: any[] = [
   PolizaPartidasTableComponent,
   PolizaDetComponent,
   ComprobantesDialogComponent,
-  AjusteCobranzaComponent
+  AjusteCobranzaComponent,
+  ReclasificarModalComponent
 ];
 
 export const entryComponents: any[] = [
   PolizaCreateComponent,
   PolizaDetComponent,
   ComprobantesDialogComponent,
-  AjusteCobranzaComponent
+  AjusteCobranzaComponent,
+  ReclasificarModalComponent
 ];
 
 export * from './polizas-table/polizas-table.component';
@@ -33,3 +36,4 @@ export * from './poliza-det-form/poliza-det-form.component';
 export * from './poliza-det-form/agregar-poliza-det-btn.component';
 export * from './comprobantes-dialog/comprobantes-dialog.component';
 export * from './ajuste-cobranza/ajuste-cobranza.component';
+export * from './reclasificar/reclasificar-modal.component';

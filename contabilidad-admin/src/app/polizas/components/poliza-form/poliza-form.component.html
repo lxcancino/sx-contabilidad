@@ -79,6 +79,7 @@
         [partidas]="poliza.partidas"
         (totalesChanged)="onTotales($event)"
         (doubleClick)="doubleClick($event)"
+        (reclasificar)="onReclasificar($event)"
       ></sx-poliza-partidas-table>
       <sx-agregar-polizadet [poliza]="poliza"></sx-agregar-polizadet>
     </div>
@@ -106,17 +107,21 @@
         >
           <mat-icon>loop</mat-icon> Recalcular
         </button>
+
         <button mat-button (click)="print.emit(poliza)" type="button">
           <mat-icon>print</mat-icon> Imprimir
         </button>
+
         <button mat-button (click)="cerrar.emit(poliza)" color="primary">
           <mat-icon>layers_clear</mat-icon> Cerrar
         </button>
+
         <button mat-button (click)="delete.emit(poliza)" color="warn">
           <mat-icon>delete</mat-icon> Eliminar
         </button>
+
         <span
-          *ngIf="(totales$ | async) as t"
+          *ngIf="totales$ | async as t"
           class="text-md"
           layout
           layout-align="center center"
@@ -125,12 +130,6 @@
           <span class="pad-left"> Haber: {{ t.haber | currency }} </span>
           <span class="pad-left"> Cuadre: {{ t.cuadre | currency }} </span>
           <span flex></span>
-          <!-- <span class="pad-left">
-            Com Nac: {{ poliza.totalNacional | currency }}
-          </span>
-          <span class="pad-left">
-            Comp Ext: {{ poliza.totalExtranjero | currency }}
-          </span> -->
         </span>
       </div>
     </mat-card-actions>

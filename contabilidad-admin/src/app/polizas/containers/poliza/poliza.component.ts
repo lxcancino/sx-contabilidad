@@ -63,6 +63,8 @@ export class PolizaComponent implements OnInit {
 
   onRecalcular(event: Poliza) {
     this.store.dispatch(new fromStore.RecalcularPoliza({ polizaId: event.id }));
+    // if (!event.cierre) {
+    // }
   }
 
   onUpdate(event: { id: number; changes: Partial<Poliza> }) {
@@ -160,18 +162,25 @@ export class PolizaComponent implements OnInit {
       .ajustarFormaDePago(event.id, event.formaDePago)
       .subscribe(
         response => {
-          this.dialogService.openAlert({
-            title: 'ACTUALIZACION EXITOSA',
-            message: 'Debe actualizar la poliza para que los cambios tengan efecto',
-            closeButton: 'CERRAR'
-          }).afterClosed().subscribe( () => {});
+          this.dialogService
+            .openAlert({
+              title: 'ACTUALIZACION EXITOSA',
+              message:
+                'Debe actualizar la poliza para que los cambios tengan efecto',
+              closeButton: 'CERRAR'
+            })
+            .afterClosed()
+            .subscribe(() => {});
         },
         err => {
-          this.dialogService.openAlert({
-            title: 'ERROR EN EL SERVIDOR',
-            message: err.message,
-            closeButton: 'CERRAR'
-          }).afterClosed().subscribe( () => {});
+          this.dialogService
+            .openAlert({
+              title: 'ERROR EN EL SERVIDOR',
+              message: err.message,
+              closeButton: 'CERRAR'
+            })
+            .afterClosed()
+            .subscribe(() => {});
         }
       );
   }

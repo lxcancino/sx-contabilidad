@@ -31,7 +31,7 @@ export const CUENTA_CONTABLE_LOOKUPFIELD_VALUE_ACCESSOR: any = {
   providers: [CUENTA_CONTABLE_LOOKUPFIELD_VALUE_ACCESSOR],
   template: `
     <mat-form-field class="fill">
-    <input type="text" matInput [formControl]="searchControl" placeholder="Cuenta"
+    <input type="text" matInput [formControl]="searchControl" [placeholder]="placeholder"
       [required]="required" [matAutocomplete]="auto">
     <mat-error>
       Debe selccionar una cuenta
@@ -69,6 +69,9 @@ export class CuentaContableFieldComponent
 
   @Input()
   detalle = true;
+
+  @Input()
+  placeholder = 'Cuenta';
 
   cuentas$: Observable<CuentaContable[]>;
 

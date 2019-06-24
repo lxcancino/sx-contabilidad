@@ -20,8 +20,13 @@ import {
   FilterChangedEvent,
   GridReadyEvent,
   GridApi,
-  RowDoubleClickedEvent
+  RowDoubleClickedEvent,
+  CellDoubleClickedEvent,
+  CellContextMenuEvent
 } from 'ag-grid-community';
+import { TdDialogService } from '@covalent/core';
+import { MatDialog, MatDialogConfig, DialogPosition } from '@angular/material';
+import { PeriodoDialogComponent } from 'app/_shared/components';
 
 @Component({
   selector: 'sx-poliza-partidas-table',
@@ -43,6 +48,12 @@ import {
         (gridReady)="onGridReady($event)"
         (modelUpdated)="onModelUpdate($event)">
       </ag-grid-angular>
+      <span [matMenuTriggerFor]="appMenu"></span>
+      <mat-menu #appMenu="matMenu">
+        <button mat-menu-item>Settings</button>
+        <button mat-menu-item>Help</button>
+      </mat-menu>
+
     </div>
   `,
   styles: [
@@ -79,6 +90,9 @@ export class PolizaPartidasTableComponent implements OnInit, OnChanges {
   edit = new EventEmitter();
 
   @Output()
+  reclasificar = new EventEmitter<{ row: any; data: any }>();
+
+  @Output()
   doubleClick = new EventEmitter();
 
   @Output()
@@ -93,7 +107,8 @@ export class PolizaPartidasTableComponent implements OnInit, OnChanges {
 
   constructor(
     private cd: ChangeDetectorRef,
-    @Inject(LOCALE_ID) private locale: string
+    @Inject(LOCALE_ID) private locale: string,
+    private dialog: MatDialog
   ) {
     this.gridOptions = <GridOptions>{};
     this.gridOptions.columnDefs = this.buildColsDef();
@@ -107,11 +122,39 @@ export class PolizaPartidasTableComponent implements OnInit, OnChanges {
     this.buildLocalText();
   }
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.gridOptions.onCellDoubleClicked = (event: CellDoubleClickedEvent) => {
+      const id = event.column.getColId();
+      const row = event.rowIndex;
+      if (id === 'clave' || id === 'concepto') {
+        this.reclasificar.emit({ row, data: event.data });
+      }
+    };
+    this.gridOptions.onCellContextMenu = (ce: CellContextMenuEvent) => {
+      console.log('ContexMenu: ', ce);
+      const event: MouseEvent = ce.event as MouseEvent;
+      event.preventDefault();
+      const { x, y } = event;
+      console.log(`Position x: ${x} Y: ${y}`);
+      /*
+      const position: DialogPosition = {};
+
+      position.left = `${event.clientX}px`;
+      position.right = `${event.clientY}px`;
+
+      this.dialog
+        .open(PeriodoDialogComponent, {
+          data: { title: 'Acciones' },
+          position: { top: `${event.clientY}px`, left: `${event.clientX}px` }
+        })
+        .afterClosed()
+        .subscribe(res => {});
+      */
+    };
+  }
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes.partidas && changes.partidas.currentValue) {
-      // this.gridOptions.rowData = changes.partidas.currentValue;
       if (this.gridApi) {
         this.gridApi.setRowData(changes.partidas.currentValue);
       }

@@ -30,6 +30,7 @@ import { PolizaPartidasTableComponent } from '../poliza-partidas-table/poliza-pa
 import { TdDialogService } from '@covalent/core';
 import { MatDialog } from '@angular/material';
 import { ComprobantesDialogComponent } from '../comprobantes-dialog/comprobantes-dialog.component';
+import { ReclasificarModalComponent } from '../reclasificar/reclasificar-modal.component';
 
 @Component({
   selector: 'sx-poliza-form',
@@ -49,7 +50,7 @@ export class PolizaFormComponent implements OnInit, OnDestroy, OnChanges {
   poliza: Poliza;
 
   @Output()
-  update = new EventEmitter();
+  update = new EventEmitter<Update<Poliza>>();
 
   @Output()
   recalcular = new EventEmitter();
@@ -122,11 +123,12 @@ export class PolizaFormComponent implements OnInit, OnDestroy, OnChanges {
       this.buildForm();
     }
     this.form.patchValue(this.poliza);
+    /*
     this.cleanPartidas();
     this.poliza.partidas.forEach(det => {
       this.partidas.push(new FormControl(det));
     });
-
+    */
     // this.debe = _.sumBy(this.poliza.partidas, 'debe');
     const debe = _.sumBy(this.poliza.partidas, 'debe');
     const haber = _.sumBy(this.poliza.partidas, 'haber');
@@ -144,17 +146,18 @@ export class PolizaFormComponent implements OnInit, OnDestroy, OnChanges {
       this.form = this.fb.group({
         // fecha: [new Date(), [Validators.required]],
         concepto: [null, [Validators.required]],
-        manual: [false, [Validators.required]],
-        partidas: this.fb.array([])
+        manual: [false, [Validators.required]]
+        // partidas: this.fb.array([])
       });
     }
   }
-
+  /*
   private cleanPartidas() {
     while (this.partidas.length !== 0) {
       this.partidas.removeAt(0);
     }
   }
+  */
 
   onUpdate() {
     if (this.poliza.manual) {
@@ -171,20 +174,23 @@ export class PolizaFormComponent implements OnInit, OnDestroy, OnChanges {
       }
     }
   }
-
+  /*
   get partidas() {
     return this.form.get('partidas') as FormArray;
   }
-
+  */
+  /*
   agregarPartida(partida: PolizaDet) {
     this.partidas.push(new FormControl(partida));
     this.form.markAsDirty();
   }
-
+  */
+  /*
   onDeleteRow(index: number) {
     this.partidas.removeAt(index);
     this.form.markAsDirty();
   }
+  */
 
   onUpdateRow(index: number) {}
 
@@ -283,5 +289,25 @@ export class PolizaFormComponent implements OnInit, OnDestroy, OnChanges {
         }
       }
     }
+  }
+
+  onReclasificar(event: { row: any; data: any }) {
+    this.dialog
+      .open(ReclasificarModalComponent, {
+        data: { clave: event.data.clave, descripcion: event.data.concepto },
+        width: '750px'
+      })
+      .afterClosed()
+      .subscribe(res => {
+        if (res) {
+          // console.log('Destino: ', res);
+          const partidas = [...this.poliza.partidas];
+          const partida: Partial<PolizaDet> = partidas.find(
+            det => det.id === event.data.id
+          );
+          partida.cuenta = { id: res.id };
+          this.update.emit({ id: this.poliza.id, changes: { partidas } });
+        }
+      });
   }
 }
