@@ -87,7 +87,7 @@ export class PolizaPartidasTableComponent implements OnInit, OnChanges {
   select = new EventEmitter();
 
   @Output()
-  edit = new EventEmitter();
+  edit = new EventEmitter<Partial<PolizaDet>>();
 
   @Output()
   reclasificar = new EventEmitter<{ row: any; data: any }>();
@@ -126,8 +126,12 @@ export class PolizaPartidasTableComponent implements OnInit, OnChanges {
     this.gridOptions.onCellDoubleClicked = (event: CellDoubleClickedEvent) => {
       const id = event.column.getColId();
       const row = event.rowIndex;
-      if (id === 'clave' || id === 'concepto') {
+      if (id === 'clave') {
         this.reclasificar.emit({ row, data: event.data });
+        // this.edit.emit(event.data);
+      }
+      if (id === 'concepto') {
+        this.edit.emit(event.data);
       }
     };
     this.gridOptions.onCellContextMenu = (ce: CellContextMenuEvent) => {
