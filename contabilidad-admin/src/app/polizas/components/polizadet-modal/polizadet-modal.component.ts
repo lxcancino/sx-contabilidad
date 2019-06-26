@@ -38,6 +38,7 @@ export class PolizadetModalComponent implements OnInit {
       cuenta: [null, Validators.required],
       debe: [0.0, [Validators.required]],
       haber: [0.0, [Validators.required]],
+      descripcion: [],
       asiento: [],
       sucursal: [],
       referencia: [],
