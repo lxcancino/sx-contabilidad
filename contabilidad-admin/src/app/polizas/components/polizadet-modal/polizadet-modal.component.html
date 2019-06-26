@@ -1,5 +1,10 @@
 <form [formGroup]="form" novalidate (ngSubmit)="doAccept()">
-  <h4 mat-dialog-title>Cuenta: {{ polizadet.clave }}</h4>
+  <div>
+    <h4 mat-dialog-title>Cuenta: {{ polizadet.clave }}</h4>
+    <p>
+      {{ polizadet.concepto }}
+    </p>
+  </div>
   <mat-divider></mat-divider>
   <mat-dialog-content>
     <div layout="column" class="selector-form">
