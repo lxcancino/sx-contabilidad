@@ -37,7 +37,11 @@ export class PolizadetModalComponent implements OnInit {
     this.form = this.fb.group({
       cuenta: [null, Validators.required],
       debe: [0.0, [Validators.required]],
-      haber: [0.0, [Validators.required]]
+      haber: [0.0, [Validators.required]],
+      asiento: [],
+      sucursal: [],
+      referencia: [],
+      referencia2: []
     });
   }
 

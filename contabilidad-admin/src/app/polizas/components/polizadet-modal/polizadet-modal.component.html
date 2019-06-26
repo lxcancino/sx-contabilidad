@@ -8,11 +8,6 @@
   <mat-divider></mat-divider>
   <mat-dialog-content>
     <div layout="column" class="selector-form">
-      <div>
-        <p>
-          {{ polizadet.descripcion }}
-        </p>
-      </div>
       <sx-cuenta-contable-field
         placeholder="Cuenta"
         [detalle]="true"
@@ -37,6 +32,50 @@
           autocomplete="off"
           type="number"
           formControlName="haber"
+        />
+      </mat-form-field>
+    </div>
+    <mat-form-field flex>
+      <input
+        matInput
+        placeholder="Descripción"
+        formControlName="descripcion"
+        autocomplete="off"
+      />
+    </mat-form-field>
+    <div layout>
+      <mat-form-field flex>
+        <input
+          matInput
+          placeholder="Asiento"
+          formControlName="asiento"
+          autocomplete="off"
+        />
+      </mat-form-field>
+      <mat-form-field flex class="pad-left">
+        <input
+          matInput
+          placeholder="Sucursal"
+          formControlName="sucursal"
+          autocomplete="off"
+        />
+      </mat-form-field>
+    </div>
+    <div layout>
+      <mat-form-field flex>
+        <input
+          matInput
+          placeholder="Referencia"
+          formControlName="referencia"
+          autocomplete="off"
+        />
+      </mat-form-field>
+      <mat-form-field flex class="pad-left">
+        <input
+          matInput
+          placeholder="Referencia 2"
+          formControlName="referencia2"
+          autocomplete="off"
         />
       </mat-form-field>
     </div>
