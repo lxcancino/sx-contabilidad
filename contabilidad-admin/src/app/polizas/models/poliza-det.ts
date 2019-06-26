@@ -3,6 +3,7 @@ import { CuentaContable } from 'app/cuentas/models';
 export interface PolizaDet {
   id: number;
   cuenta: Partial<CuentaContable>;
+  clave?: string;
   debe: number;
   haber: number;
   concepto: string;

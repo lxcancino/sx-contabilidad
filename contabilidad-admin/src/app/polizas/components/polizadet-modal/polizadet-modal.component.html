@@ -1,5 +1,5 @@
 <form [formGroup]="form" novalidate (ngSubmit)="doAccept()">
-  <h4 mat-dialog-title>Partida de póliza: {{ polizadet.concepto }}</h4>
+  <h4 mat-dialog-title>Cuenta: {{ polizadet.clave }}</h4>
   <mat-divider></mat-divider>
   <mat-dialog-content>
     <div layout="column" class="selector-form">
@@ -16,7 +16,7 @@
       </sx-cuenta-contable-field>
     </div>
     <div layout>
-      <mat-form-field>
+      <mat-form-field flex>
         <input
           matInput
           placeholder="debe"
@@ -25,7 +25,7 @@
           formControlName="debe"
         />
       </mat-form-field>
-      <mat-form-field>
+      <mat-form-field flex class="pad-left">
         <input
           matInput
           placeholder="haber"
