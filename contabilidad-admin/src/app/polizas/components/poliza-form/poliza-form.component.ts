@@ -31,6 +31,7 @@ import { TdDialogService } from '@covalent/core';
 import { MatDialog } from '@angular/material';
 import { ComprobantesDialogComponent } from '../comprobantes-dialog/comprobantes-dialog.component';
 import { ReclasificarModalComponent } from '../reclasificar/reclasificar-modal.component';
+import { PolizadetModalComponent } from '../polizadet-modal/polizadet-modal.component';
 
 @Component({
   selector: 'sx-poliza-form',
@@ -312,7 +313,7 @@ export class PolizaFormComponent implements OnInit, OnDestroy, OnChanges {
   }
   onEdit(event: Partial<PolizaDet>) {
     this.dialog
-      .open(ReclasificarModalComponent, {
+      .open(PolizadetModalComponent, {
         data: { polizadet: event },
         width: '750px'
       })
