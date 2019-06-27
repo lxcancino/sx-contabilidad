@@ -331,4 +331,18 @@ export class PolizaFormComponent implements OnInit, OnDestroy, OnChanges {
         }
       });
   }
+
+  onCopy(event: Partial<PolizaDet>) {
+    const partidas: any[] = [...this.poliza.partidas];
+    const index = partidas.indexOf(item => item.id === event.id);
+    const targetIdx = index + 1;
+    // console.log('Insertando registro en: ', clone, targetIdx);
+    const clone = { ...event };
+    clone.id = null;
+    clone.descripcion = 'COPIA';
+    partidas.splice(targetIdx, 0, clone);
+    console.log('Clone: ', clone);
+    // console.log('Partidas: ', partidas);
+    // this.update.emit({ id: this.poliza.id, changes: { partidas } });
+  }
 }

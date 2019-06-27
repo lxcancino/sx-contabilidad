@@ -25,7 +25,12 @@ import {
   CellContextMenuEvent
 } from 'ag-grid-community';
 import { TdDialogService } from '@covalent/core';
-import { MatDialog, MatDialogConfig, DialogPosition } from '@angular/material';
+import {
+  MatDialog,
+  MatDialogConfig,
+  DialogPosition,
+  MatMenuTrigger
+} from '@angular/material';
 import { PeriodoDialogComponent } from 'app/_shared/components';
 
 @Component({
@@ -48,10 +53,16 @@ import { PeriodoDialogComponent } from 'app/_shared/components';
         (gridReady)="onGridReady($event)"
         (modelUpdated)="onModelUpdate($event)">
       </ag-grid-angular>
-      <span [matMenuTriggerFor]="appMenu"></span>
-      <mat-menu #appMenu="matMenu">
-        <button mat-menu-item>Settings</button>
-        <button mat-menu-item>Help</button>
+      <span style="position: fixed"
+        [matMenuTriggerFor]="contextMenu"
+        [style.left]="contextMenuPosition.x"
+        [style.top]="contextMenuPosition.y">
+      </span>
+      <mat-menu #contextMenu="matMenu">
+        <ng-template matMenuContent let-item="item">
+          <button mat-menu-item (click)="copiarRegistro(item)">Copiar</button>
+          <button mat-menu-item (click)="eliminarRegistro(item)">Eliminar</button>
+	      </ng-template>
       </mat-menu>
 
     </div>
@@ -98,12 +109,20 @@ export class PolizaPartidasTableComponent implements OnInit, OnChanges {
   @Output()
   totalesChanged = new EventEmitter<{ debe: number; haber: number }>();
 
+  @Output()
+  copy = new EventEmitter();
+
   printFriendly = false;
 
   localeText;
 
   pinnedBottomRowData;
   frameworkComponents;
+
+  @ViewChild(MatMenuTrigger)
+  contextMenu: MatMenuTrigger;
+
+  contextMenuPosition = { x: '0px', y: '0px' };
 
   constructor(
     private cd: ChangeDetectorRef,
@@ -135,25 +154,15 @@ export class PolizaPartidasTableComponent implements OnInit, OnChanges {
       }
     };
     this.gridOptions.onCellContextMenu = (ce: CellContextMenuEvent) => {
-      console.log('ContexMenu: ', ce);
       const event: MouseEvent = ce.event as MouseEvent;
       event.preventDefault();
       const { x, y } = event;
       console.log(`Position x: ${x} Y: ${y}`);
-      /*
-      const position: DialogPosition = {};
 
-      position.left = `${event.clientX}px`;
-      position.right = `${event.clientY}px`;
-
-      this.dialog
-        .open(PeriodoDialogComponent, {
-          data: { title: 'Acciones' },
-          position: { top: `${event.clientY}px`, left: `${event.clientX}px` }
-        })
-        .afterClosed()
-        .subscribe(res => {});
-      */
+      this.contextMenuPosition.x = x + 'px';
+      this.contextMenuPosition.y = y + 'px';
+      this.contextMenu.menuData = { item: ce.data };
+      this.contextMenu.openMenu();
     };
   }
 
@@ -329,5 +338,14 @@ export class PolizaPartidasTableComponent implements OnInit, OnChanges {
 
   transformCurrency(data) {
     return formatCurrency(data, this.locale, '$');
+  }
+
+  copiarRegistro(event) {
+    // console.log('Copiando registro: ', event);
+    this.copy.emit(event);
+  }
+
+  eliminarRegistro(event) {
+    console.log('Delete registro: ', event);
   }
 }
