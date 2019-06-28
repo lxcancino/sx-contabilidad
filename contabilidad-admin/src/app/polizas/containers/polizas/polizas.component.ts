@@ -121,6 +121,7 @@ export class PolizasComponent implements OnInit, OnDestroy {
               );
               break;
             }
+            case 'VARIACION_CAMBIARIA':
             case 'CHEQUES_EN_TRANSITO':
             case 'PROVISION_NOMINA':
             case 'CHEQUE':
