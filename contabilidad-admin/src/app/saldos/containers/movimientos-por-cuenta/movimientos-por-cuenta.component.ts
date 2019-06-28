@@ -1,4 +1,9 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  OnDestroy,
+  ChangeDetectionStrategy
+} from '@angular/core';
 
 import { Store, select } from '@ngrx/store';
 import * as fromStore from '../../store';
@@ -10,27 +15,16 @@ import { map, takeUntil } from 'rxjs/operators';
 import { Periodo } from 'app/_core/models/periodo';
 import { SaldoPorCuentaContable } from 'app/saldos/models';
 
+import { PolizaDet } from 'app/polizas/models';
+
 @Component({
   selector: 'sx-movimientos-por-cuenta',
-  template: `
-    <mat-card *ngIf="saldo$ | async as saldo">
-      <mat-toolbar color="accent">
-        <div layout>
-          <span>Movimiento de cuenta:</span>
-          <span flex></span>
-          <span class="pad-left">{{saldo.clave}}</span>
-          <span class="pad-left">{{saldo.descripcion}}</span>
-          <span flex></span>
-        </div>
-      </mat-toolbar>
-      <mat-card-content>
-        {{saldo$ | async | json}}
-      </mat-card-content>
-    </mat-card>
-  `
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  templateUrl: './movimientos-por-cuenta.component.html'
 })
 export class MovimientosPorCuentaComponent implements OnInit, OnDestroy {
   saldo$: Observable<SaldoPorCuentaContable>;
+  movimientos$: Observable<PolizaDet[]>;
   destroy$ = new Subject();
 
   constructor(private store: Store<fromStore.State>) {}
@@ -53,5 +47,15 @@ export class MovimientosPorCuentaComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     this.destroy$.next(true);
     this.destroy$.complete();
+  }
+
+  reload(saldo: SaldoPorCuentaContable) {
+    const periodo = Periodo.toPeriodo(saldo.ejercicio, saldo.mes);
+    this.store.dispatch(
+      new fromActions.LoadMovimientosPorCuenta({
+        cuenta: saldo.cuenta,
+        periodo: periodo
+      })
+    );
   }
 }

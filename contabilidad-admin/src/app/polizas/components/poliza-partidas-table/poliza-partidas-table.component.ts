@@ -165,19 +165,23 @@ export class PolizaPartidasTableComponent implements OnInit, OnChanges {
       this.reclasificar.emit({ row, data: event.data });
     }
     if (id === 'concepto' || id === 'descripcion') {
-      this.edit.emit(event.data);
+      if (this.manual) {
+        this.edit.emit(event.data);
+      }
     }
   }
 
   openContextMenu(ce: CellContextMenuEvent) {
-    const event: MouseEvent = ce.event as MouseEvent;
-    event.preventDefault();
-    const { x, y } = event;
-    this.contextMenuPosition.x = x + 'px';
-    this.contextMenuPosition.y = y + 'px';
-    this.contextMenu.menuData = { item: ce.data, index: ce.rowIndex };
-    this.cd.detectChanges();
-    this.contextMenu.openMenu();
+    if (this.manual) {
+      const event: MouseEvent = ce.event as MouseEvent;
+      event.preventDefault();
+      const { x, y } = event;
+      this.contextMenuPosition.x = x + 'px';
+      this.contextMenuPosition.y = y + 'px';
+      this.contextMenu.menuData = { item: ce.data, index: ce.rowIndex };
+      this.cd.detectChanges();
+      this.contextMenu.openMenu();
+    }
   }
 
   onModelUpdate(event) {

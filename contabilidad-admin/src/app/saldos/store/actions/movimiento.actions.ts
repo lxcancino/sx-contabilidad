@@ -8,6 +8,11 @@ export const enum MovimientoActionTypes {
   LoadMovimientosPorCuenta = '[Movimientos por cuenta] Load movimientos por cuenta',
   LoadMovimientosPorCuentaFail = '[Movimientos por cuenta API] Load movimientos por cuenta fail',
   LoadMovimientosPorCuentaSuccess = '[Movimientos por cuenta API] Load movimientos por cuenta success'
+  /*
+  LoadSaldosDeSucuentas = '[Movimientos por cuenta] Load movimientos por cuenta',
+  LoadSaldosDeSucuentasFail = '[Movimientos por cuenta API] Load movimientos por cuenta fail',
+  LoadSaldosDeSucuentasSuccess = '[Movimientos por cuenta API] Load movimientos por cuenta success',
+  */
 }
 
 export class LoadMovimientosPorCuenta implements Action {

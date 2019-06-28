@@ -33,6 +33,7 @@
             matTooltip="Hacer la poliza {{
               poliza.manual ? 'Automática' : 'Manual'
             }}"
+            *ngIf="!poliza.manual"
           >
             <mat-icon>dialpad</mat-icon>
             <span>{{ poliza.manual ? 'AUTOMÁTICA' : 'MANUAL' }}</span>
@@ -83,6 +84,7 @@
         (edit)="onEdit($event)"
         (copy)="onCopy($event)"
         (delete)="onDelete($event)"
+        [manual]="poliza.manual"
       ></sx-poliza-partidas-table>
       <sx-agregar-polizadet [poliza]="poliza"></sx-agregar-polizadet>
     </div>
