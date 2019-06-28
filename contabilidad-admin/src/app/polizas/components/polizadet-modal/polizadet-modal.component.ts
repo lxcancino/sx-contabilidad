@@ -56,8 +56,7 @@ export class PolizadetModalComponent implements OnInit {
       const res = {
         ...this.form.value,
         cuenta,
-        clave: cuenta.clave,
-        descripcion: cuenta.descripcion
+        clave: cuenta.clave
       };
       this.dialogRef.close(res);
     }

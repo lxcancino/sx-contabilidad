@@ -287,7 +287,6 @@ export class PolizaFormComponent implements OnInit, OnDestroy, OnChanges {
       .afterClosed()
       .subscribe(res => {
         if (res) {
-          // console.log('Destino: ', res);
           const partidas = [...this.poliza.partidas];
           const partida: Partial<PolizaDet> = partidas.find(
             det => det.id === event.id

@@ -13,14 +13,15 @@ import { SaldoPorCuentaContable } from 'app/saldos/models';
 @Component({
   selector: 'sx-movimientos-por-cuenta',
   template: `
-    <mat-card>
-      <!--
-      <div layout layout-align="start center"  class="pad-left-sm pad-right-sm">
-        <span>Detalles de cuenta</span>
-      </div>
-      -->
+    <mat-card *ngIf="saldo$ | async as saldo">
       <mat-toolbar color="accent">
-        <span>Detalle de cuenta:</span>
+        <div layout>
+          <span>Movimiento de cuenta:</span>
+          <span flex></span>
+          <span class="pad-left">{{saldo.clave}}</span>
+          <span class="pad-left">{{saldo.descripcion}}</span>
+          <span flex></span>
+        </div>
       </mat-toolbar>
       <mat-card-content>
         {{saldo$ | async | json}}

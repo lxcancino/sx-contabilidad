@@ -164,7 +164,7 @@ export class PolizaPartidasTableComponent implements OnInit, OnChanges {
     if (id === 'clave') {
       this.reclasificar.emit({ row, data: event.data });
     }
-    if (id === 'concepto') {
+    if (id === 'concepto' || id === 'descripcion') {
       this.edit.emit(event.data);
     }
   }
