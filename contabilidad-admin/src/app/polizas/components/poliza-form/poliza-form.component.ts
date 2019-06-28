@@ -124,13 +124,6 @@ export class PolizaFormComponent implements OnInit, OnDestroy, OnChanges {
       this.buildForm();
     }
     this.form.patchValue(this.poliza);
-    /*
-    this.cleanPartidas();
-    this.poliza.partidas.forEach(det => {
-      this.partidas.push(new FormControl(det));
-    });
-    */
-    // this.debe = _.sumBy(this.poliza.partidas, 'debe');
     const debe = _.sumBy(this.poliza.partidas, 'debe');
     const haber = _.sumBy(this.poliza.partidas, 'haber');
     const cuadre = debe - haber;
@@ -145,20 +138,11 @@ export class PolizaFormComponent implements OnInit, OnDestroy, OnChanges {
   private buildForm() {
     if (!this.form) {
       this.form = this.fb.group({
-        // fecha: [new Date(), [Validators.required]],
         concepto: [null, [Validators.required]],
         manual: [false, [Validators.required]]
-        // partidas: this.fb.array([])
       });
     }
   }
-  /*
-  private cleanPartidas() {
-    while (this.partidas.length !== 0) {
-      this.partidas.removeAt(0);
-    }
-  }
-  */
 
   onUpdate() {
     if (this.poliza.manual) {
@@ -175,28 +159,12 @@ export class PolizaFormComponent implements OnInit, OnDestroy, OnChanges {
       }
     }
   }
-  /*
-  get partidas() {
-    return this.form.get('partidas') as FormArray;
-  }
-  */
-  /*
-  agregarPartida(partida: PolizaDet) {
-    this.partidas.push(new FormControl(partida));
-    this.form.markAsDirty();
-  }
-  */
-  /*
-  onDeleteRow(index: number) {
-    this.partidas.removeAt(index);
-    this.form.markAsDirty();
-  }
-  */
 
-  onUpdateRow(index: number) {}
+  get partidas() {
+    return this.poliza.partidas;
+  }
 
   get cuadre() {
-    // return this.debe - this.haber;
     return 0.0;
   }
 
@@ -301,7 +269,6 @@ export class PolizaFormComponent implements OnInit, OnDestroy, OnChanges {
       .afterClosed()
       .subscribe(res => {
         if (res) {
-          // console.log('Destino: ', res);
           const partidas = [...this.poliza.partidas];
           const partida: Partial<PolizaDet> = partidas.find(
             det => det.id === event.data.id
@@ -326,7 +293,57 @@ export class PolizaFormComponent implements OnInit, OnDestroy, OnChanges {
             det => det.id === event.id
           );
           _.assign(partida, res);
-          console.log('Actualizando partida: ', partida);
+          this.update.emit({ id: this.poliza.id, changes: { partidas } });
+        }
+      });
+  }
+
+  onCopy(event: Partial<PolizaDet>) {
+    const partidas: any[] = [...this.poliza.partidas];
+    const index = partidas.findIndex(item => item.id === event.id);
+    const targetIdx = index + 1;
+
+    const clone: Partial<PolizaDet> = {
+      cuenta: event.cuenta,
+      clave: event.clave,
+      debe: event.debe || 0.0,
+      haber: event.haber || 0.0,
+      concepto: event.concepto,
+      descripcion: event.descripcion,
+      asiento: event.asiento,
+      referencia: event.referencia,
+      referencia2: event.referencia2,
+      origen: event.origen,
+      entidad: event.entidad,
+      documento: event.documento,
+      documentoTipo: event.documentoTipo,
+      documentoFecha: event.documentoFecha,
+      sucursal: event.sucursal
+    };
+    partidas.splice(targetIdx, 0, clone);
+    this.update.emit({ id: this.poliza.id, changes: { partidas } });
+  }
+
+  onDelete(event: { index: number; data: Partial<PolizaDet> }) {
+    this.dialogService
+      .openConfirm({
+        title: 'Mantenimiento de poliza',
+        message: `Eliminar partida ${event.index + 1}
+          Cuenta: ${event.data.clave}
+          Debe: ${event.data.debe || 0.0}
+          Haber: ${event.data.haber}`,
+        acceptButton: 'ACEPTAR',
+        cancelButton: 'CANCELAR',
+        minWidth: '650px'
+      })
+      .afterClosed()
+      .subscribe(res => {
+        if (res) {
+          // console.log('Eliminando ', event.index);
+          const partidas: any[] = [...this.poliza.partidas];
+          partidas.splice(event.index, 1);
+          // console.log('After: ', partidas);
+          // this.partidasGrid.gridApi.setRowData(partidas);
           this.update.emit({ id: this.poliza.id, changes: { partidas } });
         }
       });
