@@ -12,7 +12,7 @@ import {
   LOCALE_ID,
   Inject
 } from '@angular/core';
-import { formatDate, formatCurrency } from '@angular/common';
+import { formatCurrency } from '@angular/common';
 
 import { PolizaDet, Poliza } from '../../models';
 import {
@@ -24,14 +24,8 @@ import {
   CellDoubleClickedEvent,
   CellContextMenuEvent
 } from 'ag-grid-community';
-import { TdDialogService } from '@covalent/core';
-import {
-  MatDialog,
-  MatDialogConfig,
-  DialogPosition,
-  MatMenuTrigger
-} from '@angular/material';
-import { PeriodoDialogComponent } from 'app/_shared/components';
+
+import { MatMenuTrigger } from '@angular/material';
 
 @Component({
   selector: 'sx-poliza-partidas-table',
@@ -59,12 +53,17 @@ import { PeriodoDialogComponent } from 'app/_shared/components';
         [style.top]="contextMenuPosition.y">
       </span>
       <mat-menu #contextMenu="matMenu">
-        <ng-template matMenuContent let-item="item">
-          <button mat-menu-item (click)="copiarRegistro(item)">Copiar</button>
-          <button mat-menu-item (click)="eliminarRegistro(item)">Eliminar</button>
+        <ng-template matMenuContent let-item="item" let-index="index">
+          <button mat-menu-item (click)="copiarRegistro(item)">
+            <mat-icon>content_copy</mat-icon>
+            <span>Copiar</span>
+          </button>
+          <button mat-menu-item (click)="eliminarRegistro(item, index)" color="warning">
+            <mat-icon color="warn">delete</mat-icon>
+            <span>Eliminar</span>
+          </button>
 	      </ng-template>
       </mat-menu>
-
     </div>
   `,
   styles: [
@@ -112,6 +111,9 @@ export class PolizaPartidasTableComponent implements OnInit, OnChanges {
   @Output()
   copy = new EventEmitter();
 
+  @Output()
+  delete = new EventEmitter<{ index: number; data: Partial<PolizaDet> }>();
+
   printFriendly = false;
 
   localeText;
@@ -124,10 +126,12 @@ export class PolizaPartidasTableComponent implements OnInit, OnChanges {
 
   contextMenuPosition = { x: '0px', y: '0px' };
 
+  @Input()
+  manual = false;
+
   constructor(
     private cd: ChangeDetectorRef,
-    @Inject(LOCALE_ID) private locale: string,
-    private dialog: MatDialog
+    @Inject(LOCALE_ID) private locale: string
   ) {
     this.gridOptions = <GridOptions>{};
     this.gridOptions.columnDefs = this.buildColsDef();
@@ -141,37 +145,39 @@ export class PolizaPartidasTableComponent implements OnInit, OnChanges {
     this.buildLocalText();
   }
 
-  ngOnInit() {
-    this.gridOptions.onCellDoubleClicked = (event: CellDoubleClickedEvent) => {
-      const id = event.column.getColId();
-      const row = event.rowIndex;
-      if (id === 'clave') {
-        this.reclasificar.emit({ row, data: event.data });
-        // this.edit.emit(event.data);
-      }
-      if (id === 'concepto') {
-        this.edit.emit(event.data);
-      }
-    };
-    this.gridOptions.onCellContextMenu = (ce: CellContextMenuEvent) => {
-      const event: MouseEvent = ce.event as MouseEvent;
-      event.preventDefault();
-      const { x, y } = event;
-      console.log(`Position x: ${x} Y: ${y}`);
-
-      this.contextMenuPosition.x = x + 'px';
-      this.contextMenuPosition.y = y + 'px';
-      this.contextMenu.menuData = { item: ce.data };
-      this.contextMenu.openMenu();
-    };
-  }
-
   ngOnChanges(changes: SimpleChanges) {
     if (changes.partidas && changes.partidas.currentValue) {
       if (this.gridApi) {
         this.gridApi.setRowData(changes.partidas.currentValue);
       }
     }
+  }
+
+  ngOnInit() {
+    this.gridOptions.onCellDoubleClicked = this.doulbeClickHandler.bind(this);
+    this.gridOptions.onCellContextMenu = this.openContextMenu.bind(this);
+  }
+
+  doulbeClickHandler(event: CellDoubleClickedEvent) {
+    const id = event.column.getColId();
+    const row = event.rowIndex;
+    if (id === 'clave') {
+      this.reclasificar.emit({ row, data: event.data });
+    }
+    if (id === 'concepto') {
+      this.edit.emit(event.data);
+    }
+  }
+
+  openContextMenu(ce: CellContextMenuEvent) {
+    const event: MouseEvent = ce.event as MouseEvent;
+    event.preventDefault();
+    const { x, y } = event;
+    this.contextMenuPosition.x = x + 'px';
+    this.contextMenuPosition.y = y + 'px';
+    this.contextMenu.menuData = { item: ce.data, index: ce.rowIndex };
+    this.cd.detectChanges();
+    this.contextMenu.openMenu();
   }
 
   onModelUpdate(event) {
@@ -345,7 +351,8 @@ export class PolizaPartidasTableComponent implements OnInit, OnChanges {
     this.copy.emit(event);
   }
 
-  eliminarRegistro(event) {
-    console.log('Delete registro: ', event);
+  eliminarRegistro(event, index: number) {
+    // console.log('Delete registro: ', event, index);
+    this.delete.emit({ index, data: event });
   }
 }
