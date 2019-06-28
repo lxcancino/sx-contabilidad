@@ -72,6 +72,7 @@ export const initialState: State = {
       new Grupo('DEPOSITOS_EN_TRANSITO', 'Depósitos en tránsito', ''),
       new Grupo('TESORERIA', 'Tesorería', ''),
       new Grupo('PROVISION_DE_GASTOS', 'Provisión de gastos', ''),
+      new Grupo('PROVISION_DE_REMBOLSO', 'Provisión de rembolso', ''),
       new Grupo('PROVISION_DE_FLETES', 'Provisión de fletes', ''),
       new Grupo('PROVISION_DE_SEGUROS', 'Provisión de seguros', ''),
       new Grupo('PROVISION_NOMINA', 'Provisión de nómina', ''),
