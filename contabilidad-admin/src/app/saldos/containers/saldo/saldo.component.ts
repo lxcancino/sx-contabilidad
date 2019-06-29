@@ -6,6 +6,7 @@ import {
 } from '@angular/core';
 
 import { Store, select } from '@ngrx/store';
+import * as fromRoot from 'app/store';
 import * as fromStore from '../../store';
 import * as fromActions from '../../store/actions/movimiento.actions';
 
@@ -18,36 +19,21 @@ import { SaldoPorCuentaContable } from 'app/saldos/models';
 import { PolizaDet } from 'app/polizas/models';
 
 @Component({
-  selector: 'sx-movimientos-por-cuenta',
+  selector: 'sx-saldo',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  templateUrl: './movimientos-por-cuenta.component.html'
+  templateUrl: './saldo.component.html',
+  styleUrls: ['./saldo.component.scss']
 })
-export class MovimientosPorCuentaComponent implements OnInit, OnDestroy {
+export class SaldoComponent implements OnInit {
   saldo$: Observable<SaldoPorCuentaContable>;
-  movimientos$: Observable<PolizaDet[]>;
-  destroy$ = new Subject();
+  children$: Observable<SaldoPorCuentaContable[]>;
   search$ = new BehaviorSubject<string>('');
 
   constructor(private store: Store<fromStore.State>) {}
 
   ngOnInit() {
     this.saldo$ = this.store.pipe(select(fromStore.getSelectedSaldo));
-    this.saldo$
-      .pipe(
-        takeUntil(this.destroy$),
-        map(saldo => {
-          const periodo = Periodo.toPeriodo(saldo.ejercicio, saldo.mes);
-          return { periodo, cuenta: saldo.cuenta };
-        })
-      )
-      .subscribe(action =>
-        this.store.dispatch(new fromActions.LoadMovimientosPorCuenta(action))
-      );
-  }
-
-  ngOnDestroy() {
-    this.destroy$.next(true);
-    this.destroy$.complete();
+    this.children$ = this.saldo$.pipe(map(saldo => saldo.children));
   }
 
   reload(saldo: SaldoPorCuentaContable) {
@@ -58,5 +44,14 @@ export class MovimientosPorCuentaComponent implements OnInit, OnDestroy {
         periodo: periodo
       })
     );
+  }
+
+  getTitle(saldo: SaldoPorCuentaContable): string {
+    return `Cunta: ${saldo.descripcion} (${saldo.clave})`;
+  }
+
+  onDrill(saldo: SaldoPorCuentaContable) {
+    console.log('Drill down: ', saldo);
+    this.store.dispatch(new fromRoot.Go({ path: ['saldos/mayor', saldo.id] }));
   }
 }

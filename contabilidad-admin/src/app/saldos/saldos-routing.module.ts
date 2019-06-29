@@ -16,7 +16,7 @@ const routes: Routes = [
       },
       {
         path: 'mayor/:saldoId',
-        component: fromContainers.MovimientosPorCuentaComponent,
+        component: fromContainers.SaldoComponent,
         canActivate: [fromGuards.SaldoExistsGuard]
       },
       {
