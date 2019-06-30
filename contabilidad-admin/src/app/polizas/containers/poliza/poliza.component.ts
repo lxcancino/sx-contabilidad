@@ -29,7 +29,8 @@ import { CobranzaSupportService } from 'app/polizas/services/conbranza-support.s
         (comprobantes)="onComprobantes($event)"
         (toogleManual)="onManual($event)"
         (generarComplementosDePago)="onGenerarComplementosDePago($event)"
-        (cambiarFormaDePago)="onCambioDeFormaDePago($event)">
+        (cambiarFormaDePago)="onCambioDeFormaDePago($event)"
+        (prorratearPartida)="onProrratear(poliza, $event)">
       </sx-poliza-form>
     </div>
   </ng-template>
@@ -183,5 +184,14 @@ export class PolizaComponent implements OnInit {
             .subscribe(() => {});
         }
       );
+  }
+
+  onProrratear(poliza: Poliza, event: { polizaDet: number; data: any }) {
+    const command = {
+      polizaId: poliza.id,
+      ...event
+    };
+    console.log('Command: ', command);
+    this.store.dispatch(new fromStore.ProrratearPartida(command));
   }
 }

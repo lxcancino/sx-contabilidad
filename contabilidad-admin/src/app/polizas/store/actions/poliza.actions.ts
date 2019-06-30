@@ -51,7 +51,12 @@ export enum PolizaActionTypes {
 
   // Generar complementos
   GenerarComplementos = '[Poliza Component] GenerarComplementos Poliza',
-  GenerarComplementosFail = '[Poliza API] GenerarComplementos Poliza Fail'
+  GenerarComplementosFail = '[Poliza API] GenerarComplementos Poliza Fail',
+
+  // Prorratear
+  ProrratearPartida = '[Polizas Component] ProrratearPartidas',
+  ProrratearPartidaFail = '[Polizas API] ProrratearPartidas Fail',
+  ProrratearPartidaSuccess = '[Polizas API] ProrratearPartidas Success'
 }
 
 // Set
@@ -213,6 +218,23 @@ export class GenerarComplementosFail implements Action {
   constructor(public payload: { response: any }) {}
 }
 
+export class ProrratearPartida implements Action {
+  readonly type = PolizaActionTypes.ProrratearPartida;
+  constructor(
+    public payload: { polizaId: number; polizaDet: number; data: any }
+  ) {}
+}
+
+export class ProrratearPartidaFail implements Action {
+  readonly type = PolizaActionTypes.ProrratearPartidaFail;
+  constructor(public payload: { response: any }) {}
+}
+
+export class ProrratearPartidaSuccess implements Action {
+  readonly type = PolizaActionTypes.ProrratearPartidaSuccess;
+  constructor(public payload: { poliza: Poliza }) {}
+}
+
 export type PolizaActions =
   | LoadPolizas
   | LoadPolizasFail
@@ -245,4 +267,7 @@ export type PolizaActions =
   | GenerarFoliosFail
   | GenerarFoliosSuccess
   | GenerarComplementos
-  | GenerarComplementosFail;
+  | GenerarComplementosFail
+  | ProrratearPartida
+  | ProrratearPartidaFail
+  | ProrratearPartidaSuccess;

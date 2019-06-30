@@ -32,6 +32,7 @@ import { MatDialog } from '@angular/material';
 import { ComprobantesDialogComponent } from '../comprobantes-dialog/comprobantes-dialog.component';
 import { ReclasificarModalComponent } from '../reclasificar/reclasificar-modal.component';
 import { PolizadetModalComponent } from '../polizadet-modal/polizadet-modal.component';
+import { ProrrateoModalComponent } from '../prorrateo-modal/prorrateo-modal.component';
 
 @Component({
   selector: 'sx-poliza-form',
@@ -79,6 +80,9 @@ export class PolizaFormComponent implements OnInit, OnDestroy, OnChanges {
 
   @Output()
   cambiarFormaDePago = new EventEmitter();
+
+  @Output()
+  prorratearPartida = new EventEmitter<{ polizaDetId: number; data: any }>();
 
   subscription: Subscription;
 
@@ -344,6 +348,22 @@ export class PolizaFormComponent implements OnInit, OnDestroy, OnChanges {
           // console.log('After: ', partidas);
           // this.partidasGrid.gridApi.setRowData(partidas);
           this.update.emit({ id: this.poliza.id, changes: { partidas } });
+        }
+      });
+  }
+
+  onProrratear(event: { index: number; data: Partial<PolizaDet> }) {
+    this.dialog
+      .open(ProrrateoModalComponent, {
+        data: { polizadet: event.data }
+      })
+      .afterClosed()
+      .subscribe(res => {
+        if (res) {
+          this.prorratearPartida.emit({
+            polizaDetId: event.data.id,
+            data: res
+          });
         }
       });
   }

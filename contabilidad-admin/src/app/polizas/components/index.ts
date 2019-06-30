@@ -8,6 +8,7 @@ import { ComprobantesDialogComponent } from './comprobantes-dialog/comprobantes-
 import { AjusteCobranzaComponent } from './ajuste-cobranza/ajuste-cobranza.component';
 import { ReclasificarModalComponent } from './reclasificar/reclasificar-modal.component';
 import { PolizadetModalComponent } from './polizadet-modal/polizadet-modal.component';
+import { ProrrateoModalComponent } from './prorrateo-modal/prorrateo-modal.component';
 
 export const components: any[] = [
   PolizasTableComponent,
@@ -19,7 +20,8 @@ export const components: any[] = [
   ComprobantesDialogComponent,
   AjusteCobranzaComponent,
   ReclasificarModalComponent,
-  PolizadetModalComponent
+  PolizadetModalComponent,
+  ProrrateoModalComponent
 ];
 
 export const entryComponents: any[] = [
@@ -28,7 +30,8 @@ export const entryComponents: any[] = [
   ComprobantesDialogComponent,
   AjusteCobranzaComponent,
   ReclasificarModalComponent,
-  PolizadetModalComponent
+  PolizadetModalComponent,
+  ProrrateoModalComponent
 ];
 
 export * from './polizas-table/polizas-table.component';
@@ -41,3 +44,4 @@ export * from './comprobantes-dialog/comprobantes-dialog.component';
 export * from './ajuste-cobranza/ajuste-cobranza.component';
 export * from './reclasificar/reclasificar-modal.component';
 export * from './polizadet-modal/polizadet-modal.component';
+export * from './prorrateo-modal/prorrateo-modal.component';

@@ -62,6 +62,10 @@ import { MatMenuTrigger } from '@angular/material';
             <mat-icon color="warn">delete</mat-icon>
             <span>Eliminar</span>
           </button>
+          <button mat-menu-item (click)="prorratearRegistro(item, index)" >
+            <mat-icon>call_split</mat-icon>
+            <span>Prorratear en sucursales</span>
+          </button>
 	      </ng-template>
       </mat-menu>
     </div>
@@ -113,6 +117,9 @@ export class PolizaPartidasTableComponent implements OnInit, OnChanges {
 
   @Output()
   delete = new EventEmitter<{ index: number; data: Partial<PolizaDet> }>();
+
+  @Output()
+  prorratear = new EventEmitter<{ index: number; data: Partial<PolizaDet> }>();
 
   printFriendly = false;
 
@@ -359,4 +366,9 @@ export class PolizaPartidasTableComponent implements OnInit, OnChanges {
     // console.log('Delete registro: ', event, index);
     this.delete.emit({ index, data: event });
   }
+
+  prorratearRegistro(event, index: number) {
+    this.prorratear.emit({ index, data: event });
+  }
+
 }

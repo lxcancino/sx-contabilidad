@@ -236,6 +236,20 @@ export class PolizasEffects {
     })
   );
 
+  @Effect()
+  prorratearPartida$ = this.actions$.pipe(
+    ofType<fromActions.ProrratearPartida>(PolizaActionTypes.ProrratearPartida),
+    map(action => action.payload),
+    switchMap(command => {
+      return this.service.prorratearPartida(command).pipe(
+        map(poliza => new fromActions.UpsertPoliza({ poliza })),
+        catchError(response =>
+          of(new fromActions.ProrratearPartidaFail({ response }))
+        )
+      );
+    })
+  );
+
   @Effect({ dispatch: false })
   generarFoliosSuccess$ = this.actions$.pipe(
     ofType<fromActions.GenerarFoliosSuccess>(
@@ -265,6 +279,7 @@ export class PolizasEffects {
       | fromActions.GenerarPolizasFail
       | fromActions.GenerarFoliosFail
       | fromActions.GenerarComplementosFail
+      | fromActions.ProrratearPartidaFail
     >(
       PolizaActionTypes.LoadPolizasFail,
       PolizaActionTypes.CreatePolizaFail,
@@ -273,7 +288,8 @@ export class PolizasEffects {
       PolizaActionTypes.CreatePolizasEgresoFail,
       PolizaActionTypes.GenerarPolizasFail,
       PolizaActionTypes.GenerarFoliosFail,
-      PolizaActionTypes.GenerarComplementosFail
+      PolizaActionTypes.GenerarComplementosFail,
+      PolizaActionTypes.ProrratearPartidaFail
     ),
     map(action => action.payload.response),
     map(response => new fromRoot.GlobalHttpError({ response }))

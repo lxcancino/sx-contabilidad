@@ -33,6 +33,7 @@ export const initialState: State = adapter.getInitialState({
 
 export function reducer(state = initialState, action: PolizaActions): State {
   switch (action.type) {
+    case PolizaActionTypes.ProrratearPartida:
     case PolizaActionTypes.GenerarComplementos:
     case PolizaActionTypes.GenerarFolios:
     case PolizaActionTypes.CerrarPoliza:
@@ -49,6 +50,7 @@ export function reducer(state = initialState, action: PolizaActions): State {
       };
     }
 
+    case PolizaActionTypes.ProrratearPartidaFail:
     case PolizaActionTypes.GenerarComplementosFail:
     case PolizaActionTypes.GenerarFoliosFail:
     case PolizaActionTypes.GenerarPolizasFail:

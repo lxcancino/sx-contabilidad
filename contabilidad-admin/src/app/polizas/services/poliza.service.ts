@@ -108,6 +108,18 @@ export class PolizaService {
       .pipe(catchError((error: any) => throwError(error)));
   }
 
+  prorratearPartida(command: {
+    polizaId: number;
+    polizaDet: number;
+    data: any;
+  }): Observable<Poliza> {
+    const url = `${this.apiUrl}/prorratearPartida/${command.polizaId}`;
+    console.log('Command: ', command);
+    return this.http
+      .put<Poliza>(url, command)
+      .pipe(catchError((error: any) => throwError(error)));
+  }
+
   get apiUrl() {
     if (!this._apiUrl) {
       this._apiUrl = this.config.buildApiUrl('contabilidad/polizas');
