@@ -39,7 +39,6 @@ export const initialState: State = {
     new Grupo('EGRESO', 'Egreso', 'Pólizas de egresos', [
       new Grupo('CHEQUE', 'Cheques', 'Pagos con cheque'),
       new Grupo('TRANSFERENCIA', 'Transferencias', 'Pagos con transferencia'),
-      new Grupo('TARJETA', 'Tarjeta', 'Pagos con tarjeta'),
       new Grupo('COMISIONES_TARJETA', 'Comisiones Tarjeta', 'Comisiones'),
     ]),
     new Grupo('DIARIO', 'Diario', 'Pólizas de diario', [
