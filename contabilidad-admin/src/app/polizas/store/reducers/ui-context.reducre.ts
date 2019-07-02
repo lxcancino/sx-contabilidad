@@ -41,8 +41,6 @@ export const initialState: State = {
       new Grupo('TRANSFERENCIA', 'Transferencias', 'Pagos con transferencia'),
       new Grupo('TARJETA', 'Tarjeta', 'Pagos con tarjeta'),
       new Grupo('COMISIONES_TARJETA', 'Comisiones Tarjeta', 'Comisiones'),
-      new Grupo('COMISIONES_TESORERIA', 'Comisiones Tesoreria', 'Comisiones'),
-      new Grupo('DOTACION_MORRALLA', 'Dotacion Morralla', 'Morralla')
     ]),
     new Grupo('DIARIO', 'Diario', 'Pólizas de diario', [
       new Grupo('VENTAS_CON', 'Ventas CON', 'Contado'),
@@ -78,10 +76,9 @@ export const initialState: State = {
       new Grupo('COMISIONES_BANCARIA_GASTO', 'Comisiones bancarias gasto', ''),
       new Grupo('PROVISION_NOMINA', 'Provisión de nómina', ''),
       new Grupo('PROVISION_DE_CARGA_SOCIAL', 'Provisión de carga social', ''),
-      new Grupo('CIERRE_ANUAL', 'Cierre anual', ''),
-      new Grupo('TRASPASO_E_INVERSIONES', 'Traspaso e inversiones', ''),
       new Grupo('VARIACION_CAMBIARIA', 'Variacion Cambiaria', ''),
       new Grupo('IMPUESTOS_SOBRE_NOMINA', 'Impuesto Sobre Nomina', ''),
+      new Grupo('CIERRE_ANUAL', 'Cierre anual', ''),
     ])
   ]
 };
