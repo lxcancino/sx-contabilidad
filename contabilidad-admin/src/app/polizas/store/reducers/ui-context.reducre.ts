@@ -81,6 +81,7 @@ export const initialState: State = {
       new Grupo('CIERRE_ANUAL', 'Cierre anual', ''),
       new Grupo('TRASPASO_E_INVERSIONES', 'Traspaso e inversiones', ''),
       new Grupo('VARIACION_CAMBIARIA', 'Variacion Cambiaria', ''),
+      new Grupo('IMPUESTOS_SOBRE_NOMINA', 'Impuesto Sobre Nomina', ''),
     ])
   ]
 };

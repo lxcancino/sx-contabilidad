@@ -11,7 +11,7 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
   <form [formGroup]="form">
     <sx-ejercicio-field [parent]="form"></sx-ejercicio-field>
     <sx-mes-field [parent]="form"></sx-mes-field>
-    <sx-producto-field formControlName="producto"></sx-producto-field>
+    <sx-producto-field [activos]="true" formControlName="producto"></sx-producto-field>
   </form>
   </mat-dialog-content>
   <mat-dialog-actions>

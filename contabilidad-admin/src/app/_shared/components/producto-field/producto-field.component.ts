@@ -59,7 +59,7 @@ export class ProductoFieldComponent implements OnInit, ControlValueAccessor {
   @Input()
   required = false;
   @Input()
-  activos = false;
+  activos = true;
 
   productos$: Observable<Producto[]>;
 
@@ -94,6 +94,7 @@ export class ProductoFieldComponent implements OnInit, ControlValueAccessor {
   }
 
   lookupProductoes(value: string): Observable<Producto[]> {
+    console.log('Estse', this.activos);
     const params = new HttpParams()
       .set('term', value)
       .set('activos', this.activos ? 'true' : 'false');
