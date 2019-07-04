@@ -30,7 +30,17 @@ export class PolizadetModalComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.form.patchValue(this.polizadet);
+    if (this.polizadet) {
+      this.form.patchValue(this.polizadet);
+    } else {
+      const template =  {
+        asiento: 'GENERICA',
+        sucursal: 'OFICINAS',
+        referencia: 'GENERICA',
+        referencia2: 'GENERICA'
+      };
+      this.form.patchValue(template);
+    }
   }
 
   private buildForm() {

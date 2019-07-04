@@ -5,7 +5,7 @@ import {
   Inject
 } from '@angular/core';
 import { MAT_DIALOG_DATA } from '@angular/material';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
 import { Periodo } from 'app/_core/models/periodo';
 
 @Component({
@@ -30,6 +30,10 @@ import { Periodo } from 'app/_core/models/periodo';
         <mat-form-field flex>
           <input matInput placeholder="Subtipo" formControlName="subtipo" readonly="true">
         </mat-form-field>
+        <ng-container *ngIf= "conConcepto()">
+          <sx-upper-case-field flex formControlName="concepto" placeholder="Concepto">
+          </sx-upper-case-field>
+        </ng-container>
         <mat-form-field >
           <input matInput [matDatepicker]="myDatepicker" placeholder="Fecha" [max]="maxDate" [min]="minDate" formControlName="fecha" >
           <mat-datepicker-toggle matSuffix [for]="myDatepicker"></mat-datepicker-toggle>
@@ -80,5 +84,13 @@ export class PolizaCreateComponent implements OnInit {
       subtipo: [null, [Validators.required]],
       fecha: [null, [Validators.required]]
     });
+
+    if (this.config.subtipo === 'CIERRE_MENSUAL') {
+      this.form.addControl('concepto', new FormControl('',[Validators.required]));
+    }
+  }
+
+  conConcepto(): boolean {
+    return this.config.subtipo === 'CIERRE_MENSUAL';
   }
 }

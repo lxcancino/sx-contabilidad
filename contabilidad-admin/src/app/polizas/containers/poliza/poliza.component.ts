@@ -191,7 +191,6 @@ export class PolizaComponent implements OnInit {
       polizaId: poliza.id,
       ...event
     };
-    console.log('Command: ', command);
     this.store.dispatch(new fromStore.ProrratearPartida(command));
   }
 }

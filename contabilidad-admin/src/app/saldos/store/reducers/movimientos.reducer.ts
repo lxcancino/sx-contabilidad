@@ -11,7 +11,7 @@ export interface State extends EntityState<PolizaDet> {
 export const adapter: EntityAdapter<PolizaDet> = createEntityAdapter();
 
 export const initialState = adapter.getInitialState({
-  loading: true
+  loading: false
 });
 
 export function reducer(
@@ -51,4 +51,4 @@ export const {
   selectTotal
 } = adapter.getSelectors();
 
-export const getLoading = (state: State) => state.loading;
+export const getMovimientosLoading = (state: State) => state.loading;

@@ -4,7 +4,7 @@ import {
   Inject,
   ChangeDetectionStrategy
 } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, FormControl } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 
 import { PolizaDet } from '../../models';
@@ -21,11 +21,11 @@ export class ProrrateoModalComponent implements OnInit {
   polizadet: Partial<PolizaDet>;
 
   sucursales = {
-    oficinas: '01',
-    andrade: '03',
-    bolivar: '05',
+    oficinas: '1',
+    andrade: '3',
+    bolivar: '5',
     calle4: '10',
-    tacuba: '02',
+    tacuba: '2',
     febrero: '13'
   };
 
@@ -44,14 +44,14 @@ export class ProrrateoModalComponent implements OnInit {
   private buildForm() {
     this.form = this.fb.group(
       {
-        oficinas: [],
-        andrade: [],
-        calle4: [],
-        bolivar: [],
-        tacuba: [],
-        febrero: []
+        oficinas: new FormControl(null, { updateOn: 'blur' }),
+        andrade: [null, { updateOn: 'blur' }],
+        calle4: [null, { updateOn: 'blur' }],
+        bolivar: [null, { updateOn: 'blur' }],
+        tacuba: [null, { updateOn: 'blur' }],
+        febrero: [null, { updateOn: 'blur' }]
       },
-      { validator: this.validateImporte.bind(this) }
+      { validator: [this.validateImporte.bind(this)] }
     );
   }
 

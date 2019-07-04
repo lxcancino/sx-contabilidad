@@ -56,7 +56,11 @@ export enum PolizaActionTypes {
   // Prorratear
   ProrratearPartida = '[Polizas Component] ProrratearPartidas',
   ProrratearPartidaFail = '[Polizas API] ProrratearPartidas Fail',
-  ProrratearPartidaSuccess = '[Polizas API] ProrratearPartidas Success'
+  ProrratearPartidaSuccess = '[Polizas API] ProrratearPartidas Success',
+
+  CopiarPoliza = '[Poliza Component] Copiar poliza ',
+  CopiarPolizaSuccess = '[Poliza API] Copiar poliza  Success',
+  CopiarPolizaFail = '[Poliza API] Copiar poliza  Fail'
 }
 
 // Set
@@ -235,6 +239,19 @@ export class ProrratearPartidaSuccess implements Action {
   constructor(public payload: { poliza: Poliza }) {}
 }
 
+export class CopiarPoliza implements Action {
+  readonly type = PolizaActionTypes.CopiarPoliza;
+  constructor(public payload: { polizaId: number }) {}
+}
+export class CopiarPolizaFail implements Action {
+  readonly type = PolizaActionTypes.CopiarPolizaFail;
+  constructor(public payload: { response: any }) {}
+}
+export class CopiarPolizaSuccess implements Action {
+  readonly type = PolizaActionTypes.CopiarPolizaSuccess;
+  constructor(public payload: { poliza: Poliza }) {}
+}
+
 export type PolizaActions =
   | LoadPolizas
   | LoadPolizasFail
@@ -270,4 +287,7 @@ export type PolizaActions =
   | GenerarComplementosFail
   | ProrratearPartida
   | ProrratearPartidaFail
-  | ProrratearPartidaSuccess;
+  | ProrratearPartidaSuccess
+  | CopiarPoliza
+  | CopiarPolizaFail
+  | CopiarPolizaSuccess;

@@ -17,34 +17,7 @@ import { PolizaCreateComponent } from 'app/polizas/components';
 
 @Component({
   selector: 'sx-polizas',
-  template: `
-    <mat-card *ngIf="config$ | async as config">
-      <sx-search-title title="Pólizas de {{config?.tipo?.toLowerCase()}} ({{config?.subtipo}})"
-        [inputValue]="searchTerm$ | async"
-        [visible]="(searchTerm$ | async).length > 0"
-        (search)="onFilter($event)">
-        <button mat-menu-item class="actions" (click)="reload(config)"><mat-icon>refresh</mat-icon> Recargar</button>
-        <a mat-menu-item  color="accent" class="actions" (click)="onCreate(config) ">
-          <mat-icon>add</mat-icon> Nueva póliza
-        </a>
-        <button class="actions" mat-menu-item (click)="regenerarFolios(config)">
-          <mat-icon>format_list_numbered</mat-icon> Regenerar folios
-        </button>
-      </sx-search-title>
-      <mat-divider></mat-divider>
-        <ng-template tdLoading [tdLoadingUntil]="!(loading$ | async)"  tdLoadingStrategy="overlay" >
-          <sx-polizas-table [polizas]="polizas$ | async" (select)="onSelect($event)" [filter]="searchTerm$ | async"></sx-polizas-table>
-        </ng-template>
-      <mat-card-footer>
-
-      </mat-card-footer>
-      <a mat-fab matTooltip="Alta de póliza" matTooltipPosition="before" color="accent" class="mat-fab-position-bottom-right z-3"
-      (click)="onCreate(config) ">
-    <mat-icon>add</mat-icon>
-    </a>
-    </mat-card>
-
-  `,
+  templateUrl: './polizas.component.html',
   styles: [
     `
       .mat-card {
@@ -182,5 +155,28 @@ export class PolizasComponent implements OnInit, OnDestroy {
           this.store.dispatch(new fromStore.GenerarFolios({ filter: event }));
         }
       });
+  }
+
+  onCopy(event: Poliza) {
+    if (event.subtipo === 'CIERRE_MENSUAL') {
+      this.dialogService
+        .openConfirm({
+          title: 'COPIAR POLIZA AL SIGUIENTE PERIODO ',
+          message: `PÓLIZA: ${event.folio} ${
+            event.concepto
+          } ***(NO OLVIDE CAMBIAR EL PERIODO) ***`,
+          acceptButton: 'ACEPTAR',
+          cancelButton: 'CANCELAR',
+          minWidth: '550px'
+        })
+        .afterClosed()
+        .subscribe(res => {
+          if (res) {
+            this.store.dispatch(
+              new fromStore.CopiarPoliza({ polizaId: event.id })
+            );
+          }
+        });
+    }
   }
 }

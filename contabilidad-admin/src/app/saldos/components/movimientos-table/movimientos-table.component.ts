@@ -5,29 +5,25 @@ import {
   Input,
   OnChanges,
   SimpleChanges,
-  ViewChild,
   Output,
   EventEmitter,
   ChangeDetectorRef,
   LOCALE_ID,
   Inject
 } from '@angular/core';
-import { formatDate, formatCurrency } from '@angular/common';
+import { formatCurrency } from '@angular/common';
 
-import { SaldoPorCuentaContable } from '../../models';
 import {
   GridOptions,
   FilterChangedEvent,
   GridReadyEvent,
-  GridApi,
-  RowDoubleClickedEvent,
-  RowClickedEvent,
-  CellClickedEvent,
-  CellDoubleClickedEvent
+  GridApi
 } from 'ag-grid-community';
 
+import { PolizaDet } from 'app/polizas/models';
+
 @Component({
-  selector: 'sx-saldos-table',
+  selector: 'sx-movimientos-table',
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <div style='height: 100%'>
@@ -36,17 +32,15 @@ import {
         [ngClass]="{myGrid: !printFriendly, print: printFriendly}"
         [gridOptions]="gridOptions"
         [defaultColDef]="defaultColDef"
-        [enableFilter]="true"
-        [enableSorting]="true"
+        [enableFilter]="enableFilter"
+        [enableSorting]="enableSorting"
         [floatingFilter]="true"
         [enableColResize]="true"
         [animateRows]="true"
         [localeText]="localeText"
-        [rowSelection]="selectionType"
         (firstDataRendered)="onFirstDataRendered($event)"
         (gridReady)="onGridReady($event)"
-        (modelUpdated)="onModelUpdate($event)"
-        (selectionChanged)="onSelectionChanged()">
+        (modelUpdated)="onModelUpdate($event)">
       </ag-grid-angular>
     </div>
   `,
@@ -54,17 +48,23 @@ import {
     `
       .myGrid {
         width: 100%;
-        height: 100%;
+        height: 400px;
       }
     `
   ]
 })
-export class SaldosTableComponent implements OnInit, OnChanges {
+export class MovimientosTableComponent implements OnInit, OnChanges {
   @Input()
-  saldos: SaldoPorCuentaContable[] = [];
+  partidas: PolizaDet[] = [];
 
   @Input()
   filter: string;
+
+  @Input()
+  enableFilter = true;
+
+  @Input()
+  enableSorting = true;
 
   @Input()
   selected: number;
@@ -74,25 +74,20 @@ export class SaldosTableComponent implements OnInit, OnChanges {
   defaultColDef;
 
   @Output()
-  drillData = new EventEmitter<SaldoPorCuentaContable>();
+  select = new EventEmitter();
 
   @Output()
-  selectionChange = new EventEmitter<any[]>();
+  edit = new EventEmitter();
 
   @Output()
-  totalesChanged = new EventEmitter<{
-    saldoInicial: number;
-    debe: number;
-    haber: number;
-    saldoFinal: number;
-  }>();
-
-  @Input()
-  selectionType = 'single';
+  totalesChanged = new EventEmitter<{ debe: number; haber: number }>();
 
   printFriendly = false;
 
   localeText;
+
+  pinnedBottomRowData;
+  frameworkComponents;
 
   constructor(
     private cd: ChangeDetectorRef,
@@ -101,40 +96,20 @@ export class SaldosTableComponent implements OnInit, OnChanges {
     this.gridOptions = <GridOptions>{};
     this.gridOptions.columnDefs = this.buildColsDef();
     this.defaultColDef = {
-      // width: 100,
+      width: 120,
       editable: false,
       filter: 'agTextColumnFilter'
     };
-
     this.gridOptions.onFilterChanged = this.onFilter;
-
-    this.gridOptions.onRowDoubleClicked = (event: RowDoubleClickedEvent) => {
-      this.drillData.emit(event.data);
-      // console.log('Double click: ', event);
-    };
-    this.gridOptions.onCellClicked = (event: CellClickedEvent) => {
-      if (event.colDef.field === 'clave') {
-        // this.selectionChange.emit([event.data]);
-        // console.log('Cell clicked: ', event.colDef.field);
-        // const selectedRows = this.gridApi.getSelectedRows();
-        // this.selectionChange.emit(selectedRows);
-      }
-    };
-    this.gridOptions.onCellDoubleClicked = (event: CellDoubleClickedEvent) => {
-      if (event.colDef.field === 'descripcion') {
-        this.drillData.emit(event.data);
-      }
-    };
     this.buildLocalText();
   }
 
   ngOnInit() {}
 
   ngOnChanges(changes: SimpleChanges) {
-    if (changes.saldos && changes.saldos.currentValue) {
-      // this.gridOptions.rowData = changes.saldos.currentValue;
+    if (changes.partidas && changes.partidas.currentValue) {
       if (this.gridApi) {
-        this.gridApi.setRowData(changes.saldos.currentValue);
+        this.gridApi.setRowData(changes.partidas.currentValue);
       }
     }
   }
@@ -145,7 +120,7 @@ export class SaldosTableComponent implements OnInit, OnChanges {
 
   onGridReady(params: GridReadyEvent) {
     this.gridApi = params.api;
-    this.gridApi.setRowData(this.saldos);
+    this.gridApi.setRowData(this.partidas);
   }
 
   onFirstDataRendered(params) {
@@ -156,20 +131,13 @@ export class SaldosTableComponent implements OnInit, OnChanges {
 
   actualizarTotales() {
     if (this.gridApi) {
-      let saldoInicial = 0.0;
       let debe = 0.0;
       let haber = 0.0;
-      let saldoFinal = 0.0;
-      this.gridApi.forEachNodeAfterFilterAndSort((rowNode, index) => {
-        if (rowNode.data.nivel === 1) {
-          saldoInicial += rowNode.data.saldoInicial;
-          debe += rowNode.data.debe;
-          haber += rowNode.data.haber;
-          saldoFinal += rowNode.data.saldoFinal;
-        }
+      this.gridApi.forEachNodeAfterFilter((rowNode, index) => {
+        debe += rowNode.data.debe;
+        haber += rowNode.data.haber;
       });
-      const totales = { saldoInicial, debe, haber, saldoFinal };
-      this.totalesChanged.emit(totales);
+      this.totalesChanged.emit({ debe, haber });
     }
   }
 
@@ -187,7 +155,7 @@ export class SaldosTableComponent implements OnInit, OnChanges {
 
   exportData() {
     const params = {
-      fileName: 'saldos.csv'
+      fileName: `AUX_${new Date().getTime()}.csv`
     };
     this.gridApi.exportDataAsCsv(params);
   }
@@ -195,33 +163,29 @@ export class SaldosTableComponent implements OnInit, OnChanges {
   private buildColsDef() {
     return [
       {
+        headerName: 'Pza',
+        field: 'folio',
+        width: 90
+      },
+      {
+        headerName: 'Subtipo',
+        field: 'subtipo',
+        width: 100
+      },
+      {
         headerName: 'Cuenta',
         field: 'clave',
-        width: 170
+        width: 130
       },
       {
-        headerName: 'Descripción de la cuenta',
+        headerName: 'Concepto',
+        field: 'concepto',
+        width: 200
+      },
+      {
+        headerName: 'Desc',
         field: 'descripcion',
-        width: 400
-      },
-      {
-        headerName: 'N',
-        field: 'nivel',
-        filter: 'agNumberColumnFilter',
-        width: 60
-      },
-      {
-        headerName: 'D',
-        field: 'detaññe',
-        filter: 'agNumberColumnFilter',
-        width: 60
-      },
-      {
-        headerName: 'S. Inicial',
-        field: 'saldoInicial',
-        filter: 'agNumberColumnFilter',
-        cellRenderer: params => this.transformCurrency(params.value),
-        width: 150
+        width: 200
       },
       {
         headerName: 'Debe',
@@ -236,14 +200,15 @@ export class SaldosTableComponent implements OnInit, OnChanges {
         cellRenderer: params => this.transformCurrency(params.value)
       },
       {
-        headerName: 'S. Final',
-        field: 'saldoFinal',
-        filter: 'agNumberColumnFilter',
-        cellRenderer: params => this.transformCurrency(params.value),
-        width: 150
-      }
+        headerName: 'Sucursal',
+        field: 'sucursal',
+        columnGroupShow: 'open'
+      },
+      { headerName: 'Ref', field: 'referencia', columnGroupShow: 'closed' },
+      { headerName: 'Docto', field: 'documento', columnGroupShow: 'open' }
     ];
   }
+
   buildLocalText() {
     this.localeText = {
       page: 'página',
@@ -273,10 +238,5 @@ export class SaldosTableComponent implements OnInit, OnChanges {
 
   transformCurrency(data) {
     return formatCurrency(data, this.locale, '$');
-  }
-
-  onSelectionChanged() {
-    const selectedRows = this.gridApi.getSelectedRows();
-    this.selectionChange.emit(selectedRows);
   }
 }

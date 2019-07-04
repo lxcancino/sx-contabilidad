@@ -67,14 +67,12 @@ export class PolizasTableComponent implements OnInit, OnChanges {
     'cuadre',
     'manual',
     'cierre',
-    'updateUser'
+    'updateUser',
+    'operaciones'
   ];
 
   @ViewChild(MatSort)
   sort: MatSort;
-
-  @ViewChild(MatPaginator)
-  paginator: MatPaginator;
 
   @Output()
   select = new EventEmitter();
@@ -82,10 +80,12 @@ export class PolizasTableComponent implements OnInit, OnChanges {
   @Output()
   edit = new EventEmitter();
 
+  @Output()
+  copy = new EventEmitter();
+
   constructor() {}
 
   ngOnInit() {
-    this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
   }
 
@@ -97,5 +97,10 @@ export class PolizasTableComponent implements OnInit, OnChanges {
       const s = changes.filter.currentValue || '';
       this.dataSource.filter = s.toLowerCase();
     }
+  }
+
+  onCopy(event: Event, row: Poliza) {
+    event.stopPropagation();
+    this.copy.emit(row);
   }
 }

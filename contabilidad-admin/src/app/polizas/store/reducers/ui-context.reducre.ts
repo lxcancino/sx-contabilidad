@@ -39,7 +39,7 @@ export const initialState: State = {
     new Grupo('EGRESO', 'Egreso', 'Pólizas de egresos', [
       new Grupo('CHEQUE', 'Cheques', 'Pagos con cheque'),
       new Grupo('TRANSFERENCIA', 'Transferencias', 'Pagos con transferencia'),
-      new Grupo('COMISIONES_TARJETA', 'Comisiones Tarjeta', 'Comisiones'),
+      new Grupo('COMISIONES_TARJETA', 'Comisiones Tarjeta', 'Comisiones')
     ]),
     new Grupo('DIARIO', 'Diario', 'Pólizas de diario', [
       new Grupo('VENTAS_CON', 'Ventas CON', 'Contado'),
@@ -78,6 +78,7 @@ export const initialState: State = {
       new Grupo('VARIACION_CAMBIARIA', 'Variacion Cambiaria', ''),
       new Grupo('IMPUESTOS_SOBRE_NOMINA', 'Impuesto Sobre Nomina', ''),
       new Grupo('CIERRE_ANUAL', 'Cierre anual', ''),
+      new Grupo('CIERRE_MENSUAL', 'Cierre Mensual', '')
     ])
   ]
 };

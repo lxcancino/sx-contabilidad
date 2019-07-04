@@ -114,9 +114,15 @@ export class PolizaService {
     data: any;
   }): Observable<Poliza> {
     const url = `${this.apiUrl}/prorratearPartida/${command.polizaId}`;
-    console.log('Command: ', command);
     return this.http
       .put<Poliza>(url, command)
+      .pipe(catchError((error: any) => throwError(error)));
+  }
+
+  copiar(polizaId: number): Observable<Poliza> {
+    const url = `${this.apiUrl}/copiar/${polizaId}`;
+    return this.http
+      .post<Poliza>(url, {})
       .pipe(catchError((error: any) => throwError(error)));
   }
 

@@ -89,7 +89,14 @@
       ></sx-poliza-partidas-table>
       <!-- <sx-agregar-polizadet [poliza]="poliza"></sx-agregar-polizadet> -->
     </div>
-
+    <a
+      mat-fab
+      color="accent"
+      class="mat-fab-position-bottom-right z-3"
+      (click)="onInsert()"
+    >
+      <mat-icon>add</mat-icon>
+    </a>
     <mat-divider></mat-divider>
     <mat-card-actions>
       <div layout>

@@ -282,6 +282,23 @@ export class PolizaFormComponent implements OnInit, OnDestroy, OnChanges {
         }
       });
   }
+
+  onInsert() {
+    this.dialog
+      .open(PolizadetModalComponent, {
+        data: {},
+        width: '750px'
+      })
+      .afterClosed()
+      .subscribe(res => {
+        if (res) {
+          const partidas = [...this.poliza.partidas];
+          partidas.push(res);
+          this.update.emit({ id: this.poliza.id, changes: { partidas } });
+        }
+      });
+  }
+
   onEdit(event: Partial<PolizaDet>) {
     this.dialog
       .open(PolizadetModalComponent, {

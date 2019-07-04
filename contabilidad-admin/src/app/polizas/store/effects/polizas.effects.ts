@@ -136,7 +136,7 @@ export class PolizasEffects {
     map(action => action.payload.poliza),
     tap(poliza =>
       this.snackBar.open(`Poliza ${poliza.id} actualizada`, 'Cerrar', {
-        duration: 8000
+        duration: 500
       })
     )
     // map(poliza => new fromRoot.Go({ path: ['/polizas', poliza.id] }))
@@ -248,6 +248,33 @@ export class PolizasEffects {
         )
       );
     })
+  );
+
+  @Effect()
+  copiarPoliza$ = this.actions$.pipe(
+    ofType<fromActions.CopiarPoliza>(PolizaActionTypes.CopiarPoliza),
+    map(action => action.payload.polizaId),
+    switchMap(id => {
+      return this.service.copiar(id).pipe(
+        map(poliza => new fromActions.CopiarPolizaSuccess({ poliza })),
+        catchError(response =>
+          of(new fromActions.CopiarPolizaFail({ response }))
+        )
+      );
+    })
+  );
+
+  @Effect({ dispatch: false })
+  copiarPolizaSuccess$ = this.actions$.pipe(
+    ofType<fromActions.CopiarPolizaSuccess>(
+      PolizaActionTypes.CopiarPolizaSuccess
+    ),
+    map(action => action.payload.poliza),
+    tap(poliza =>
+      this.snackBar.open(`Poliza generada ${poliza.folio}`, 'Cerrar', {
+        duration: 3000
+      })
+    )
   );
 
   @Effect({ dispatch: false })

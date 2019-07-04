@@ -1,9 +1,12 @@
 <form [formGroup]="form" novalidate (ngSubmit)="doAccept()">
-  <div>
+  <div *ngIf="polizadet">
     <h4 mat-dialog-title>Cuenta: {{ polizadet.clave }}</h4>
     <p>
       {{ polizadet.concepto }}
     </p>
+  </div>
+  <div *ngIf="!polizadet">
+    <h4>Alta de partida</h4>
   </div>
   <mat-divider></mat-divider>
   <mat-dialog-content>
