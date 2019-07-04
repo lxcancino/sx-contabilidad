@@ -1,11 +1,10 @@
 <form [formGroup]="form">
   <mat-card>
     <div layout class="pad-left pad-right pad-top mat-title">
-      <span>Póliza: {{ poliza.subtipo }} {{ poliza?.folio }}</span>
+      <span>Póliza: {{ poliza?.folio }} {{ poliza.subtipo }} </span>
       <span class="pad-left cursor-pointer" (click)="changeConcepto()"
         >Concepto: {{ concepto }}</span
       >
-      <span class="pad-left">({{ poliza.fecha | date: 'dd/MM/yyyy' }})</span>
       <span flex></span>
 
       <span class="pad-left" *ngIf="poliza.cierre"
@@ -68,8 +67,10 @@
         Cuadre: {{ poliza.debe - poliza.haber | currency }}
       </span>
       <span flex></span>
-
-      <span>Actualizó: {{ poliza.updateUser }}</span>
+      <span class="pad-left"
+        >Fecha: {{ poliza.fecha | date: 'dd/MM/yyyy' }}</span
+      >
+      <span class="pad-left">Actualizó: {{ poliza.updateUser }}</span>
     </div>
 
     <mat-divider></mat-divider>
@@ -94,6 +95,7 @@
       color="accent"
       class="mat-fab-position-bottom-right z-3"
       (click)="onInsert()"
+      *ngIf="poliza.manual"
     >
       <mat-icon>add</mat-icon>
     </a>
