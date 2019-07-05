@@ -4,13 +4,17 @@ import { SaldoComponent } from './saldo/saldo.component';
 
 import { AuxiliarComponent } from './auxiliar/auxiliar.component';
 import { MovimientosPorCuentaComponent } from './movimientos-por-cuenta/movimientos-por-cuenta.component';
+import { BalanzaPageComponent } from './balanza/balanza-page.component';
+import { DiotComponent } from './diot/diot.component';
 
 export const containers: any[] = [
   SaldosPageComponent,
   SaldosComponent,
   SaldoComponent,
   MovimientosPorCuentaComponent,
-  AuxiliarComponent
+  AuxiliarComponent,
+  BalanzaPageComponent,
+  DiotComponent
 ];
 
 export * from './saldos-page/saldos-page.component';
@@ -19,3 +23,6 @@ export * from './saldo/saldo.component';
 
 export * from './movimientos-por-cuenta/movimientos-por-cuenta.component';
 export * from './auxiliar/auxiliar.component';
+export * from './balanza/balanza-page.component';
+
+export * from './diot/diot.component';

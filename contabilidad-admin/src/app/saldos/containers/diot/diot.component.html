@@ -1,0 +1,19 @@
+<mat-card>
+  <sx-search-title
+    title="DIOT Declaracion informativa de operaciones con terceros"
+  >
+    <button mat-menu-item class="actions">
+      <mat-icon>settings</mat-icon> GENERAR
+    </button>
+  </sx-search-title>
+  <mat-divider></mat-divider>
+  <ng-template
+    tdLoading
+    [tdLoadingUntil]="!(loading$ | async)"
+    tdLoadingStrategy="overlay"
+  >
+  </ng-template>
+  <div class="grid-panel">
+    <sx-diot-table [partidas]="diot$ | async"></sx-diot-table>
+  </div>
+</mat-card>

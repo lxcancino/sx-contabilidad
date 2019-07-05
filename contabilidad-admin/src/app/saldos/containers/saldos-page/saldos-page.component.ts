@@ -27,13 +27,25 @@ export class SaldosPageComponent implements OnInit {
       route: 'mayor',
       title: 'SALDOS',
       description: 'Saldos',
-      icon: 'filter_1'
+      icon: 'storage'
+    },
+    {
+      route: 'banalza',
+      title: 'Balanza',
+      description: 'Balanza',
+      icon: 'my_library_books'
     },
     {
       route: 'auxiliar',
       title: 'Auxiliares',
       description: 'Consultas de auxiliares',
       icon: 'layers'
+    },
+    {
+      route: 'diot',
+      title: 'DIOT',
+      description: '',
+      icon: 'grid_off'
     }
   ];
 

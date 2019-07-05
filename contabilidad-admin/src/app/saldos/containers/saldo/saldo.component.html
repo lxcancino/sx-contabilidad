@@ -33,7 +33,12 @@
       <mat-icon color="primary">file_download</mat-icon>
     </button>
   </div>
-
+  <ng-template
+    tdLoading
+    [tdLoadingUntil]="!(loading$ | async)"
+    tdLoadingStrategy="overlay"
+  >
+  </ng-template>
   <div class="movimientos-panel">
     <sx-movimientos-table
       #movimientosGrid
