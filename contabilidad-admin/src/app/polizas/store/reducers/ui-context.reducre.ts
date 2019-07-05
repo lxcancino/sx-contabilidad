@@ -34,7 +34,6 @@ export const initialState: State = {
         'Intereses prestamos ',
         'Prestamos choferes'
       ),
-      new Grupo('DEPOSITOS_TESORERIA', 'Depositos', 'Depositos de tesorería')
     ]),
     new Grupo('EGRESO', 'Egreso', 'Pólizas de egresos', [
       new Grupo('CHEQUE', 'Cheques', 'Pagos con cheque'),
@@ -68,6 +67,7 @@ export const initialState: State = {
       new Grupo('CHEQUES_EN_TRANSITO', 'Cheques en transito', ''),
       new Grupo('DEPOSITOS_EN_TRANSITO', 'Depósitos en tránsito', ''),
       new Grupo('TESORERIA', 'Tesorería', ''),
+      new Grupo('DEPOSITOS_TESORERIA', 'Depositos', 'Depositos de tesorería'),
       new Grupo('PROVISION_DE_GASTOS', 'Provisión de gastos', ''),
       new Grupo('PROVISION_DE_REMBOLSO', 'Provisión de rembolso', ''),
       new Grupo('PROVISION_DE_FLETES', 'Provisión de fletes', ''),
@@ -78,7 +78,7 @@ export const initialState: State = {
       new Grupo('VARIACION_CAMBIARIA', 'Variacion Cambiaria', ''),
       new Grupo('IMPUESTOS_SOBRE_NOMINA', 'Impuesto Sobre Nomina', ''),
       new Grupo('CIERRE_ANUAL', 'Cierre anual', ''),
-      new Grupo('CIERRE_MENSUAL', 'Cierre Mensual', '')
+      new Grupo('CIERRE_MENSUAL', 'Cierre Mensual', ''),
     ])
   ]
 };
