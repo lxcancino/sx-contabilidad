@@ -11,7 +11,7 @@ import {
   LOCALE_ID,
   Inject
 } from '@angular/core';
-import { formatCurrency, formatDate } from '@angular/common';
+import { formatDate, formatCurrency } from '@angular/common';
 
 import {
   GridOptions,
@@ -20,10 +20,10 @@ import {
   GridApi
 } from 'ag-grid-community';
 
-import { PolizaDet } from 'app/polizas/models';
+import { Diot } from 'app/saldos/models';
 
 @Component({
-  selector: 'sx-movimientos-table',
+  selector: 'sx-diot-table',
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <div style='height: 100%'>
@@ -32,8 +32,8 @@ import { PolizaDet } from 'app/polizas/models';
         [ngClass]="{myGrid: !printFriendly, print: printFriendly}"
         [gridOptions]="gridOptions"
         [defaultColDef]="defaultColDef"
-        [enableFilter]="enableFilter"
-        [enableSorting]="enableSorting"
+        [enableFilter]="true"
+        [enableSorting]="true"
         [floatingFilter]="true"
         [enableColResize]="true"
         [animateRows]="true"
@@ -48,23 +48,17 @@ import { PolizaDet } from 'app/polizas/models';
     `
       .myGrid {
         width: 100%;
-        height: 100%;
+        height: 400px;
       }
     `
   ]
 })
-export class MovimientosTableComponent implements OnInit, OnChanges {
+export class DiotTableComponent implements OnInit, OnChanges {
   @Input()
-  partidas: PolizaDet[] = [];
+  partidas: Diot[] = [];
 
   @Input()
   filter: string;
-
-  @Input()
-  enableFilter = true;
-
-  @Input()
-  enableSorting = true;
 
   @Input()
   selected: number;
@@ -96,7 +90,6 @@ export class MovimientosTableComponent implements OnInit, OnChanges {
     this.gridOptions = <GridOptions>{};
     this.gridOptions.columnDefs = this.buildColsDef();
     this.defaultColDef = {
-      width: 120,
       editable: false,
       filter: 'agTextColumnFilter'
     };
@@ -153,9 +146,9 @@ export class MovimientosTableComponent implements OnInit, OnChanges {
     }, 8000);
   }
 
-  exportData() {
+  exportData(cuenta) {
     const params = {
-      fileName: `AUX_${new Date().getTime()}.csv`
+      fileName: `DIOT_${new Date().getTime()}.csv`
     };
     this.gridApi.exportDataAsCsv(params);
   }
@@ -163,35 +156,16 @@ export class MovimientosTableComponent implements OnInit, OnChanges {
   private buildColsDef() {
     return [
       {
-        headerName: 'Pza',
-        field: 'folio',
-        width: 90
+        headerName: 'Poliza',
+        field: 'folio'
       },
       {
         headerName: 'Subtipo',
-        field: 'subtipo',
-        width: 100
-      },
-      {
-        headerName: 'Fecha',
-        field: 'fecha',
-        width: 110,
-        cellRenderer: params => this.transformDate(params.value)
-      },
-      {
-        headerName: 'Cuenta',
-        field: 'clave',
-        width: 130
+        field: 'subtipo'
       },
       {
         headerName: 'Concepto',
-        field: 'concepto',
-        width: 200
-      },
-      {
-        headerName: 'Desc',
-        field: 'descripcion',
-        width: 200
+        field: 'descripcion'
       },
       {
         headerName: 'Debe',
@@ -206,12 +180,9 @@ export class MovimientosTableComponent implements OnInit, OnChanges {
         cellRenderer: params => this.transformCurrency(params.value)
       },
       {
-        headerName: 'Sucursal',
-        field: 'sucursal',
-        columnGroupShow: 'open'
-      },
-      { headerName: 'Ref', field: 'referencia', columnGroupShow: 'closed' },
-      { headerName: 'Docto', field: 'documento', columnGroupShow: 'open' }
+        headerName: 'Asiento',
+        field: 'asiento'
+      }
     ];
   }
 
@@ -244,8 +215,5 @@ export class MovimientosTableComponent implements OnInit, OnChanges {
 
   transformCurrency(data) {
     return formatCurrency(data, this.locale, '$');
-  }
-  transformDate(data) {
-    return formatDate(data, 'dd/MM/yyyy', this.locale);
   }
 }

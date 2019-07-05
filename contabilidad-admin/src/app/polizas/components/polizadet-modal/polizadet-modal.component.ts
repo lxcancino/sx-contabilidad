@@ -52,7 +52,8 @@ export class PolizadetModalComponent implements OnInit {
       asiento: [],
       sucursal: [],
       referencia: [],
-      referencia2: []
+      referencia2: [],
+      uuid: []
     });
   }
 

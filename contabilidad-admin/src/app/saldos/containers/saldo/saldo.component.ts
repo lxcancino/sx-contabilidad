@@ -30,15 +30,17 @@ export class SaldoComponent implements OnInit {
 
   search$ = new BehaviorSubject<string>('');
   movimientos$: Observable<PolizaDet[]>;
+  loading$: Observable<boolean>;
 
   constructor(private store: Store<fromStore.State>) {}
 
   ngOnInit() {
     this.saldo$ = this.store.pipe(select(fromStore.getSelectedSaldo));
     this.children$ = this.saldo$.pipe(map(saldo => saldo.children));
-    this.saldo$.subscribe(s => console.log('Saldo: ', s));
+    // this.saldo$.subscribe(s => console.log('Saldo: ', s));
     this.movimientos$ = this.store.pipe(select(fromStore.getMovimientos));
-    this.movimientos$.subscribe(m => console.log('Movx: ', m));
+    this.loading$ = this.store.pipe(select(fromStore.getMovimientosLoading));
+    
   }
 
   reload(saldo: SaldoPorCuentaContable) {}

@@ -5,7 +5,12 @@ import {
   Inject
 } from '@angular/core';
 import { MAT_DIALOG_DATA } from '@angular/material';
-import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
+import {
+  FormGroup,
+  FormBuilder,
+  Validators,
+  FormControl
+} from '@angular/forms';
 import { Periodo } from 'app/_core/models/periodo';
 
 @Component({
@@ -85,12 +90,18 @@ export class PolizaCreateComponent implements OnInit {
       fecha: [null, [Validators.required]]
     });
 
-    if (this.config.subtipo === 'CIERRE_MENSUAL') {
-      this.form.addControl('concepto', new FormControl('',[Validators.required]));
+    if (this.conConcepto()) {
+      this.form.addControl(
+        'concepto',
+        new FormControl('', [Validators.required])
+      );
     }
   }
 
   conConcepto(): boolean {
-    return this.config.subtipo === 'CIERRE_MENSUAL';
+    return (
+      this.config.subtipo === 'CIERRE_MENSUAL' ||
+      this.config.subtipo === 'COMISIONES_BANCARIA_GASTO'
+    );
   }
 }

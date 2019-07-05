@@ -22,6 +22,15 @@ const routes: Routes = [
       {
         path: 'auxiliar',
         component: fromContainers.AuxiliarComponent
+      },
+      {
+        path: 'balanza',
+        canActivate: [fromGuards.SaldosGuard],
+        component: fromContainers.BalanzaPageComponent
+      },
+      {
+        path: 'diot',
+        component: fromContainers.DiotComponent
       }
     ]
   }
