@@ -20,13 +20,12 @@ const routes: Routes = [
         canActivate: [fromGuards.SaldoExistsGuard]
       },
       {
-        path: 'auxiliar',
-        component: fromContainers.AuxiliarComponent
+        path: 'balanza',
+        component: fromContainers.BalanzaPageComponent
       },
       {
-        path: 'balanza',
-        canActivate: [fromGuards.SaldosGuard],
-        component: fromContainers.BalanzaPageComponent
+        path: 'auxiliar',
+        component: fromContainers.AuxiliarComponent
       },
       {
         path: 'diot',

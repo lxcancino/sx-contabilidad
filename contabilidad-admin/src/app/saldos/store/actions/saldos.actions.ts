@@ -7,8 +7,11 @@ export enum SaldosActionTypes {
   SetSaldosPeriodo = '[Saldos page] Set Periodo de saldos',
 
   LoadSaldos = '[Saldos Guard] Load Saldos',
-  LoadSaldosSuccess = '[Saldos API] Load Saldos Success',
   LoadSaldosFail = '[Saldos API] Load Saldos Fail',
+  LoadSaldosSuccess = '[Saldos API] Load Saldos Success',
+
+  CleanSaldos = '[Saldos ] Load Saldos Success',
+  
 
   // Actualizar
   ActualizarSaldos = '[Saldos Component] Actualizar Saldos',
@@ -26,7 +29,12 @@ export enum SaldosActionTypes {
   CierreAnualSuccess = '[Saldos API] CierreAnual de Saldos Success',
 
   // Updsert saldo
-  UpsertSaldo = '[Saldo exists guard] Upsert saldo'
+  UpsertSaldo = '[Saldo exists guard] Upsert saldo',
+
+  // Balanza
+  LoadBalanza = '[Balanza Component] Load Balanza',
+  LoadBalanzaSuccess = '[Saldos API] Load Balanza Success',
+  LoadBalanzaFail = '[Saldos API] Load Balanza Fail'
 }
 
 export class SetSaldosPeriodo implements Action {
@@ -93,6 +101,20 @@ export class UpsertSaldo implements Action {
   constructor(public payload: { saldo: SaldoPorCuentaContable }) {}
 }
 
+// Balanza
+export class LoadBalanza implements Action {
+  readonly type = SaldosActionTypes.LoadBalanza;
+}
+export class LoadBalanzaFail implements Action {
+  readonly type = SaldosActionTypes.LoadBalanzaFail;
+
+  constructor(public payload: { response: any }) {}
+}
+export class LoadBalanzaSuccess implements Action {
+  readonly type = SaldosActionTypes.LoadBalanzaSuccess;
+  constructor(public payload: { saldos: SaldoPorCuentaContable[] }) {}
+}
+
 export type SaldosActions =
   | SetSaldosPeriodo
   | LoadSaldos
@@ -107,4 +129,7 @@ export type SaldosActions =
   | CierreAnual
   | CierreAnualFail
   | CierreAnualSuccess
+  | LoadBalanza
+  | LoadBalanzaFail
+  | LoadBalanzaSuccess
   | UpsertSaldo;

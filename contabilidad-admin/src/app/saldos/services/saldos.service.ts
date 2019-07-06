@@ -19,12 +19,18 @@ export class SaldosService {
 
   constructor(private http: HttpClient, private config: ConfigService) {}
 
-  list(filter: EjercicioMes): Observable<SaldoPorCuentaContable[]> {
-    const params = new HttpParams()
+  list(
+    filter: EjercicioMes,
+    nivel: number = null
+  ): Observable<SaldoPorCuentaContable[]> {
+    let params = new HttpParams()
       .set('ejercicio', filter.ejercicio.toString())
       .set('mes', filter.mes.toString())
       .set('sort', 'clave')
       .set('order', 'asc');
+    if (nivel) {
+      params = params.set('nivel', nivel.toString());
+    }
     return this.http
       .get<SaldoPorCuentaContable[]>(this.apiUrl, { params: params })
       .pipe(catchError((error: any) => throwError(error)));

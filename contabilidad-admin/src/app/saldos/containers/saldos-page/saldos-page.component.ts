@@ -30,7 +30,7 @@ export class SaldosPageComponent implements OnInit {
       icon: 'storage'
     },
     {
-      route: 'banalza',
+      route: 'balanza',
       title: 'Balanza',
       description: 'Balanza',
       icon: 'my_library_books'

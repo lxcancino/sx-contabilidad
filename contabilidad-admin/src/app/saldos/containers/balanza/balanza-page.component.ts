@@ -56,7 +56,7 @@ export class BalanzaPageComponent implements OnInit, OnDestroy {
   onSelect(event: SaldoPorCuentaContable) {}
 
   reload() {
-    this.store.dispatch(new fromStore.LoadSaldos());
+    this.store.dispatch(new fromStore.LoadBalanza());
   }
 
   onFilter(event) {
