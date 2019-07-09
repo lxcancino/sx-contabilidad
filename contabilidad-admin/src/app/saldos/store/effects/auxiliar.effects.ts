@@ -13,6 +13,33 @@ export class AuxiliarEffects {
   constructor(private actions$: Actions, private service: AuxiliaresService) {}
 
   @Effect()
+  loadAuxiliar$ = this.actions$.pipe(
+    ofType<fromActions.LoadAuxiliar>(
+      fromActions.AuxiliarActionTypes.LoadAuxiliar
+    ),
+    map(action => action.payload),
+    switchMap(command =>
+      this.service
+        .auxiliar(
+          command.cuentaInicial.id,
+          command.cuentaFinal.id,
+          command.periodo
+        )
+        .pipe(
+          map(
+            rows =>
+              new fromActions.LoadAuxiliarSuccess({
+                movimientos: rows
+              })
+          ),
+          catchError(response =>
+            of(new fromActions.LoadAuxiliarFail({ response }))
+          )
+        )
+    )
+  );
+
+  @Effect()
   loadAuxiliarBancos$ = this.actions$.pipe(
     ofType<fromActions.LoadAuxiliarDeBancos>(
       fromActions.AuxiliarActionTypes.LoadAuxiliarDeBancos

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 
 import { Store, select } from '@ngrx/store';
 import * as fromRoot from 'app/store';
@@ -20,7 +20,7 @@ import { Periodo } from 'app/_core/models/periodo';
   templateUrl: './auxiliar-bancos.component.html',
   styleUrls: ['./auxiliar-bancos.component.scss']
 })
-export class AuxiliarBancosComponent implements OnInit {
+export class AuxiliarBancosComponent implements OnInit, OnDestroy {
   search = '';
 
   movimientos$: Observable<Auxiliar[]>;
@@ -43,6 +43,10 @@ export class AuxiliarBancosComponent implements OnInit {
     this.periodo = Periodo.fromStorage(this.storageKey, Periodo.fromNow(45));
   }
 
+  ngOnDestroy() {
+    this.store.dispatch(new fromStore.CleanAuxiliar());
+  }
+
   reload() {}
 
   generar() {
@@ -58,7 +62,7 @@ export class AuxiliarBancosComponent implements OnInit {
           Periodo.saveOnStorage(this.storageKey, periodo);
           this.store.dispatch(
             new fromStore.LoadAuxiliarDeBancos({
-              cuentaId: res.cuentaInicial,
+              cuentaId: res.cuentaInicial.id,
               periodo
             })
           );

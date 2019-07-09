@@ -5,6 +5,7 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Periodo } from 'app/_core/models/periodo';
 
 import * as moment from 'moment';
+import { CuentaContable } from 'app/cuentas/models';
 
 @Component({
   selector: 'sx-auxiliar-contable-dialog',
@@ -26,10 +27,12 @@ import * as moment from 'moment';
       </mat-form-field>
     </div>
     <div layout>
-      <sx-cuenta-contable-field formControlName="cuentaInicial" flex placeholder="De la Cuenta:"></sx-cuenta-contable-field>
+      <sx-cuenta-contable-field formControlName="cuentaInicial" flex placeholder="De la Cuenta:" [detalle]="true">
+      </sx-cuenta-contable-field>
     </div>
     <div layout>
-      <sx-cuenta-contable-field formControlName="cuentaFinal" flex placeholder="A la cuenta:"></sx-cuenta-contable-field>
+      <sx-cuenta-contable-field formControlName="cuentaFinal" flex placeholder="A la cuenta:" [detalle]="true">
+      </sx-cuenta-contable-field>
     </div>
   </form>
   </mat-dialog-content>
@@ -42,6 +45,7 @@ import * as moment from 'moment';
 export class AuxiliarContableDialogComponent implements OnInit {
   periodo: Periodo;
   form: FormGroup;
+  rango: { cuentaInicial: CuentaContable; cuentaFinal: CuentaContable };
 
   constructor(
     public dialogRef: MatDialogRef<AuxiliarContableDialogComponent>,
@@ -49,6 +53,7 @@ export class AuxiliarContableDialogComponent implements OnInit {
     private fb: FormBuilder
   ) {
     this.periodo = data.periodo || Periodo.mesActual();
+    this.rango = data.rango || { cuentaInicial: null, cuentaFinal: null };
   }
 
   ngOnInit() {
@@ -60,8 +65,8 @@ export class AuxiliarContableDialogComponent implements OnInit {
     this.form = this.fb.group({
       fechaInicial: [this.periodo.fechaInicial, Validators.required],
       fechaFinal: [this.periodo.fechaInicial, Validators.required],
-      cuentaInicial: [null, Validators.required],
-      cuentaFinal: [null]
+      cuentaInicial: [this.rango.cuentaInicial, Validators.required],
+      cuentaFinal: [this.rango.cuentaFinal]
     });
   }
 
@@ -71,17 +76,16 @@ export class AuxiliarContableDialogComponent implements OnInit {
 
   closeDialog() {
     const params = { ...this.form.value };
-    params.cuentaInicial = this.form.get('cuentaInicial').value.id;
+    params.cuentaInicial = this.form.get('cuentaInicial').value;
     if (this.form.get('cuentaFinal').value) {
-      params.cuentaFinal = this.form.get('cuentaFinal').value.id;
+      params.cuentaFinal = this.form.get('cuentaFinal').value;
+    } else {
+      params.cuentaFinal = params.cuentaInicial;
     }
     const f1 = moment(this.form.get('fechaInicial').value).toDate();
     const f2 = moment(this.form.get('fechaFinal').value).toDate();
     const periodo = new Periodo(f1, f2);
     params.periodo = periodo;
-    // params.fechaInicial = moment(f1).toISOString();
-    // params.fechaFinal = moment(f2).toISOString();
-
     this.dialogRef.close(params);
   }
 }

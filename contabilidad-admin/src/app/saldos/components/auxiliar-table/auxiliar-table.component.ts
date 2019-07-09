@@ -18,7 +18,9 @@ import {
   FilterChangedEvent,
   GridReadyEvent,
   GridApi,
-  ColDef
+  ColDef,
+  CsvExportParams,
+  ProcessCellForExportParams
 } from 'ag-grid-community';
 
 import { Auxiliar } from 'app/saldos/models/auxiliar';
@@ -146,14 +148,32 @@ export class AuxiliarTableComponent implements OnInit, OnChanges {
   }
 
   exportData() {
-    const params = {
-      fileName: `AUX_BANCOS_${new Date().getTime()}.csv`
+    const params: CsvExportParams = {
+      fileName: `AUX_${new Date().getTime()}.csv`,
+      processCellCallback: (pm: ProcessCellForExportParams) => {
+        if (pm.column.getId() === 'fecha') {
+          return this.transformDate(pm.value);
+        }
+        return pm.value;
+      }
     };
+
     this.gridApi.exportDataAsCsv(params);
   }
 
   private buildColsDef() {
     const data: ColDef[] = [
+      {
+        headerName: 'T',
+        field: 'tipo',
+        cellRenderer: params => params.value.substring(0, 1),
+        width: 60
+      },
+      {
+        headerName: 'Subtipo',
+        field: 'subtipo',
+        width: 150
+      },
       {
         headerName: 'Poliza',
         field: 'poliza',
@@ -167,31 +187,22 @@ export class AuxiliarTableComponent implements OnInit, OnChanges {
       {
         headerName: 'Mes',
         field: 'mes',
-        width: 100
+        width: 90
       },
       {
         headerName: 'Fecha',
         field: 'fecha',
         cellRenderer: params => this.transformDate(params.value),
-        width: 100
+        width: 120
       },
       {
         headerName: 'Cuenta',
         field: 'clave'
       },
       {
-        headerName: 'Concepto',
-        field: 'concepto'
-      },
-      {
-        headerName: 'Tipo',
-        field: 'tipo',
-        maxWidth: 110
-      },
-      {
-        headerName: 'Subtipo',
-        field: 'subtipo',
-        maxWidth: 110
+        headerName: 'Descripción',
+        field: 'descripcion',
+        minWidth: 250
       },
       {
         headerName: 'Debe',
@@ -207,12 +218,13 @@ export class AuxiliarTableComponent implements OnInit, OnChanges {
       },
       {
         headerName: 'Sucursal',
-        field: 'sucursal'
+        field: 'sucursal',
+        maxWidth: 130
       },
       {
         headerName: 'Asiento',
         field: 'asiento',
-        maxWidth: 120
+        maxWidth: 130
       }
     ];
     return data;

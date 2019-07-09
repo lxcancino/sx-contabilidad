@@ -1,15 +1,20 @@
 import * as fromActions from '../actions/auxiliar.actions';
 import { AuxiliarActionTypes } from '../actions/auxiliar.actions';
 import { Auxiliar } from 'app/saldos/models/auxiliar';
+import { CuentaContable } from 'app/cuentas/models';
 
 export interface State {
   registros: Auxiliar[];
+  cuentaInicial: CuentaContable;
+  cuentaFinal: CuentaContable;
   loading: boolean;
 }
 
 export const initialState = {
   loading: false,
-  registros: []
+  registros: [],
+  cuentaInicial: undefined,
+  cuentaFinal: undefined
 };
 
 export function reducer(
@@ -17,23 +22,42 @@ export function reducer(
   action: fromActions.AuxiliarActions
 ): State {
   switch (action.type) {
+    case AuxiliarActionTypes.LoadAuxiliar: {
+      const { cuentaInicial, cuentaFinal } = action.payload;
+      return {
+        ...state,
+        loading: true,
+        cuentaInicial,
+        cuentaFinal
+      };
+    }
+
     case AuxiliarActionTypes.LoadAuxiliarDeBancos: {
       return {
         ...state,
         loading: true
       };
     }
+    case AuxiliarActionTypes.LoadAuxiliarFail:
     case AuxiliarActionTypes.LoadAuxiliarDeBancosFail: {
       return {
         ...state,
         loading: false
       };
     }
+
+    case AuxiliarActionTypes.LoadAuxiliarSuccess:
     case AuxiliarActionTypes.LoadAuxiliarDeBancosSuccess: {
       return {
         ...state,
         registros: action.payload.movimientos,
         loading: false
+      };
+    }
+    case AuxiliarActionTypes.CleanAuxiliar: {
+      return {
+        ...state,
+        registros: []
       };
     }
     default:
@@ -45,3 +69,6 @@ export function reducer(
 
 export const getAuxiliarLoading = (state: State) => state.loading;
 export const getRegistros = (state: State) => state.registros;
+export const getCuentasRange = (state: State) => {
+  return { cuentaInicial: state.cuentaInicial, cuentaFinal: state.cuentaFinal };
+};

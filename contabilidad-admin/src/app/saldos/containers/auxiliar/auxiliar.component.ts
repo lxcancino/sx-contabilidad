@@ -1,11 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 
 import { Store, select } from '@ngrx/store';
-import * as fromRoot from 'app/store';
 import * as fromStore from '../../store';
-import * as fromActions from '../../store/actions/auxiliar.actions';
 
-import { Observable } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 
 import { ReportService } from 'app/reportes/services/report.service';
 
@@ -14,13 +12,14 @@ import { MatDialog } from '@angular/material';
 import { AuxiliarContableDialogComponent } from 'app/saldos/components';
 import { Auxiliar } from 'app/saldos/models/auxiliar';
 import { Periodo } from 'app/_core/models/periodo';
+import { CuentaContable } from 'app/cuentas/models';
 
 @Component({
   selector: 'sx-auxiliar',
   templateUrl: './auxiliar.component.html',
   styleUrls: ['./auxiliar.component.scss']
 })
-export class AuxiliarComponent implements OnInit {
+export class AuxiliarComponent implements OnInit, OnDestroy {
   search = '';
 
   movimientos$: Observable<Auxiliar[]>;
@@ -28,6 +27,15 @@ export class AuxiliarComponent implements OnInit {
 
   loading$: Observable<boolean>;
   totales: any;
+
+  cuentaRange$: Observable<{
+    cuentaInicial: CuentaContable;
+    cuentaFinal: CuentaContable;
+  }>;
+
+  rango: { cuentaInicial: CuentaContable; cuentaFinal: CuentaContable } = null;
+
+  subscription: Subscription;
 
   private storageKey = 'sx.contabilidad.auxiliar.periodo';
 
@@ -41,6 +49,16 @@ export class AuxiliarComponent implements OnInit {
     this.loading$ = this.store.pipe(select(fromStore.getAuxiliarLoading));
     this.movimientos$ = this.store.pipe(select(fromStore.getAllAuxiliar));
     this.periodo = Periodo.fromStorage(this.storageKey, Periodo.fromNow(45));
+    this.subscription = this.store
+      .pipe(select(fromStore.getCuentasRange))
+      .subscribe(r => (this.rango = r));
+  }
+
+  ngOnDestroy() {
+    if (this.subscription) {
+      this.subscription.unsubscribe();
+    }
+    this.store.dispatch(new fromStore.CleanAuxiliar());
   }
 
   reload() {}
@@ -48,7 +66,7 @@ export class AuxiliarComponent implements OnInit {
   generar() {
     this.dialog
       .open(AuxiliarContableDialogComponent, {
-        data: { periodo: this.periodo },
+        data: { periodo: this.periodo, rango: this.rango },
         width: '750px'
       })
       .afterClosed()
@@ -57,8 +75,9 @@ export class AuxiliarComponent implements OnInit {
           const periodo: Periodo = res.periodo;
           Periodo.saveOnStorage(this.storageKey, periodo);
           this.store.dispatch(
-            new fromStore.LoadAuxiliarDeBancos({
-              cuentaId: res.cuentaInicial,
+            new fromStore.LoadAuxiliar({
+              cuentaInicial: res.cuentaInicial,
+              cuentaFinal: res.cuentaFinal || res.cuentaInicial,
               periodo
             })
           );
@@ -82,7 +101,7 @@ export class AuxiliarComponent implements OnInit {
       .subscribe(res => {
         if (res) {
           this.reportService.runReport(
-            `contabilidad/saldos/printAuxiliarBancos`,
+            `contabilidad/auxiliar/printAuxiliar`,
             res
           );
         }
