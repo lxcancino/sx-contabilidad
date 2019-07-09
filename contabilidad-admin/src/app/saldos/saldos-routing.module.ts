@@ -28,6 +28,10 @@ const routes: Routes = [
         component: fromContainers.AuxiliarComponent
       },
       {
+        path: 'auxiliarBancos',
+        component: fromContainers.AuxiliarBancosComponent
+      },
+      {
         path: 'diot',
         component: fromContainers.DiotComponent
       }

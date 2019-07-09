@@ -16,11 +16,11 @@ import { Auxiliar } from 'app/saldos/models/auxiliar';
 import { Periodo } from 'app/_core/models/periodo';
 
 @Component({
-  selector: 'sx-auxiliar',
-  templateUrl: './auxiliar.component.html',
-  styleUrls: ['./auxiliar.component.scss']
+  selector: 'sx-auxiliar-bancos',
+  templateUrl: './auxiliar-bancos.component.html',
+  styleUrls: ['./auxiliar-bancos.component.scss']
 })
-export class AuxiliarComponent implements OnInit {
+export class AuxiliarBancosComponent implements OnInit {
   search = '';
 
   movimientos$: Observable<Auxiliar[]>;
@@ -29,7 +29,7 @@ export class AuxiliarComponent implements OnInit {
   loading$: Observable<boolean>;
   totales: any;
 
-  private storageKey = 'sx.contabilidad.auxiliar.periodo';
+  private storageKey = 'sx.contabilidad.auxiliar-bancos.periodo';
 
   constructor(
     private store: Store<fromStore.State>,

@@ -22,6 +22,7 @@ import { CuentaContable } from 'app/cuentas/models';
 
 export const CUENTA_CONTABLE_LOOKUPFIELD_VALUE_ACCESSOR: any = {
   provide: NG_VALUE_ACCESSOR,
+  // tslint:disable-next-line: no-use-before-declare
   useExisting: forwardRef(() => CuentaContableFieldComponent),
   multi: true
 };

@@ -66,6 +66,9 @@ export function reducer(state = initialState, action: SaldosActions): State {
 
     case SaldosActionTypes.ActualizarSaldosSuccess:
     case SaldosActionTypes.LoadSaldosSuccess: {
+      // adapter.removeAll({
+      //   ...state,
+      // });
       return adapter.addAll(action.payload.saldos, {
         ...state,
         loading: false,

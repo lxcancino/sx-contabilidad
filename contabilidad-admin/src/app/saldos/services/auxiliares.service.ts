@@ -6,9 +6,8 @@ import { catchError } from 'rxjs/operators';
 
 import { ConfigService } from 'app/utils/config.service';
 
-import { SaldoPorCuentaContable } from '../models';
-import { Update } from '@ngrx/entity';
-import { EjercicioMes } from '../../models/ejercicio-mes';
+import { Periodo } from 'app/_core/models/periodo';
+import { Auxiliar } from '../models/auxiliar';
 
 @Injectable({ providedIn: 'root' })
 export class AuxiliaresService {
@@ -16,43 +15,20 @@ export class AuxiliaresService {
 
   constructor(private http: HttpClient, private config: ConfigService) {}
 
-  drillPeriodo(cuentaId: number, periodo: EjercicioMes): Observable<any> {
-    const url = `${this.apiUrl}/drillPeriodo`;
+  bancos(cuentaId: number, periodo: Periodo): Observable<Auxiliar[]> {
+    const url = this.config.buildApiUrl('contabilidad/auxiliarBancos');
     const params = new HttpParams()
-      .set('ejercicio', periodo.ejercicio.toString())
-      .set('mes', periodo.mes.toString())
+      .set('fechaInicial', periodo.fechaInicial.toISOString())
+      .set('fechaFinal', periodo.fechaFinal.toISOString())
       .set('cuenta', cuentaId.toString());
     return this.http
-      .get<any[]>(url, { params: params })
-      .pipe(catchError((error: any) => throwError(error)));
-  }
-
-  drillSubtipo(command: {
-    cuenta: number;
-    ejercicio: number;
-    mes: number;
-    subtipos: string[];
-    fecha?: string;
-  }): Observable<any> {
-    const url = `${this.apiUrl}/drillSubtipo`;
-    return this.http
-      .post<any[]>(url, command)
-      .pipe(catchError((error: any) => throwError(error)));
-  }
-
-  drillDia(cuentaId: number, fecha: string): Observable<any> {
-    const url = `${this.apiUrl}/drillFecha`;
-    const params = new HttpParams()
-      .set('fecha', fecha)
-      .set('cuenta', cuentaId.toString());
-    return this.http
-      .get<any[]>(url, { params: params })
+      .get<Auxiliar[]>(url, { params: params })
       .pipe(catchError((error: any) => throwError(error)));
   }
 
   get apiUrl() {
     if (!this._apiUrl) {
-      this._apiUrl = this.config.buildApiUrl('contabilidad/saldos');
+      this._apiUrl = this.config.buildApiUrl('contabilidad/auxiliar');
     }
     return this._apiUrl;
   }

@@ -40,6 +40,14 @@
     <mat-divider></mat-divider>
 
     <h3 matSubheader>Auxiliares</h3>
+    <ng-template let-item let-last="last" ngFor [ngForOf]="auxiliares">
+      <a mat-list-item [routerLink]="[item.route]" routerLinkActive="active">
+        <mat-icon matListAvatar>{{ item.icon }}</mat-icon>
+        <h3 matLine>{{ item.title }}</h3>
+        <p matLine>{{ item.description }}</p>
+      </a>
+      <mat-divider [inset]="true" *ngIf="!last"></mat-divider>
+    </ng-template>
   </mat-nav-list>
 
   <router-outlet></router-outlet>

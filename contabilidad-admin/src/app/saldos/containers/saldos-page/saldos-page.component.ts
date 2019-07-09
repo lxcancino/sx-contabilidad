@@ -35,17 +35,27 @@ export class SaldosPageComponent implements OnInit {
       description: 'Balanza',
       icon: 'my_library_books'
     },
-    {
-      route: 'auxiliar',
-      title: 'Auxiliares',
-      description: 'Consultas de auxiliares',
-      icon: 'layers'
-    },
+
     {
       route: 'diot',
       title: 'DIOT',
       description: '',
       icon: 'grid_off'
+    }
+  ];
+
+  auxiliares: any[] = [
+    {
+      route: 'auxiliar',
+      title: 'General',
+      description: 'Auxiliar contable',
+      icon: 'layers'
+    },
+    {
+      route: 'auxiliarBancos',
+      title: 'Bancos',
+      description: 'Auxiliar de bancos',
+      icon: 'account_balance'
     }
   ];
 

@@ -3,13 +3,15 @@ import { AuxiliarContableDialogComponent } from './auxiliar-contable-dialog/auxi
 import { PolizadetTableComponent } from './polizadet-table/polizadet-table.component';
 import { MovimientosTableComponent } from './movimientos-table/movimientos-table.component';
 import { DiotTableComponent } from './diot-table/diot-table.component';
+import { AuxiliarTableComponent } from './auxiliar-table/auxiliar-table.component';
 
 export const components: any[] = [
   SaldosTableComponent,
   AuxiliarContableDialogComponent,
   PolizadetTableComponent,
   MovimientosTableComponent,
-  DiotTableComponent
+  DiotTableComponent,
+  AuxiliarTableComponent
 ];
 export const entryComponents: any[] = [AuxiliarContableDialogComponent];
 
@@ -18,3 +20,4 @@ export * from './auxiliar-contable-dialog/auxiliar-contable-dialog.component';
 export * from './polizadet-table/polizadet-table.component';
 export * from './movimientos-table/movimientos-table.component';
 export * from './diot-table/diot-table.component';
+export * from './auxiliar-table/auxiliar-table.component';
