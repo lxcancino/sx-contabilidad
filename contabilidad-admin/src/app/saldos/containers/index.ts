@@ -7,6 +7,7 @@ import { MovimientosPorCuentaComponent } from './movimientos-por-cuenta/movimien
 import { BalanzaPageComponent } from './balanza/balanza-page.component';
 import { DiotComponent } from './diot/diot.component';
 import { AuxiliarBancosComponent } from './auxiliar-bancos/auxiliar-bancos.component';
+import { PagoIsrComponent } from './pago-isr/pago-isr.component';
 
 export const containers: any[] = [
   SaldosPageComponent,
@@ -16,7 +17,8 @@ export const containers: any[] = [
   AuxiliarComponent,
   BalanzaPageComponent,
   DiotComponent,
-  AuxiliarBancosComponent
+  AuxiliarBancosComponent,
+  PagoIsrComponent
 ];
 
 export * from './saldos-page/saldos-page.component';
@@ -29,3 +31,4 @@ export * from './balanza/balanza-page.component';
 
 export * from './diot/diot.component';
 export * from './auxiliar-bancos/auxiliar-bancos.component';
+export * from './pago-isr/pago-isr.component';

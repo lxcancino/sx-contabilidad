@@ -19,24 +19,38 @@ export function reducer(
   action: fromActions.DiotActions
 ): State {
   switch (action.type) {
+    case DiotActionTypes.GenerarArchivoDiot:
+    case DiotActionTypes.GenerarDiot:
     case DiotActionTypes.LoadDiot: {
       return {
         ...state,
         loading: true
       };
     }
+    case DiotActionTypes.GenerarArchivoDiotFail:
+    case DiotActionTypes.GenerarDiotFail:
     case DiotActionTypes.LoadDiotFail: {
       return {
         ...state,
         loading: false
       };
     }
+
+    case DiotActionTypes.GenerarDiotSuccess:
     case DiotActionTypes.LoadDiotSuccess: {
       return adapter.addAll(action.payload.rows, {
         ...state,
         loading: false
       });
     }
+
+    case DiotActionTypes.GenerarArchivoDiotSuccess: {
+      return {
+        ...state,
+        loading: false
+      };
+    }
+
     default:
       return {
         ...state

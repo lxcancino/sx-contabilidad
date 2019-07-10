@@ -41,6 +41,12 @@ export class SaldosPageComponent implements OnInit {
       title: 'DIOT',
       description: '',
       icon: 'grid_off'
+    },
+    {
+      route: 'pagoIsr',
+      title: 'Pago ISR',
+      description: 'Pago provisional de ISR',
+      icon: 'work'
     }
   ];
 

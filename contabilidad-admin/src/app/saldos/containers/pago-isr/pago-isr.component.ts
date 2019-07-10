@@ -7,23 +7,22 @@ import * as fromStore from '../../store';
 import { Observable, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
-import { Diot } from '../../models';
+import { PagoIsr } from '../../models';
 import { ReportService } from 'app/reportes/services/report.service';
 
 import { MatDialog } from '@angular/material';
 import { TdDialogService } from '@covalent/core';
 
 import { EjercicioMes } from '../../../models/ejercicio-mes';
-import { DiotService } from 'app/saldos/services/diot.service';
 
 @Component({
-  selector: 'sx-diot',
-  templateUrl: './diot.component.html',
-  styleUrls: ['./diot.component.scss']
+  selector: 'sx-pago-isr',
+  templateUrl: './pago-isr.component.html',
+  styleUrls: ['./pago-isr.component.scss']
 })
-export class DiotComponent implements OnInit, OnDestroy {
+export class PagoIsrComponent implements OnInit, OnDestroy {
   search = '';
-  diot$: Observable<Diot[]>;
+  rows$: Observable<PagoIsr[]>;
 
   periodo: EjercicioMes;
 
@@ -34,13 +33,12 @@ export class DiotComponent implements OnInit, OnDestroy {
     private store: Store<fromStore.State>,
     private dialog: MatDialog,
     private reportService: ReportService,
-    private dialogService: TdDialogService,
-    private service: DiotService
+    private dialogService: TdDialogService
   ) {}
 
   ngOnInit() {
-    this.loading$ = this.store.pipe(select(fromStore.getDiotLoading));
-    this.diot$ = this.store.pipe(select(fromStore.getAllDiot));
+    this.loading$ = this.store.pipe(select(fromStore.getPagoIsrLoading));
+    this.rows$ = this.store.pipe(select(fromStore.getAllPagoIsr));
 
     this.store
       .pipe(select(fromStore.getSaldosPeriodo))
@@ -56,10 +54,10 @@ export class DiotComponent implements OnInit, OnDestroy {
     this.destroy$.complete();
   }
 
-  onSelect(event: Diot) {}
+  onSelect(event: PagoIsr) {}
 
   reload(periodo: EjercicioMes) {
-    this.store.dispatch(new fromStore.LoadDiot({ periodo }));
+    this.store.dispatch(new fromStore.LoadPagoIsr({ periodo }));
   }
 
   onFilter(event) {}
@@ -67,23 +65,18 @@ export class DiotComponent implements OnInit, OnDestroy {
   onGenerar(periodo: EjercicioMes) {
     this.dialogService
       .openConfirm({
-        title: `Generar DIOT`,
-        message: `Periodo ${periodo.ejercicio} / ${periodo.mes}`,
+        title: `GENERAR PAGO PROVISIONAL DE ISR `,
+        message: `PERIODO: ${periodo.ejercicio} / ${periodo.mes}`,
         acceptButton: 'GENERAR',
         cancelButton: 'CANCELAR'
       })
       .afterClosed()
       .subscribe(res => {
         if (res) {
-          console.log('Generar DIOT', res);
-          this.store.dispatch(new fromStore.GenerarDiot({ periodo }));
+          console.log('Generar PagoISR', res);
+          this.store.dispatch(new fromStore.GenerarPagoIsr({ periodo }));
         }
       });
-  }
-
-  onGenerarArchivo(periodo: EjercicioMes) {
-    // this.store.dispatch(new fromStore.GenerarArchivoDiot({ periodo }));
-    this.service.downloadDiot(periodo);
   }
 
   printReport() {
@@ -98,7 +91,7 @@ export class DiotComponent implements OnInit, OnDestroy {
       .afterClosed()
       .subscribe(res => {
         if (res) {
-          this.reportService.runReport(`contabilidad/diot/print`, res);
+          this.reportService.runReport(`contabilidad/rows/print`, res);
         }
       });
       */

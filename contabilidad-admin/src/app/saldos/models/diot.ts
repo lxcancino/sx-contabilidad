@@ -27,4 +27,6 @@ export interface Diot {
   pagosSinIva: number;
   ivaRetenidoContribuyente: number;
   ivaNotas: number;
+  ivaAcreditable: number;
+  ivaAnticipo: number;
 }

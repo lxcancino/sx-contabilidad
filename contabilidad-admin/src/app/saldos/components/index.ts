@@ -5,6 +5,7 @@ import { MovimientosTableComponent } from './movimientos-table/movimientos-table
 import { DiotTableComponent } from './diot-table/diot-table.component';
 import { AuxiliarTableComponent } from './auxiliar-table/auxiliar-table.component';
 import { ReclasificarBatchModalComponent } from './reclasificar-batch/reclasificar-batch-modal.component';
+import { PagoIsrTableComponent } from './pago-isr-table/pago-isr-table.component';
 
 export const components: any[] = [
   SaldosTableComponent,
@@ -13,7 +14,8 @@ export const components: any[] = [
   MovimientosTableComponent,
   DiotTableComponent,
   AuxiliarTableComponent,
-  ReclasificarBatchModalComponent
+  ReclasificarBatchModalComponent,
+  PagoIsrTableComponent
 ];
 export const entryComponents: any[] = [
   AuxiliarContableDialogComponent,
@@ -27,3 +29,4 @@ export * from './movimientos-table/movimientos-table.component';
 export * from './diot-table/diot-table.component';
 export * from './auxiliar-table/auxiliar-table.component';
 export * from './reclasificar-batch/reclasificar-batch-modal.component';
+export * from './pago-isr-table/pago-isr-table.component';

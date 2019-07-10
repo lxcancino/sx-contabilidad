@@ -4,49 +4,53 @@ import { Effect, Actions, ofType } from '@ngrx/effects';
 
 import * as fromRoot from 'app/store';
 
-import * as fromActions from '../actions/diot.actions';
-import { DiotActionTypes } from '../actions/diot.actions';
+import * as fromActions from '../actions/pago-isr.actions';
+import { PagoIsrActionTypes } from '../actions/pago-isr.actions';
 
 import { of } from 'rxjs';
 import { map, switchMap, catchError, tap } from 'rxjs/operators';
 
-import { DiotService } from 'app/saldos/services/diot.service';
+import { PagoIsrService } from 'app/saldos/services/pago-isr.service';
 
 @Injectable()
-export class DiotEffects {
-  constructor(private actions$: Actions, private service: DiotService) {}
+export class PagoIsrEffects {
+  constructor(private actions$: Actions, private service: PagoIsrService) {}
 
   @Effect()
   load$ = this.actions$.pipe(
-    ofType<fromActions.LoadDiot>(fromActions.DiotActionTypes.LoadDiot),
+    ofType<fromActions.LoadPagoIsr>(fromActions.PagoIsrActionTypes.LoadPagoIsr),
     map(action => action.payload.periodo),
     switchMap(per =>
       this.service.list(per).pipe(
         map(
           rows =>
-            new fromActions.LoadDiotSuccess({
+            new fromActions.LoadPagoIsrSuccess({
               rows
             })
         ),
-        catchError(response => of(new fromActions.LoadDiotFail({ response })))
+        catchError(response =>
+          of(new fromActions.LoadPagoIsrFail({ response }))
+        )
       )
     )
   );
 
   @Effect()
   generar$ = this.actions$.pipe(
-    ofType<fromActions.GenerarDiot>(fromActions.DiotActionTypes.GenerarDiot),
+    ofType<fromActions.GenerarPagoIsr>(
+      fromActions.PagoIsrActionTypes.GenerarPagoIsr
+    ),
     map(action => action.payload.periodo),
     switchMap(per =>
       this.service.generar(per).pipe(
         map(
           rows =>
-            new fromActions.GenerarDiotSuccess({
+            new fromActions.GenerarPagoIsrSuccess({
               rows
             })
         ),
         catchError(response =>
-          of(new fromActions.GenerarDiotFail({ response }))
+          of(new fromActions.GenerarPagoIsrFail({ response }))
         )
       )
     )
@@ -54,14 +58,9 @@ export class DiotEffects {
 
   @Effect()
   errorHandler$ = this.actions$.pipe(
-    ofType<
-      | fromActions.LoadDiotFail
-      | fromActions.GenerarDiotFail
-      | fromActions.GenerarArchivoDiotFail
-    >(
-      DiotActionTypes.LoadDiotFail,
-      DiotActionTypes.GenerarDiotFail,
-      DiotActionTypes.GenerarArchivoDiotFail
+    ofType<fromActions.LoadPagoIsrFail | fromActions.GenerarPagoIsrFail>(
+      PagoIsrActionTypes.LoadPagoIsrFail,
+      PagoIsrActionTypes.GenerarPagoIsrFail
     ),
     map(action => action.payload.response),
     map(response => new fromRoot.GlobalHttpError({ response }))

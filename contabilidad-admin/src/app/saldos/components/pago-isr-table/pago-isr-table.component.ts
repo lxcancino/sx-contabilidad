@@ -11,7 +11,7 @@ import {
   LOCALE_ID,
   Inject
 } from '@angular/core';
-import { formatDate, formatCurrency } from '@angular/common';
+import { formatCurrency } from '@angular/common';
 
 import {
   GridOptions,
@@ -21,10 +21,10 @@ import {
   ColDef
 } from 'ag-grid-community';
 
-import { Diot } from 'app/saldos/models';
+import { PagoIsr, PagoIsrRow, buildPagoIsrRows } from 'app/saldos/models';
 
 @Component({
-  selector: 'sx-diot-table',
+  selector: 'sx-pago-isr-table',
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
   <ag-grid-angular #agGrid
@@ -32,9 +32,9 @@ import { Diot } from 'app/saldos/models';
     style="width: 100%; height: 100%;"
     [gridOptions]="gridOptions"
     [defaultColDef]="defaultColDef"
-    [enableFilter]="true"
-    [enableSorting]="true"
-    [floatingFilter]="true"
+    [enableFilter]="false"
+    [enableSorting]="false"
+    [floatingFilter]="false"
     [enableColResize]="true"
     [localeText]="localeText"
     (firstDataRendered)="onFirstDataRendered($event)"
@@ -44,9 +44,9 @@ import { Diot } from 'app/saldos/models';
   `,
   styles: []
 })
-export class DiotTableComponent implements OnInit, OnChanges {
+export class PagoIsrTableComponent implements OnInit, OnChanges {
   @Input()
-  partidas: Diot[] = [];
+  partidas: PagoIsr[] = [];
 
   @Input()
   filter: string;
@@ -63,9 +63,6 @@ export class DiotTableComponent implements OnInit, OnChanges {
 
   @Output()
   edit = new EventEmitter();
-
-  @Output()
-  totalesChanged = new EventEmitter<{ debe: number; haber: number }>();
 
   printFriendly = false;
 
@@ -94,37 +91,22 @@ export class DiotTableComponent implements OnInit, OnChanges {
   ngOnChanges(changes: SimpleChanges) {
     if (changes.partidas && changes.partidas.currentValue) {
       if (this.gridApi) {
-        this.gridApi.setRowData(changes.partidas.currentValue);
+        // this.gridApi.setRowData(changes.partidas.currentValue);
       }
     }
   }
 
-  onModelUpdate(event) {
-    this.actualizarTotales();
-  }
+  onModelUpdate(event) {}
 
   onGridReady(params: GridReadyEvent) {
     this.gridApi = params.api;
-    this.gridApi.setRowData(this.partidas);
+    const data = buildPagoIsrRows();
+    this.gridApi.setRowData(data);
   }
 
-  onFirstDataRendered(params) {
-    // params.api.sizeColumnsToFit();
-  }
+  onFirstDataRendered(params) {}
 
   onFilter(event: FilterChangedEvent) {}
-
-  actualizarTotales() {
-    if (this.gridApi) {
-      let debe = 0.0;
-      let haber = 0.0;
-      this.gridApi.forEachNodeAfterFilter((rowNode, index) => {
-        debe += rowNode.data.debe;
-        haber += rowNode.data.haber;
-      });
-      this.totalesChanged.emit({ debe, haber });
-    }
-  }
 
   printGrid() {
     this.gridApi.setDomLayout('print');
@@ -148,139 +130,71 @@ export class DiotTableComponent implements OnInit, OnChanges {
   private buildColsDef(): ColDef[] {
     return [
       {
-        headerName: 'Proveedor',
-        field: 'proveedor',
-        tooltip: params => params.colDef.colId
+        headerName: 'Concepto',
+        field: 'concepto',
+        width: 300,
+        pinned: 'left'
       },
       {
-        headerName: 'RFC',
-        field: 'rfc'
-      },
-      {
-        headerName: 'Id',
-        field: 'idFiscal'
-      },
-      {
-        headerName: 'Nom Ext',
-        field: 'nombreExtranjero'
-      },
-      {
-        headerName: 'P. Residencia',
-        field: 'paisResidencia'
-      },
-      {
-        headerName: 'Nacionalidad',
-        field: 'nacionalidad'
-      },
-      {
-        headerName: 'P 1516',
-        field: 'pagos1516',
-        cellRenderer: params => this.transformCurrency(params.value),
-        tooltip: params => params.colDef.colId
-      },
-      {
-        headerName: 'P 15',
-        field: 'pagos15',
+        headerName: 'Enero',
+        field: 'enero',
         cellRenderer: params => this.transformCurrency(params.value)
       },
       {
-        headerName: 'IVA Pagad 1516',
-        field: 'ivaPagado1516',
+        headerName: 'Febrero',
+        field: 'febrero',
         cellRenderer: params => this.transformCurrency(params.value)
       },
       {
-        headerName: 'Pagos 1011',
-        field: 'pagos1011',
+        headerName: 'Marzo',
+        field: 'marzo',
         cellRenderer: params => this.transformCurrency(params.value)
       },
       {
-        headerName: 'Pagos 10',
-        field: 'pagos10',
+        headerName: 'Abril',
+        field: 'abril',
         cellRenderer: params => this.transformCurrency(params.value)
       },
       {
-        headerName: 'Pagos Front',
-        field: 'pagosFrontera',
+        headerName: 'Mayo',
+        field: 'mayo',
         cellRenderer: params => this.transformCurrency(params.value)
       },
       {
-        headerName: 'IVA P1011',
-        field: 'ivaPagado1011',
+        headerName: 'Junio',
+        field: 'junio',
         cellRenderer: params => this.transformCurrency(params.value)
       },
       {
-        headerName: 'IVA PFRON',
-        field: 'ivaPagadoFrontera',
+        headerName: 'Julio',
+        field: 'julio',
         cellRenderer: params => this.transformCurrency(params.value)
       },
       {
-        headerName: 'PImportacion',
-        field: 'pagosImportacion',
+        headerName: 'Agosto',
+        field: 'agosto',
         cellRenderer: params => this.transformCurrency(params.value)
       },
       {
-        headerName: 'IVA P IMP1516',
-        field: 'ivaPagadoImportacion1516',
+        headerName: 'Septiembre',
+        field: 'septiembre',
         cellRenderer: params => this.transformCurrency(params.value)
       },
       {
-        headerName: 'PIMP1011',
-        field: 'pagosImportacion1011',
+        headerName: 'Octubre',
+        field: 'octubre',
         cellRenderer: params => this.transformCurrency(params.value)
       },
       {
-        headerName: 'IVAPIMP1011',
-        field: 'ivaPagadoImportacion1011',
+        headerName: 'Noviembre',
+        field: 'noviembre',
         cellRenderer: params => this.transformCurrency(params.value)
       },
       {
-        headerName: 'PIMPSinIVA',
-        field: 'pagosImportacionSinIva',
+        headerName: 'Diciembre',
+        field: 'diciembre',
+        pinned: 'right',
         cellRenderer: params => this.transformCurrency(params.value)
-      },
-      {
-        headerName: 'PTasa0',
-        field: 'pagosTasa0',
-        cellRenderer: params => this.transformCurrency(params.value)
-      },
-      {
-        headerName: 'PSinIVA',
-        field: 'pagosSinIva',
-        cellRenderer: params => this.transformCurrency(params.value)
-      },
-      {
-        headerName: 'IVA RET CONT',
-        field: 'ivaRetenidoContribuyente',
-        cellRenderer: params => this.transformCurrency(params.value)
-      },
-      {
-        headerName: 'ivaNotas',
-        field: 'IVA Notas',
-        cellRenderer: params => {
-          if (!params.value) {
-            return this.transformCurrency(params.value);
-          } else {
-            return this.transformCurrency(0.0);
-          }
-        }
-      },
-      {
-        headerName: 'IVA Acre',
-        field: 'ivaAcreditable',
-        cellRenderer: params => this.transformCurrency(params.value)
-      },
-      {
-        headerName: 'IVA Ant',
-        field: 'ivaAnticipo',
-        cellRenderer: params => this.transformCurrency(params.value)
-      },
-      {
-        headerName: 'T Tercero',
-        field: 'tipoTercero'
-      },
-      {
-        headerName: 'T Oper',
-        field: 'tipoOperacion'
       }
     ];
   }

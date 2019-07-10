@@ -34,6 +34,10 @@ const routes: Routes = [
       {
         path: 'diot',
         component: fromContainers.DiotComponent
+      },
+      {
+        path: 'pagoIsr',
+        component: fromContainers.PagoIsrComponent
       }
     ]
   }
