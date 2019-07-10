@@ -40,7 +40,9 @@ import { PolizaDet } from 'app/polizas/models';
         [localeText]="localeText"
         (firstDataRendered)="onFirstDataRendered($event)"
         (gridReady)="onGridReady($event)"
-        (modelUpdated)="onModelUpdate($event)">
+        (modelUpdated)="onModelUpdate($event)"
+        [rowSelection]="selectionType"
+        (selectionChanged)="onSelectionChanged()">
       </ag-grid-angular>
     </div>
   `,
@@ -89,6 +91,11 @@ export class MovimientosTableComponent implements OnInit, OnChanges {
   pinnedBottomRowData;
   frameworkComponents;
 
+  @Input()
+  selectionType = 'multiple';
+  @Output()
+  selectionChange = new EventEmitter<any[]>();
+
   constructor(
     private cd: ChangeDetectorRef,
     @Inject(LOCALE_ID) private locale: string
@@ -96,7 +103,7 @@ export class MovimientosTableComponent implements OnInit, OnChanges {
     this.gridOptions = <GridOptions>{};
     this.gridOptions.columnDefs = this.buildColsDef();
     this.defaultColDef = {
-      width: 120,
+      width: 110,
       editable: false,
       filter: 'agTextColumnFilter'
     };
@@ -181,17 +188,17 @@ export class MovimientosTableComponent implements OnInit, OnChanges {
       {
         headerName: 'Cuenta',
         field: 'clave',
-        width: 130
-      },
-      {
-        headerName: 'Concepto',
-        field: 'concepto',
-        width: 200
+        width: 150
       },
       {
         headerName: 'Desc',
         field: 'descripcion',
-        width: 200
+        width: 250
+      },
+      {
+        headerName: 'Concepto',
+        field: 'concepto',
+        width: 150
       },
       {
         headerName: 'Debe',
@@ -208,10 +215,11 @@ export class MovimientosTableComponent implements OnInit, OnChanges {
       {
         headerName: 'Sucursal',
         field: 'sucursal',
-        columnGroupShow: 'open'
+        columnGroupShow: 'open',
+        maxWidth: 120
       },
-      { headerName: 'Ref', field: 'referencia', columnGroupShow: 'closed' },
-      { headerName: 'Docto', field: 'documento', columnGroupShow: 'open' }
+      { headerName: 'Ref', field: 'referencia', maxWidth: 120 },
+      { headerName: 'Docto', field: 'documento', maxWidth: 120 }
     ];
   }
 
@@ -247,5 +255,10 @@ export class MovimientosTableComponent implements OnInit, OnChanges {
   }
   transformDate(data) {
     return formatDate(data, 'dd/MM/yyyy', this.locale);
+  }
+
+  onSelectionChanged() {
+    const selectedRows = this.gridApi.getSelectedRows();
+    this.selectionChange.emit(selectedRows);
   }
 }

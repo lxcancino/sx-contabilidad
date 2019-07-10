@@ -7,12 +7,11 @@ import { PolizaDet } from 'app/polizas/models';
 export const enum MovimientoActionTypes {
   LoadMovimientosPorCuenta = '[Movimientos por cuenta] Load movimientos por cuenta',
   LoadMovimientosPorCuentaFail = '[Movimientos por cuenta API] Load movimientos por cuenta fail',
-  LoadMovimientosPorCuentaSuccess = '[Movimientos por cuenta API] Load movimientos por cuenta success'
-  /*
-  LoadSaldosDeSucuentas = '[Movimientos por cuenta] Load movimientos por cuenta',
-  LoadSaldosDeSucuentasFail = '[Movimientos por cuenta API] Load movimientos por cuenta fail',
-  LoadSaldosDeSucuentasSuccess = '[Movimientos por cuenta API] Load movimientos por cuenta success',
-  */
+  LoadMovimientosPorCuentaSuccess = '[Movimientos por cuenta API] Load movimientos por cuenta success',
+  // Reclasificacicion BATCH
+  ReclasificarMovimientos = '[Saldos Component] Reclasificar movimientos',
+  ReclasificarMovimientosFail = '[Saldos API] Reclasificar movimientos fail',
+  ReclasificarMovimientosSuccess = '[Saldos API] Reclasificar movimientos success'
 }
 
 export class LoadMovimientosPorCuenta implements Action {
@@ -30,7 +29,23 @@ export class LoadMovimientosPorCuentaSuccess implements Action {
   constructor(public payload: { movimientos: PolizaDet[] }) {}
 }
 
+// Reclasificar movimientos
+export class ReclasificarMovimientos implements Action {
+  readonly type = MovimientoActionTypes.ReclasificarMovimientos;
+  constructor(public payload: { cuenta: number; partidas: any[] }) {}
+}
+export class ReclasificarMovimientosFail implements Action {
+  readonly type = MovimientoActionTypes.ReclasificarMovimientosFail;
+  constructor(public payload: { response: any }) {}
+}
+export class ReclasificarMovimientosSuccess implements Action {
+  readonly type = MovimientoActionTypes.ReclasificarMovimientosSuccess;
+}
+
 export type MovimientosActions =
   | LoadMovimientosPorCuenta
   | LoadMovimientosPorCuentaFail
-  | LoadMovimientosPorCuentaSuccess;
+  | LoadMovimientosPorCuentaSuccess
+  | ReclasificarMovimientos
+  | ReclasificarMovimientosFail
+  | ReclasificarMovimientosSuccess;

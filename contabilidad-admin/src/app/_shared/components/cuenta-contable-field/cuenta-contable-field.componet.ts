@@ -98,14 +98,22 @@ export class CuentaContableFieldComponent
         skip(1),
         tap(() => this.onTouch()),
         debounceTime(500),
-        distinctUntilChanged(),
-        filter(value => _.isObject(value)),
-        distinctUntilChanged(
-          (p: CuentaContable, q: CuentaContable) => p.id === q.id
-        )
+        // filter(value => _.isObject(value)),
+        distinctUntilChanged((p: CuentaContable, q: CuentaContable) => {
+          if (p && q) {
+            return p.id === q.id;
+          } else {
+            return false;
+          }
+        })
       )
       .subscribe(val => {
-        this.onChange(val);
+        if (_.isObject(val)) {
+          this.onChange(val);
+        } else {
+          this.onChange(null);
+        }
+        // this.onChange(val);
       });
   }
 

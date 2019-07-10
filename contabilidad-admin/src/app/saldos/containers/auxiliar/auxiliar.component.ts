@@ -1,9 +1,15 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  OnDestroy,
+  ChangeDetectionStrategy,
+  ChangeDetectorRef
+} from '@angular/core';
 
 import { Store, select } from '@ngrx/store';
 import * as fromStore from '../../store';
 
-import { Observable, Subscription } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 
 import { ReportService } from 'app/reportes/services/report.service';
 
@@ -13,9 +19,11 @@ import { AuxiliarContableDialogComponent } from 'app/saldos/components';
 import { Auxiliar } from 'app/saldos/models/auxiliar';
 import { Periodo } from 'app/_core/models/periodo';
 import { CuentaContable } from 'app/cuentas/models';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'sx-auxiliar',
+  changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './auxiliar.component.html',
   styleUrls: ['./auxiliar.component.scss']
 })
@@ -26,58 +34,67 @@ export class AuxiliarComponent implements OnInit, OnDestroy {
   periodo: Periodo;
 
   loading$: Observable<boolean>;
-  totales: any;
 
-  cuentaRange$: Observable<{
-    cuentaInicial: CuentaContable;
-    cuentaFinal: CuentaContable;
-  }>;
+  totales$ = new Subject<any>();
 
-  rango: { cuentaInicial: CuentaContable; cuentaFinal: CuentaContable } = null;
-
-  subscription: Subscription;
+  cuenta: CuentaContable;
+  destroy$ = new Subject<boolean>();
+  saldoInicial: any;
 
   private storageKey = 'sx.contabilidad.auxiliar.periodo';
 
   constructor(
     private store: Store<fromStore.State>,
     private dialog: MatDialog,
-    private reportService: ReportService
+    private reportService: ReportService,
+    private cd: ChangeDetectorRef
   ) {}
 
   ngOnInit() {
     this.loading$ = this.store.pipe(select(fromStore.getAuxiliarLoading));
     this.movimientos$ = this.store.pipe(select(fromStore.getAllAuxiliar));
     this.periodo = Periodo.fromStorage(this.storageKey, Periodo.fromNow(45));
-    this.subscription = this.store
-      .pipe(select(fromStore.getCuentasRange))
-      .subscribe(r => (this.rango = r));
+    this.store
+      .pipe(
+        select(fromStore.getCurrentCuenta),
+        takeUntil(this.destroy$)
+      )
+      .subscribe(r => (this.cuenta = r));
+    this.movimientos$.subscribe( movs => {
+      if (movs.length > 0) {
+        this.saldoInicial = movs[0];
+      }
+    });
   }
 
   ngOnDestroy() {
-    if (this.subscription) {
-      this.subscription.unsubscribe();
-    }
+    this.destroy$.next(true);
+    this.destroy$.complete();
     this.store.dispatch(new fromStore.CleanAuxiliar());
   }
 
   reload() {}
 
+  onTotales(event) {
+    this.totales$.next(event);
+    this.cd.detectChanges();
+  }
+
   generar() {
     this.dialog
       .open(AuxiliarContableDialogComponent, {
-        data: { periodo: this.periodo, rango: this.rango },
+        data: { periodo: this.periodo, cuenta: this.cuenta },
         width: '750px'
       })
       .afterClosed()
       .subscribe((res: any) => {
         if (res) {
           const periodo: Periodo = res.periodo;
+          this.periodo = periodo;
           Periodo.saveOnStorage(this.storageKey, periodo);
           this.store.dispatch(
             new fromStore.LoadAuxiliar({
-              cuentaInicial: res.cuentaInicial,
-              cuentaFinal: res.cuentaFinal || res.cuentaInicial,
+              cuenta: res.cuenta,
               periodo
             })
           );
@@ -86,7 +103,7 @@ export class AuxiliarComponent implements OnInit, OnDestroy {
   }
 
   onFilter(event) {
-    this.totales = event;
+    this.totales$.next(event);
   }
 
   printAuxiliar() {

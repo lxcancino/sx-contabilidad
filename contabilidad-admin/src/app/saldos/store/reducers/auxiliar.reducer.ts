@@ -5,16 +5,14 @@ import { CuentaContable } from 'app/cuentas/models';
 
 export interface State {
   registros: Auxiliar[];
-  cuentaInicial: CuentaContable;
-  cuentaFinal: CuentaContable;
+  cuenta: CuentaContable;
   loading: boolean;
 }
 
 export const initialState = {
   loading: false,
   registros: [],
-  cuentaInicial: undefined,
-  cuentaFinal: undefined
+  cuenta: undefined
 };
 
 export function reducer(
@@ -23,12 +21,11 @@ export function reducer(
 ): State {
   switch (action.type) {
     case AuxiliarActionTypes.LoadAuxiliar: {
-      const { cuentaInicial, cuentaFinal } = action.payload;
+      const cuenta = action.payload.cuenta;
       return {
         ...state,
         loading: true,
-        cuentaInicial,
-        cuentaFinal
+        cuenta
       };
     }
 
@@ -69,6 +66,4 @@ export function reducer(
 
 export const getAuxiliarLoading = (state: State) => state.loading;
 export const getRegistros = (state: State) => state.registros;
-export const getCuentasRange = (state: State) => {
-  return { cuentaInicial: state.cuentaInicial, cuentaFinal: state.cuentaFinal };
-};
+export const getCuenta = (state: State) => state.cuenta;

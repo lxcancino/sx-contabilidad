@@ -56,6 +56,12 @@ export class SaldosPageComponent implements OnInit {
       title: 'Bancos',
       description: 'Auxiliar de bancos',
       icon: 'account_balance'
+    },
+    {
+      route: 'estadoDeResultados',
+      title: 'Estado de resultados',
+      description: '',
+      icon: 'assessment'
     }
   ];
 

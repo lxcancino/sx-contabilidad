@@ -19,4 +19,5 @@ export interface SaldoPorCuentaContable {
   updateUser: string;
   children?: SaldoPorCuentaContable[];
   movimientos?: any[];
+  detalle?: boolean;
 }

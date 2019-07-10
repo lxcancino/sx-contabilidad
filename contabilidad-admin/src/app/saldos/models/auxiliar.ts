@@ -11,4 +11,6 @@ export interface Auxiliar {
   sucursal: string;
   debe: number;
   haber: number;
+  inicial?: number;
+  final?: number;
 }

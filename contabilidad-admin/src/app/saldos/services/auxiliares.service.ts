@@ -15,17 +15,12 @@ export class AuxiliaresService {
 
   constructor(private http: HttpClient, private config: ConfigService) {}
 
-  auxiliar(
-    cuentaInicial: number,
-    cuentaFinal: number,
-    periodo: Periodo
-  ): Observable<Auxiliar[]> {
+  auxiliar(cuenta: number, periodo: Periodo): Observable<Auxiliar[]> {
     const url = this.config.buildApiUrl('contabilidad/auxiliar');
     const params = new HttpParams()
       .set('fechaInicial', periodo.fechaInicial.toISOString())
       .set('fechaFinal', periodo.fechaFinal.toISOString())
-      .set('cuentaInicial', cuentaInicial.toString())
-      .set('cuentaFinal', cuentaFinal.toString());
+      .set('cuenta', cuenta.toString());
     return this.http
       .get<Auxiliar[]>(url, { params: params })
       .pipe(catchError((error: any) => throwError(error)));

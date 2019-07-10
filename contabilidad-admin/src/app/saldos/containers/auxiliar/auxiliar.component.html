@@ -1,21 +1,25 @@
 <div layout="column">
   <mat-card flex>
-    <div layout layout-align="start center" class="pad">
-      <span class="mat-title pad-right">Auixiliar contable</span>
+    <div layout layout-align="start center" class="">
+      <mat-card-title-group>
+        <mat-card-title>Auxiliar</mat-card-title>
+      </mat-card-title-group>
 
-      <div class="pad-left info" *ngIf="rango" layout="column">
-        <div layout>
-          <span class="pad-left pad-bottom">De: </span>
-          <span class="pad-left pad-bottom">{{
-            rango.cuentaInicial?.clave
-          }}</span>
-          <span class="pad-left">({{ rango.cuentaInicial?.descripcion }})</span>
-        </div>
-
-        <div layout>
-          <span class="pad-left">A: </span>
-          <span class="pad-left">{{ rango.cuentaFinal?.clave }}</span>
-          <span class="pad-left">({{ rango.cuentaFinal?.descripcion }})</span>
+      <div layout class="pad-sm-bottom" *ngIf="cuenta" flex>
+        <span class="pad-left" flex>Cuenta: {{ cuenta.clave }}</span>
+        <span class="pad-left">({{ cuenta.descripcion }})</span>
+        <div flex class="pad-left info totales-panel" layout>
+          <ng-container *ngIf="totales$ | async as totales">
+            <label>Inicial: </label>
+            <span *ngIf="saldoInicial">
+              {{ saldoInicial.saldoInicial | currency }}</span
+            >
+            <label>Debe:</label>
+            <span>{{ totales?.debe | currency }}</span>
+            <label>Haber:</label>
+            <span>{{ totales?.haber | currency }}</span>
+            <span>Final:</span>
+          </ng-container>
         </div>
       </div>
 
@@ -61,6 +65,7 @@
     <div class="movimientos-panel">
       <sx-auxiliar-table
         [partidas]="movimientos$ | async"
+        (totalesChanged)="onTotales($event)"
         #grid
       ></sx-auxiliar-table>
     </div>

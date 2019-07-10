@@ -33,4 +33,20 @@ export class MovimientosEffects {
       )
     )
   );
+
+  @Effect()
+  reclasificar$ = this.actions$.pipe(
+    ofType<fromActions.ReclasificarMovimientos>(
+      fromActions.MovimientoActionTypes.ReclasificarMovimientos
+    ),
+    map(action => action.payload),
+    switchMap(command =>
+      this.service.reclasificar(command).pipe(
+        map(rows => new fromActions.ReclasificarMovimientosSuccess()),
+        catchError(response =>
+          of(new fromActions.ReclasificarMovimientosFail({ response }))
+        )
+      )
+    )
+  );
 }

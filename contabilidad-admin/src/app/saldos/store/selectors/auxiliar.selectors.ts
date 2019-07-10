@@ -18,7 +18,7 @@ export const getAuxiliarLoading = createSelector(
   fromAuxiliar.getAuxiliarLoading
 );
 
-export const getCuentasRange = createSelector(
+export const getCurrentCuenta = createSelector(
   getAuxiliarState,
-  fromAuxiliar.getCuentasRange
+  fromAuxiliar.getCuenta
 );

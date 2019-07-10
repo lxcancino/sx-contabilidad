@@ -80,6 +80,13 @@ export class SaldosService {
       .pipe(catchError((error: any) => throwError(error)));
   }
 
+  reclasificar(command: { cuenta: number; partidas: any[] }): Observable<any> {
+    const url = `${this.apiUrl}/reclasificar`;
+    return this.http
+      .post<any>(url, command)
+      .pipe(catchError((error: any) => throwError(error)));
+  }
+
   get apiUrl() {
     if (!this._apiUrl) {
       this._apiUrl = this.config.buildApiUrl('contabilidad/saldos');

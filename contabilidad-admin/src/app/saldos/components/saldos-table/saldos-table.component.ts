@@ -135,6 +135,7 @@ export class SaldosTableComponent implements OnInit, OnChanges {
       // this.gridOptions.rowData = changes.saldos.currentValue;
       if (this.gridApi) {
         this.gridApi.setRowData(changes.saldos.currentValue);
+        this.actualizarTotales();
       }
     }
   }
@@ -161,12 +162,10 @@ export class SaldosTableComponent implements OnInit, OnChanges {
       let haber = 0.0;
       let saldoFinal = 0.0;
       this.gridApi.forEachNodeAfterFilterAndSort((rowNode, index) => {
-        if (rowNode.data.nivel === 1) {
-          saldoInicial += rowNode.data.saldoInicial;
-          debe += rowNode.data.debe;
-          haber += rowNode.data.haber;
-          saldoFinal += rowNode.data.saldoFinal;
-        }
+        saldoInicial += rowNode.data.saldoInicial;
+        debe += rowNode.data.debe;
+        haber += rowNode.data.haber;
+        saldoFinal += rowNode.data.saldoFinal;
       });
       const totales = { saldoInicial, debe, haber, saldoFinal };
       this.totalesChanged.emit(totales);
@@ -212,8 +211,9 @@ export class SaldosTableComponent implements OnInit, OnChanges {
       },
       {
         headerName: 'D',
-        field: 'detaññe',
+        field: 'detalle',
         filter: 'agNumberColumnFilter',
+        cellRenderer: params => (params.value ? 'S' : 'N'),
         width: 60
       },
       {

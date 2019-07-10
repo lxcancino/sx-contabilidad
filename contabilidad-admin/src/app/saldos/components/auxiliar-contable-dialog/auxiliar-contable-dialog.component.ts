@@ -27,11 +27,7 @@ import { CuentaContable } from 'app/cuentas/models';
       </mat-form-field>
     </div>
     <div layout>
-      <sx-cuenta-contable-field formControlName="cuentaInicial" flex placeholder="De la Cuenta:" [detalle]="true">
-      </sx-cuenta-contable-field>
-    </div>
-    <div layout>
-      <sx-cuenta-contable-field formControlName="cuentaFinal" flex placeholder="A la cuenta:" [detalle]="true">
+      <sx-cuenta-contable-field formControlName="cuenta" flex placeholder="Cuenta:" [detalle]="true">
       </sx-cuenta-contable-field>
     </div>
   </form>
@@ -45,7 +41,7 @@ import { CuentaContable } from 'app/cuentas/models';
 export class AuxiliarContableDialogComponent implements OnInit {
   periodo: Periodo;
   form: FormGroup;
-  rango: { cuentaInicial: CuentaContable; cuentaFinal: CuentaContable };
+  cuenta: CuentaContable;
 
   constructor(
     public dialogRef: MatDialogRef<AuxiliarContableDialogComponent>,
@@ -53,7 +49,7 @@ export class AuxiliarContableDialogComponent implements OnInit {
     private fb: FormBuilder
   ) {
     this.periodo = data.periodo || Periodo.mesActual();
-    this.rango = data.rango || { cuentaInicial: null, cuentaFinal: null };
+    this.cuenta = data.cuenta;
   }
 
   ngOnInit() {
@@ -65,8 +61,7 @@ export class AuxiliarContableDialogComponent implements OnInit {
     this.form = this.fb.group({
       fechaInicial: [this.periodo.fechaInicial, Validators.required],
       fechaFinal: [this.periodo.fechaInicial, Validators.required],
-      cuentaInicial: [this.rango.cuentaInicial, Validators.required],
-      cuentaFinal: [this.rango.cuentaFinal]
+      cuenta: [this.cuenta, Validators.required]
     });
   }
 
@@ -76,12 +71,7 @@ export class AuxiliarContableDialogComponent implements OnInit {
 
   closeDialog() {
     const params = { ...this.form.value };
-    params.cuentaInicial = this.form.get('cuentaInicial').value;
-    if (this.form.get('cuentaFinal').value) {
-      params.cuentaFinal = this.form.get('cuentaFinal').value;
-    } else {
-      params.cuentaFinal = params.cuentaInicial;
-    }
+    params.cuenta = this.form.get('cuenta').value;
     const f1 = moment(this.form.get('fechaInicial').value).toDate();
     const f2 = moment(this.form.get('fechaFinal').value).toDate();
     const periodo = new Periodo(f1, f2);

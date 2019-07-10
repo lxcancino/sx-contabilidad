@@ -11,7 +11,6 @@ export enum SaldosActionTypes {
   LoadSaldosSuccess = '[Saldos API] Load Saldos Success',
 
   CleanSaldos = '[Saldos ] Load Saldos Success',
-  
 
   // Actualizar
   ActualizarSaldos = '[Saldos Component] Actualizar Saldos',

@@ -20,8 +20,7 @@ export class LoadAuxiliar implements Action {
   readonly type = AuxiliarActionTypes.LoadAuxiliar;
   constructor(
     public payload: {
-      cuentaInicial: CuentaContable;
-      cuentaFinal: CuentaContable;
+      cuenta: CuentaContable;
       periodo: Periodo;
     }
   ) {}

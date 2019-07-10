@@ -19,12 +19,14 @@ export function reducer(
   action: fromActions.MovimientosActions
 ): State {
   switch (action.type) {
+    case MovimientoActionTypes.ReclasificarMovimientos:
     case MovimientoActionTypes.LoadMovimientosPorCuenta: {
       return {
         ...state,
         loading: true
       };
     }
+    case MovimientoActionTypes.ReclasificarMovimientosFail:
     case MovimientoActionTypes.LoadMovimientosPorCuentaFail: {
       return {
         ...state,
@@ -33,6 +35,12 @@ export function reducer(
     }
     case MovimientoActionTypes.LoadMovimientosPorCuentaSuccess: {
       return adapter.addAll(action.payload.movimientos, {
+        ...state,
+        loading: false
+      });
+    }
+    case MovimientoActionTypes.ReclasificarMovimientosSuccess: {
+      return adapter.removeAll({
         ...state,
         loading: false
       });

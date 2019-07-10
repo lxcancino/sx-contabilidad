@@ -1,5 +1,26 @@
 <mat-card *ngIf="saldo$ | async as saldo">
-  <sx-search-title [title]="getTitle(saldo)"> </sx-search-title>
+  <sx-search-title [title]="getTitle(saldo)">
+    <div layout class="info" flex>
+      <span flex></span>
+      <div layout flex>
+        <span class="pad-right">DEBE:</span>
+        <span flex>{{ totales.debe | currency }}</span>
+      </div>
+      <span flex></span>
+      <div layout flex>
+        <span class="pad-right">HABER:</span>
+        <span flex>{{ totales.haber | currency }}</span>
+      </div>
+    </div>
+    <button
+      mat-menu-item
+      class="actions"
+      (click)="recalcularSaldo(selected)"
+      [disabled]="!selectedSaldo"
+    >
+      <mat-icon>settings</mat-icon> Actualizar saldo
+    </button>
+  </sx-search-title>
   <mat-divider></mat-divider>
   <div class="table-panel">
     <sx-saldos-table
@@ -7,6 +28,7 @@
       #grid
       (drillData)="onDrill($event)"
       (selectionChange)="onSelection($event)"
+      (totalesChanged)="onTotales($event)"
     >
       <button mat-menu-item (click)="reload(saldo)" class="actions">
         <mat-icon>refresh</mat-icon> Refresh
@@ -21,8 +43,18 @@
 </mat-card>
 
 <mat-card>
-  <div layout>
+  <div layout layout-align="center center">
     <mat-card-title>Movimientos</mat-card-title>
+    <span flex></span>
+    <div layout flex>
+      <span class="pad-right">DEBE:</span>
+      <span flex>{{ totalesMovimientos.debe | currency }}</span>
+    </div>
+    <div layout flex>
+      <span class="pad-right">HABER:</span>
+      <span flex>{{ totalesMovimientos.haber | currency }}</span>
+    </div>
+
     <span flex></span>
     <button
       mat-button
@@ -31,6 +63,16 @@
       matTooltip="Exportar a CSV"
     >
       <mat-icon color="primary">file_download</mat-icon>
+    </button>
+    <button
+      mat-button
+      mat-icon-button
+      [disabled]="selected && selected.length === 0"
+      (click)="onReclasificar()"
+      matTooltip="Reclaificar"
+      color="accent"
+    >
+      <mat-icon>call_split</mat-icon>
     </button>
   </div>
   <ng-template
@@ -43,7 +85,8 @@
     <sx-movimientos-table
       #movimientosGrid
       [partidas]="movimientos$ | async"
-      (selectionChange)="onSelection($event)"
+      (selectionChange)="onPartidasSelected($event)"
+      (totalesChanged)="onTotalesMovimientos($event)"
     ></sx-movimientos-table>
   </div>
 </mat-card>

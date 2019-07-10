@@ -19,23 +19,17 @@ export class AuxiliarEffects {
     ),
     map(action => action.payload),
     switchMap(command =>
-      this.service
-        .auxiliar(
-          command.cuentaInicial.id,
-          command.cuentaFinal.id,
-          command.periodo
+      this.service.auxiliar(command.cuenta.id, command.periodo).pipe(
+        map(
+          rows =>
+            new fromActions.LoadAuxiliarSuccess({
+              movimientos: rows
+            })
+        ),
+        catchError(response =>
+          of(new fromActions.LoadAuxiliarFail({ response }))
         )
-        .pipe(
-          map(
-            rows =>
-              new fromActions.LoadAuxiliarSuccess({
-                movimientos: rows
-              })
-          ),
-          catchError(response =>
-            of(new fromActions.LoadAuxiliarFail({ response }))
-          )
-        )
+      )
     )
   );
 
