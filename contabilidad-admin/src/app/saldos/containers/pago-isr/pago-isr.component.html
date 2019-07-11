@@ -15,6 +15,6 @@
   >
   </ng-template>
   <div class="grid-panel" flex>
-    <sx-pago-isr-table [partidas]=""></sx-pago-isr-table>
+    <sx-pago-isr-table [partidas]="rows$ | async"></sx-pago-isr-table>
   </div>
 </mat-card>

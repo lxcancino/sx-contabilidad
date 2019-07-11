@@ -14,6 +14,7 @@ import { MatDialog } from '@angular/material';
 import { TdDialogService } from '@covalent/core';
 
 import { EjercicioMes } from '../../../models/ejercicio-mes';
+import { PagoIsrModalComponent } from '../../components';
 
 @Component({
   selector: 'sx-pago-isr',
@@ -63,20 +64,13 @@ export class PagoIsrComponent implements OnInit, OnDestroy {
   onFilter(event) {}
 
   onGenerar(periodo: EjercicioMes) {
-    this.dialogService
-      .openConfirm({
-        title: `GENERAR PAGO PROVISIONAL DE ISR `,
-        message: `PERIODO: ${periodo.ejercicio} / ${periodo.mes}`,
-        acceptButton: 'GENERAR',
-        cancelButton: 'CANCELAR'
-      })
-      .afterClosed()
-      .subscribe(res => {
-        if (res) {
-          console.log('Generar PagoISR', res);
-          this.store.dispatch(new fromStore.GenerarPagoIsr({ periodo }));
-        }
-      });
+    this.dialog.open(PagoIsrModalComponent, {
+      data: {}
+    }).afterClosed().subscribe(res => {
+      if (res) {
+        
+      }
+    });
   }
 
   printReport() {

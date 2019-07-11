@@ -11,7 +11,7 @@ import {
   LOCALE_ID,
   Inject
 } from '@angular/core';
-import { formatCurrency } from '@angular/common';
+import { formatCurrency, formatNumber } from '@angular/common';
 
 import {
   GridOptions,
@@ -21,7 +21,7 @@ import {
   ColDef
 } from 'ag-grid-community';
 
-import { PagoIsr, PagoIsrRow, buildPagoIsrRows } from 'app/saldos/models';
+import { PagoIsr } from 'app/saldos/models';
 
 @Component({
   selector: 'sx-pago-isr-table',
@@ -91,7 +91,7 @@ export class PagoIsrTableComponent implements OnInit, OnChanges {
   ngOnChanges(changes: SimpleChanges) {
     if (changes.partidas && changes.partidas.currentValue) {
       if (this.gridApi) {
-        // this.gridApi.setRowData(changes.partidas.currentValue);
+        this.gridApi.setRowData(changes.partidas.currentValue);
       }
     }
   }
@@ -100,8 +100,7 @@ export class PagoIsrTableComponent implements OnInit, OnChanges {
 
   onGridReady(params: GridReadyEvent) {
     this.gridApi = params.api;
-    const data = buildPagoIsrRows();
-    this.gridApi.setRowData(data);
+    this.gridApi.setRowData(this.partidas);
   }
 
   onFirstDataRendered(params) {}
@@ -130,9 +129,15 @@ export class PagoIsrTableComponent implements OnInit, OnChanges {
   private buildColsDef(): ColDef[] {
     return [
       {
+        headerName: 'Rg',
+        field: 'renglon',
+        width: 60,
+        pinned: 'left'
+      },
+      {
         headerName: 'Concepto',
         field: 'concepto',
-        width: 300,
+        width: 350,
         pinned: 'left'
       },
       {
@@ -227,6 +232,7 @@ export class PagoIsrTableComponent implements OnInit, OnChanges {
   }
 
   transformCurrency(data) {
-    return formatCurrency(data, this.locale, '$');
+    // return formatCurrency(data, this.locale, '$');
+    return formatNumber(data, this.locale, '');
   }
 }
