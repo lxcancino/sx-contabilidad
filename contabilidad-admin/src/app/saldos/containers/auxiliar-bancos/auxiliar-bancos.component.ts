@@ -62,7 +62,7 @@ export class AuxiliarBancosComponent implements OnInit, OnDestroy {
           Periodo.saveOnStorage(this.storageKey, periodo);
           this.store.dispatch(
             new fromStore.LoadAuxiliarDeBancos({
-              cuentaId: res.cuentaInicial.id,
+              cuentaId: res.cuenta.id,
               periodo
             })
           );
