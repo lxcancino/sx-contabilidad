@@ -40,9 +40,9 @@ export class PagoIsrEffects {
     ofType<fromActions.GenerarPagoIsr>(
       fromActions.PagoIsrActionTypes.GenerarPagoIsr
     ),
-    map(action => action.payload.periodo),
-    switchMap(per =>
-      this.service.generar(per).pipe(
+    // map(action => action.payload.periodo),
+    switchMap(a =>
+      this.service.generar(a.payload.periodo, a.payload.periodo).pipe(
         map(
           rows =>
             new fromActions.GenerarPagoIsrSuccess({

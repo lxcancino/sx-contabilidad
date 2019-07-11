@@ -26,10 +26,10 @@ export class PagoIsrService {
       .pipe(catchError((error: any) => throwError(error)));
   }
 
-  generar(filter: EjercicioMes): Observable<PagoIsr[]> {
+  generar(filter: EjercicioMes, data: any): Observable<PagoIsr[]> {
     const url = `${this.apiUrl}/generar/${filter.ejercicio}/${filter.mes}`;
     return this.http
-      .post<PagoIsr[]>(url, {})
+      .post<PagoIsr[]>(url, data)
       .pipe(catchError((error: any) => throwError(error)));
   }
 

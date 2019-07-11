@@ -31,7 +31,7 @@ export class LoadPagoIsrSuccess implements Action {
 // Generar
 export class GenerarPagoIsr implements Action {
   readonly type = PagoIsrActionTypes.GenerarPagoIsr;
-  constructor(public payload: { periodo: EjercicioMes }) {}
+  constructor(public payload: { periodo: EjercicioMes; params: any }) {}
 }
 export class GenerarPagoIsrFail implements Action {
   readonly type = PagoIsrActionTypes.GenerarPagoIsrFail;

@@ -28,7 +28,11 @@ export class PagoIsrModalComponent implements OnInit {
 
   private buildForm() {
     this.form = this.fb.group({
-      utilidadFiscalAf: [null, Validators.required]
+      utilidadFiscalAf: [0.0, Validators.required],
+      cfUtilidad: [null, Validators.required],
+      perdidaFiscal: [0.0, Validators.required],
+      tasaIsr: [30.0, Validators.required],
+      isrAcreDiv: [0.0, Validators.required]
     });
   }
 

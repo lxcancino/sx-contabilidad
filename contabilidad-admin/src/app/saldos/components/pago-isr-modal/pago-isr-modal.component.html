@@ -1,12 +1,10 @@
 <form [formGroup]="form" novalidate (ngSubmit)="doAccept()">
-  <div *ngIf="polizadet">
-    <h4 mat-dialog-title>
-      Pago provisional
-    </h4>
-  </div>
+  <h4 mat-dialog-title>
+    Pago provisional
+  </h4>
   <mat-divider></mat-divider>
   <mat-dialog-content>
-    <div layout="column" class="selector-form">
+    <div layout>
       <mat-form-field flex>
         <input
           matInput
@@ -14,6 +12,49 @@
           autocomplete="off"
           type="number"
           formControlName="utilidadFiscalAf"
+        />
+      </mat-form-field>
+
+      <mat-form-field flex>
+        <input
+          matInput
+          placeholder="Coeficiente de utilidad"
+          autocomplete="off"
+          type="number"
+          formControlName="cfUtilidad"
+        />
+      </mat-form-field>
+    </div>
+
+    <div layout>
+      <mat-form-field flex>
+        <input
+          matInput
+          placeholder="Pérdida fiscal del ej anterior"
+          autocomplete="off"
+          type="number"
+          formControlName="perdidaFiscal"
+        />
+      </mat-form-field>
+      <mat-form-field flex>
+        <input
+          matInput
+          placeholder="Tasa ISR"
+          autocomplete="off"
+          type="number"
+          formControlName="tasaIsr"
+        />
+      </mat-form-field>
+    </div>
+
+    <div layout>
+      <mat-form-field flex="50">
+        <input
+          matInput
+          placeholder="I.S.R. Acreditable por Div"
+          autocomplete="off"
+          type="number"
+          formControlName="isrAcreDiv"
         />
       </mat-form-field>
     </div>
