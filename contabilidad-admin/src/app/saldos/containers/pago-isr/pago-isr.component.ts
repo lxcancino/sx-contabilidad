@@ -66,12 +66,11 @@ export class PagoIsrComponent implements OnInit, OnDestroy {
   onGenerar(periodo: EjercicioMes) {
     this.dialog
       .open(PagoIsrModalComponent, {
-        data: {}
+        data: { ejercicio: periodo.ejercicio, mes: periodo.mes }
       })
       .afterClosed()
       .subscribe(res => {
         if (res) {
-          console.log('G: ', res);
           this.store.dispatch(
             new fromStore.GenerarPagoIsr({ periodo, params: res })
           );

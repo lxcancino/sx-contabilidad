@@ -42,7 +42,7 @@ import { PagoIsr } from 'app/saldos/models';
     (modelUpdated)="onModelUpdate($event)">
   </ag-grid-angular>
   `,
-  styles: []
+  styleUrls: ['./pago-isr-table.component.scss']
 })
 export class PagoIsrTableComponent implements OnInit, OnChanges {
   @Input()
@@ -83,6 +83,30 @@ export class PagoIsrTableComponent implements OnInit, OnChanges {
       width: 150
     };
     this.gridOptions.onFilterChanged = this.onFilter;
+
+    this.gridOptions.getRowClass = function(params) {
+      if (params.data.clave.includes('FORMULA')) {
+        return 'formula-row';
+      }
+    };
+    this.gridOptions.getRowStyle = function(params) {
+      if (params.data.clave.includes('FORMULA')) {
+        return {
+          'background-color': 'rgb(231, 236, 241, 0.932)',
+          'font-style': 'italic',
+          'font-weight': 'bold'
+        };
+      }
+    };
+    /*
+    this.gridOptions.rowClassRules = {
+      // apply green to 2008
+      'formula-row': function(params) {
+        return params.data.clave === 'FORMULA_02';
+      }
+    };
+    */
+
     this.buildLocalText();
   }
 
@@ -121,7 +145,7 @@ export class PagoIsrTableComponent implements OnInit, OnChanges {
 
   exportData() {
     const params = {
-      fileName: `DIOT_${new Date().getTime()}.csv`
+      fileName: `PAGO_ISR_${new Date().getTime()}.csv`
     };
     this.gridApi.exportDataAsCsv(params);
   }

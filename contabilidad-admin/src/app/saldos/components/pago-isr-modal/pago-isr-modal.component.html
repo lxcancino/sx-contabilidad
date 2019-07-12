@@ -1,8 +1,5 @@
 <form [formGroup]="form" novalidate (ngSubmit)="doAccept()">
-  <h4 mat-dialog-title>
-    Pago provisional
-  </h4>
-  <mat-divider></mat-divider>
+  <h4 mat-dialog-title>Pago provisional {{ mes }} / {{ ejercicio }}</h4>
   <mat-dialog-content>
     <div layout>
       <mat-form-field flex>

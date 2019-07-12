@@ -15,6 +15,8 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 })
 export class PagoIsrModalComponent implements OnInit {
   form: FormGroup;
+  mes: number;
+  ejercicio: number;
 
   constructor(
     private fb: FormBuilder,
@@ -22,6 +24,8 @@ export class PagoIsrModalComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {
     this.buildForm();
+    this.ejercicio = data.ejercicio;
+    this.mes = data.mes;
   }
 
   ngOnInit() {}
@@ -29,7 +33,7 @@ export class PagoIsrModalComponent implements OnInit {
   private buildForm() {
     this.form = this.fb.group({
       utilidadFiscalAf: [0.0, Validators.required],
-      cfUtilidad: [null, Validators.required],
+      cfUtilidad: [1.79, Validators.required],
       perdidaFiscal: [0.0, Validators.required],
       tasaIsr: [30.0, Validators.required],
       isrAcreDiv: [0.0, Validators.required]

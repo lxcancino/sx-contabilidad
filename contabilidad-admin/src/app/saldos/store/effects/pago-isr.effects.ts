@@ -42,7 +42,7 @@ export class PagoIsrEffects {
     ),
     // map(action => action.payload.periodo),
     switchMap(a =>
-      this.service.generar(a.payload.periodo, a.payload.periodo).pipe(
+      this.service.generar(a.payload.periodo, a.payload.params).pipe(
         map(
           rows =>
             new fromActions.GenerarPagoIsrSuccess({
