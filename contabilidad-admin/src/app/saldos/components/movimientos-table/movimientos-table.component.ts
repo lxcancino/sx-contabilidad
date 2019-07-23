@@ -196,8 +196,8 @@ export class MovimientosTableComponent implements OnInit, OnChanges {
         width: 250
       },
       {
-        headerName: 'Concepto',
-        field: 'concepto',
+        headerName: 'Aisento',
+        field: 'asiento',
         width: 150
       },
       {
