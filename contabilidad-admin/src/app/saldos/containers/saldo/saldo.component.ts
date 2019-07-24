@@ -74,7 +74,8 @@ export class SaldoComponent implements OnInit {
   onSelection(event: any[]) {
     const saldo: SaldoPorCuentaContable = event[0];
     this.selectedSaldo = saldo;
-    if (saldo.detalle) {
+
+    if (saldo.nivel > 1) {
       const periodo = Periodo.toPeriodo(saldo.ejercicio, saldo.mes);
       this.store.dispatch(
         new fromActions.LoadMovimientosPorCuenta({

@@ -13,6 +13,15 @@
       </div>
     </div>
     <button
+      class="options"
+      mat-button
+      mat-icon-button
+      (click)="grid.exportData()"
+      matTooltip="Exportar a CSV"
+    >
+      <mat-icon color="primary">file_download</mat-icon>
+    </button>
+    <button
       mat-menu-item
       class="actions"
       (click)="recalcularSaldo(selected)"
