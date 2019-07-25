@@ -24,7 +24,6 @@ export const initialState: State = {
   periodo: loadEjercicioMesFromStorage(POLIZAS_STORAGE_KEY),
   grupos: [
     new Grupo('INGRESO', 'Ingreso', 'Pólizas de ingresos', [
-      new Grupo('INGRESOS_CON', 'Ingresos CON', 'Contado'),
       new Grupo('COBRANZA_CON', 'Cobranza CON', 'Contado'),
       new Grupo('COBRANZA_COD', 'Cobranza COD', 'Contra entrega (COD)'),
       new Grupo('COBRANZA_CRE', 'Cobranza CRE', 'Crédito'),
@@ -78,7 +77,6 @@ export const initialState: State = {
       new Grupo('PROVISION_DE_CARGA_SOCIAL', 'Provisión de carga social', ''),
       new Grupo('VARIACION_CAMBIARIA', 'Variacion Cambiaria', ''),
       new Grupo('IMPUESTOS_SOBRE_NOMINA', 'Impuesto Sobre Nomina', ''),
-      new Grupo('TRASPASO_IVA', 'Traspaso Iva', ''),
       new Grupo('CIERRE_ANUAL', 'Cierre anual', ''),
       new Grupo('CIERRE_MENSUAL', 'Cierre Mensual', ''),
     ])
