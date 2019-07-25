@@ -47,3 +47,12 @@ export const getSaldosLoaded = createSelector(
   getSaldosState,
   fromSaldos.getSaldosLoaded
 );
+
+export const getSaldosMayor = createSelector(
+  getSaldosState,
+  fromSaldos.selectAll,
+  (state, saldos) => {
+    console.log(saldos);
+    return saldos.filter(item => item.nivel === 1);
+  }
+);
