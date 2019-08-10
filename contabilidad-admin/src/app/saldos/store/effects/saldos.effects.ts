@@ -142,25 +142,6 @@ export class SaldosEffects {
   );
 
   @Effect()
-  balanza$ = this.actions$.pipe(
-    ofType(SaldosActionTypes.LoadSaldos),
-    switchMap(() => {
-      return this.store.pipe(
-        select(getSaldosPeriodo),
-        take(1)
-      );
-    }),
-    switchMap(filter =>
-      this.service.list(filter, 1).pipe(
-        map(saldos => new fromActions.LoadBalanzaSuccess({ saldos })),
-        catchError(error =>
-          of(new fromActions.LoadBalanzaFail({ response: error }))
-        )
-      )
-    )
-  );
-
-  @Effect()
   setPeriodo$ = this.actions$.pipe(
     ofType<fromActions.SetSaldosPeriodo>(SaldosActionTypes.SetSaldosPeriodo),
     tap(action => {
