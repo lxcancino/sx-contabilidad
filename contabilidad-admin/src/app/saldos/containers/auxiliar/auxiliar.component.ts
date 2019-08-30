@@ -18,7 +18,7 @@ import { MatDialog } from '@angular/material';
 import { AuxiliarContableDialogComponent } from 'app/saldos/components';
 import { Auxiliar } from 'app/saldos/models/auxiliar';
 import { Periodo } from 'app/_core/models/periodo';
-import { CuentaContable } from 'app/cuentas/models';
+
 import { takeUntil } from 'rxjs/operators';
 
 @Component({
@@ -37,7 +37,8 @@ export class AuxiliarComponent implements OnInit, OnDestroy {
 
   totales$ = new Subject<any>();
 
-  cuenta: CuentaContable;
+  cuentaInicial: string;
+  cuentaFinal: string;
   destroy$ = new Subject<boolean>();
   saldoInicial: any;
 
@@ -53,14 +54,18 @@ export class AuxiliarComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.loading$ = this.store.pipe(select(fromStore.getAuxiliarLoading));
     this.movimientos$ = this.store.pipe(select(fromStore.getAllAuxiliar));
-    this.periodo = Periodo.fromStorage(this.storageKey, Periodo.fromNow(45));
+    this.periodo = Periodo.fromStorage(this.storageKey, Periodo.monthToDay());
+    /*
     this.store
       .pipe(
         select(fromStore.getCurrentCuenta),
         takeUntil(this.destroy$)
       )
-      .subscribe(r => (this.cuenta = r));
-    this.movimientos$.subscribe( movs => {
+      .subscribe(r => {
+        this.cuentaInicial = r;
+      });
+      */
+    this.movimientos$.pipe(takeUntil(this.destroy$)).subscribe(movs => {
       if (movs.length > 0) {
         this.saldoInicial = movs[0];
       }
@@ -83,7 +88,11 @@ export class AuxiliarComponent implements OnInit, OnDestroy {
   generar() {
     this.dialog
       .open(AuxiliarContableDialogComponent, {
-        data: { periodo: this.periodo, cuenta: this.cuenta },
+        data: {
+          periodo: this.periodo,
+          cuentaInicial: this.cuentaInicial,
+          cuentaFinal: this.cuentaFinal
+        },
         width: '750px'
       })
       .afterClosed()
@@ -92,9 +101,12 @@ export class AuxiliarComponent implements OnInit, OnDestroy {
           const periodo: Periodo = res.periodo;
           this.periodo = periodo;
           Periodo.saveOnStorage(this.storageKey, periodo);
+          this.cuentaInicial = res.cuentaInicial;
+          this.cuentaFinal = res.cuentaFinal || this.cuentaInicial;
           this.store.dispatch(
             new fromStore.LoadAuxiliar({
-              cuenta: res.cuenta,
+              cuentaInicial: res.cuentaInicial,
+              cuentaFinal: res.cuentaFinal,
               periodo
             })
           );

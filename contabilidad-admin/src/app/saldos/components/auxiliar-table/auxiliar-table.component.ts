@@ -179,16 +179,19 @@ export class AuxiliarTableComponent implements OnInit, OnChanges {
         field: 'poliza',
         width: 100
       },
+      /*
       {
         headerName: 'Ej',
         field: 'ejercicio',
         width: 100
       },
+
       {
         headerName: 'Mes',
         field: 'mes',
         width: 90
       },
+      */
       {
         headerName: 'Fecha',
         field: 'fecha',

@@ -19,7 +19,7 @@ export class AuxiliarEffects {
     ),
     map(action => action.payload),
     switchMap(command =>
-      this.service.auxiliar(command.cuenta.id, command.periodo).pipe(
+      this.service.auxiliar(command.cuentaInicial, command.cuentaFinal, command.periodo).pipe(
         map(
           rows =>
             new fromActions.LoadAuxiliarSuccess({

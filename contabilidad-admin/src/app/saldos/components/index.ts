@@ -7,6 +7,7 @@ import { AuxiliarTableComponent } from './auxiliar-table/auxiliar-table.componen
 import { ReclasificarBatchModalComponent } from './reclasificar-batch/reclasificar-batch-modal.component';
 import { PagoIsrTableComponent } from './pago-isr-table/pago-isr-table.component';
 import { PagoIsrModalComponent } from './pago-isr-modal/pago-isr-modal.component';
+import { AuxiliarFormComponent } from './auxiliar-form/auxiliar-form.component';
 
 export const components: any[] = [
   SaldosTableComponent,
@@ -17,7 +18,8 @@ export const components: any[] = [
   AuxiliarTableComponent,
   ReclasificarBatchModalComponent,
   PagoIsrTableComponent,
-  PagoIsrModalComponent
+  PagoIsrModalComponent,
+  AuxiliarFormComponent
 ];
 export const entryComponents: any[] = [
   AuxiliarContableDialogComponent,
@@ -34,3 +36,4 @@ export * from './auxiliar-table/auxiliar-table.component';
 export * from './reclasificar-batch/reclasificar-batch-modal.component';
 export * from './pago-isr-table/pago-isr-table.component';
 export * from './pago-isr-modal/pago-isr-modal.component';
+export * from './auxiliar-form/auxiliar-form.component';

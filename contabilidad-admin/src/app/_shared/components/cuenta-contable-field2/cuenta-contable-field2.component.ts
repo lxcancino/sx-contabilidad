@@ -20,16 +20,16 @@ import {
 import { ConfigService } from 'app/utils/config.service';
 import { CuentaContable } from 'app/cuentas/models';
 
-export const CUENTA_CONTABLE_LOOKUPFIELD_VALUE_ACCESSOR: any = {
+export const CUENTA_CONTABLE_LOOKUPFIELD2_VALUE_ACCESSOR: any = {
   provide: NG_VALUE_ACCESSOR,
   // tslint:disable-next-line: no-use-before-declare
-  useExisting: forwardRef(() => CuentaContableFieldComponent),
+  useExisting: forwardRef(() => CuentaContableField2Component),
   multi: true
 };
 
 @Component({
-  selector: 'sx-cuenta-contable-field',
-  providers: [CUENTA_CONTABLE_LOOKUPFIELD_VALUE_ACCESSOR],
+  selector: 'sx-cuenta-contable-field2',
+  providers: [CUENTA_CONTABLE_LOOKUPFIELD2_VALUE_ACCESSOR],
   template: `
     <mat-form-field class="fill">
     <input type="text" matInput [formControl]="searchControl" [placeholder]="placeholder"
@@ -39,8 +39,8 @@ export const CUENTA_CONTABLE_LOOKUPFIELD_VALUE_ACCESSOR: any = {
     </mat-error>
   </mat-form-field>
 
-  <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
-    <mat-option *ngFor="let cuenta of cuentas$ | async" [value]="cuenta">
+  <mat-autocomplete #auto="matAutocomplete" >
+    <mat-option *ngFor="let cuenta of cuentas$ | async" [value]="cuenta.clave">
       {{cuenta.clave}} {{cuenta.descripcion}}
       <span *ngIf="cuenta.padre">
         ({{cuenta.padre.descripcion.trim()}})
@@ -60,17 +60,17 @@ export const CUENTA_CONTABLE_LOOKUPFIELD_VALUE_ACCESSOR: any = {
     `
   ]
 })
-export class CuentaContableFieldComponent
+export class CuentaContableField2Component
   implements OnInit, ControlValueAccessor {
   private apiUrl: string;
 
   searchControl = new FormControl();
 
   @Input()
-  required = true;
+  required = false;
 
   @Input()
-  detalle = true;
+  detalle = false;
 
   @Input()
   placeholder = 'Cuenta';
@@ -87,7 +87,7 @@ export class CuentaContableFieldComponent
 
   ngOnInit() {
     this.cuentas$ = this.searchControl.valueChanges.pipe(
-      filter(term => !_.isObject(term)),
+      // filter(term => !_.isObject(term)),
       switchMap(term => this.lookupCuentas(term))
     );
     this.prepareControl();
@@ -99,22 +99,30 @@ export class CuentaContableFieldComponent
         skip(1),
         tap(() => this.onTouch()),
         debounceTime(500),
-        // filter(value => _.isObject(value)),
-        distinctUntilChanged((p: CuentaContable, q: CuentaContable) => {
-          if (p && q) {
-            return p.id === q.id;
-          } else {
-            return false;
-          }
-        })
+        distinctUntilChanged()
       )
-      .subscribe(val => {
-        if (_.isObject(val)) {
-          this.onChange(val);
-        } else {
-          this.onChange(null);
+      .subscribe(obj => {
+        if (_.isString(obj)) {
+          const row = obj;
+          /*
+
+          if (parts.length < 4) {
+            row += '%';
+          }
+          */
+          /*
+          parts.forEach( (item, index, arr) => {
+            if (item !== '0000') {
+              row +=  item;
+              if ((index + 1) < arr.length) {
+                row += '-';
+              }
+            }
+          });
+          */
+          this.searchControl.setValue(row);
+          this.onChange(row);
         }
-        // this.onChange(val);
       });
   }
 

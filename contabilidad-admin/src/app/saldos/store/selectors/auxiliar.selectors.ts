@@ -20,5 +20,5 @@ export const getAuxiliarLoading = createSelector(
 
 export const getCurrentCuenta = createSelector(
   getAuxiliarState,
-  fromAuxiliar.getCuenta
+  fromAuxiliar.getCuentaInicial
 );
