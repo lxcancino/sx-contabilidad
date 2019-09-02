@@ -22,6 +22,8 @@ import { EjercicioMesDialogComponent } from './ejercicio-mes-dialog/ejercicio-me
 import { EjercicioMesBtnComponent } from './ejercicio-mes-dialog/ejercicio-mes-btn.component';
 import { CuentaContableFieldComponent } from './cuenta-contable-field/cuenta-contable-field.componet';
 import { CuentaContableField2Component } from './cuenta-contable-field2/cuenta-contable-field2.component';
+import { LxTableComponent } from './lx-table/lx-table.component';
+import { PrintCellRendererComponent } from './lx-table/print-cell-renderer.component';
 
 export const components = [
   DireccionComponent,
@@ -47,13 +49,16 @@ export const components = [
   EjercicioMesDialogComponent,
   EjercicioMesBtnComponent,
   CuentaContableFieldComponent,
-  CuentaContableField2Component
+  CuentaContableField2Component,
+  LxTableComponent,
+  PrintCellRendererComponent
 ];
 
 export const entyComponents: any[] = [
   FechaDialogComponent,
   PeriodoDialogComponent,
-  EjercicioMesDialogComponent
+  EjercicioMesDialogComponent,
+  PrintCellRendererComponent
 ];
 
 export * from './direccion/direccion.component';
@@ -79,3 +84,6 @@ export * from './ejercicio-mes-dialog/ejercicio-mes-dialog.component';
 export * from './ejercicio-mes-dialog/ejercicio-mes-btn.component';
 export * from './cuenta-contable-field/cuenta-contable-field.componet';
 export * from './cuenta-contable-field2/cuenta-contable-field2.component';
+
+export * from './lx-table/lx-table.component';
+export * from './lx-table/print-cell-renderer.component';

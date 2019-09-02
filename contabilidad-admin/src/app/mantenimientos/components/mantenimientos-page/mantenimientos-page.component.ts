@@ -69,6 +69,11 @@ export class MantenimientosPageComponent implements OnInit {
       description: 'Registro de Cheques en Transito',
       icon: 'receipt'
     },
+    {
+      icon: 'business',
+      route: 'activos',
+      title: 'Activo Fijo'
+    }
   ];
 
   constructor(public media: TdMediaService) {}

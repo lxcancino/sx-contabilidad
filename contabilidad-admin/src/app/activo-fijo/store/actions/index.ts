@@ -1,1 +1,1 @@
-export  const  ac = [];
+export * from './activo.actions';

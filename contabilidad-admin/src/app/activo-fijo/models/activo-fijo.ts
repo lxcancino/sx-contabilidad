@@ -1,0 +1,40 @@
+import { Proveedor } from 'app/models/proveedor';
+import { CuentaContable } from 'app/cuentas/models';
+
+export interface ActivoFijo {
+  id: number;
+  fecha: string;
+  facturaSerie: string;
+  facturaFolio: string;
+  facturaFecha: string;
+  uuid: string;
+  descripcion: string;
+  serie: string;
+  modelo: string;
+  gastoDet: any;
+  proveedor: Partial<Proveedor>;
+  sucursalOrigen: string;
+  sucursalActual: string;
+  departamentoOrigen: string;
+  departamentoActual: string;
+  consignatario: string;
+  estado: string;
+  tipo: string;
+  cuentaContable: Partial<CuentaContable>;
+  tasaDepreciacion: number;
+  montoOriginal: number;
+  costoActualizado: number;
+  depreciacionAcumulada: number;
+  remanente: number;
+  venta: string;
+  ventaFactura: string;
+  ventaFecha: string;
+  ventaImporte: number;
+  porcentajeDepreciado: number;
+  depreciaciones: any[];
+  comentario: string;
+  createUser: string;
+  updateUser: string;
+  dateCreated: string;
+  lastUpdated: string;
+}
