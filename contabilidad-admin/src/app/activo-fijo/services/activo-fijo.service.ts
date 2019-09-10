@@ -7,6 +7,9 @@ import { catchError } from 'rxjs/operators';
 import { ConfigService } from 'app/utils/config.service';
 
 import { ActivoFijo } from '../models/activo-fijo';
+import { Update } from '@ngrx/entity';
+import { Depreciacion } from '../models/depreciacion';
+import { DepreciacionFiscal } from '../models/depreciacion-fiscal';
 
 @Injectable({ providedIn: 'root' })
 export class ActivoFijoService {
@@ -24,6 +27,71 @@ export class ActivoFijoService {
     const url = `${this.apiUrl}/${id}`;
     return this.http
       .get<ActivoFijo>(url)
+      .pipe(catchError((error: any) => throwError(error)));
+  }
+
+  save(activo: Partial<ActivoFijo>): Observable<ActivoFijo> {
+    return this.http
+      .post<ActivoFijo>(this.apiUrl, activo)
+      .pipe(catchError((error: any) => throwError(error)));
+  }
+
+  update(activo: Update<ActivoFijo>): Observable<ActivoFijo> {
+    const url = `${this.apiUrl}/${activo.id}`;
+    return this.http
+      .put<ActivoFijo>(url, activo.changes)
+      .pipe(catchError((error: any) => throwError(error)));
+  }
+
+  depreciaciones(activoId: number): Observable<Depreciacion[]> {
+    const url = `${this.apiUrl}/${activoId}/depreciaciones`;
+    return this.http
+      .get<Depreciacion[]>(url)
+      .pipe(catchError((error: any) => throwError(error)));
+  }
+
+  createDepreciacion(activoId: number, corte: Date): Observable<Depreciacion> {
+    const url = `${this.apiUrl}/${activoId}/depreciaciones`;
+    return this.http
+      .post<Depreciacion>(url, { corte: corte.toISOString() })
+      .pipe(catchError((error: any) => throwError(error)));
+  }
+
+  deleteDepreciacion(activoId: number, depreciacionId: number) {
+    const url = `${this.apiUrl}/${activoId}/depreciaciones/${depreciacionId}`;
+    return this.http
+      .delete(url, {})
+      .pipe(catchError((error: any) => throwError(error)));
+  }
+
+  depreciacionesFiscales(activoId: number): Observable<DepreciacionFiscal[]> {
+    const url = `${this.apiUrl}/${activoId}/fiscales`;
+    return this.http
+      .get<DepreciacionFiscal[]>(url)
+      .pipe(catchError((error: any) => throwError(error)));
+  }
+
+  createDepreciacionFiscal(
+    activoId: number,
+    depreciacion: DepreciacionFiscal
+  ): Observable<DepreciacionFiscal> {
+    const url = `${this.apiUrl}/${activoId}/fiscales`;
+    return this.http
+      .post<DepreciacionFiscal>(url, depreciacion)
+      .pipe(catchError((error: any) => throwError(error)));
+  }
+
+  deleteDepreciacionFiscal(activoId: number, depreciacionId: number) {
+    const url = `${this.apiUrl}/${activoId}/fiscales/${depreciacionId}`;
+    return this.http
+      .delete(url, {})
+      .pipe(catchError((error: any) => throwError(error)));
+  }
+
+  generarPendientes(): Observable<ActivoFijo[]> {
+    const url = `${this.apiUrl}/generarPendientes`;
+    return this.http
+      .get<ActivoFijo[]>(url)
       .pipe(catchError((error: any) => throwError(error)));
   }
 

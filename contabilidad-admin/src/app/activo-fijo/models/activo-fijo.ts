@@ -3,36 +3,33 @@ import { CuentaContable } from 'app/cuentas/models';
 
 export interface ActivoFijo {
   id: number;
-  fecha: string;
-  facturaSerie: string;
-  facturaFolio: string;
-  facturaFecha: string;
-  uuid: string;
+  adquisicion: string;
   descripcion: string;
   serie: string;
   modelo: string;
+  // Factura orignal
+  facturaSerie: string;
+  facturaFolio: string;
+  uuid: string;
+  // Clasificacion
+  estado: string;
+  cuentaContable: Partial<CuentaContable>;
+  // Origen
   gastoDet: any;
   proveedor: Partial<Proveedor>;
+  // Consignatario
   sucursalOrigen: string;
   sucursalActual: string;
   departamentoOrigen: string;
   departamentoActual: string;
   consignatario: string;
-  estado: string;
-  tipo: string;
-  cuentaContable: Partial<CuentaContable>;
-  tasaDepreciacion: number;
+  // Importes generales
   montoOriginal: number;
-  costoActualizado: number;
+  tasaDepreciacion: number;
   depreciacionAcumulada: number;
+  depreciacionInicial: number;
   remanente: number;
-  venta: string;
-  ventaFactura: string;
-  ventaFecha: string;
-  ventaImporte: number;
-  porcentajeDepreciado: number;
-  depreciaciones: any[];
-  comentario: string;
+  // Log
   createUser: string;
   updateUser: string;
   dateCreated: string;

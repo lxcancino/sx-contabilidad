@@ -46,8 +46,8 @@ export class MainPageComponent implements OnInit, OnDestroy {
     },
     {
       icon: 'build',
-      route: '/ajustes',
-      title: 'Mantenimientos al SIIPAPX'
+      route: '/operaciones',
+      title: 'Operaciones'
     }
   ];
 

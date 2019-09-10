@@ -30,25 +30,23 @@ export class ActivosComponent implements OnInit {
   }
 
   onCreate() {
-    this.dialog
-      .open(CreateActivoModalComponent, {
-        data: {},
-        width: '650px'
-      })
-      .afterClosed()
-      .subscribe(res => {
-        if (res) {
-          console.log('Alta de activo: ', res);
-        }
-      });
+    this.store.dispatch(
+      new fromRoot.Go({ path: ['operaciones/activos/create'] })
+    );
   }
 
   onSelect(event: ActivoFijo) {
-    this.store.dispatch(new fromRoot.Go({ path: ['activos', event.id] }));
+    this.store.dispatch(
+      new fromRoot.Go({ path: ['operaciones/activos', event.id] })
+    );
   }
 
   reload() {
     this.store.dispatch(new fromStore.LoadActivos());
+  }
+
+  importarPendientes() {
+    this.store.dispatch(new fromStore.GenerarPendientes());
   }
 
   @HostListener('document:keydown.meta.i', ['$event'])

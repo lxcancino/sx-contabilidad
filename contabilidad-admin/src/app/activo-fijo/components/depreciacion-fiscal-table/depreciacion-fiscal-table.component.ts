@@ -24,33 +24,33 @@ import {
 import { SxTableService } from 'app/_shared/components/lx-table/sx-table.service';
 import { ActivoFijo } from 'app/activo-fijo/models/activo-fijo';
 import { spAgGridText } from 'app/_shared/components/lx-table/table-support';
+import { DepreciacionFiscal } from 'app/activo-fijo/models/depreciacion-fiscal';
 
 @Component({
-  selector: 'sx-activos-table',
+  selector: 'sx-depreciacione-fiscal-table',
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <div style="height: 100%">
+    <div style="height: 350px">
       <ag-grid-angular
         #agGrid
         class="ag-theme-balham"
         style="width: 100%; height: 100%;"
-        [rowData]="activos"
+        [rowData]="depreciaciones"
         [gridOptions]="gridOptions"
         [defaultColDef]="defaultColDef"
-        [floatingFilter]="true"
+        [floatingFilter]="false"
         [localeText]="localeText"
         (gridReady)="onGridReady($event)"
         (modelUpdated)="onModelUpdate($event)"
-        (gridReady)="actualizarTotales()"
       >
       </ag-grid-angular>
     </div>
   `,
   styles: [``]
 })
-export class ActivosTableComponent implements OnInit, OnChanges {
+export class DepreciacioneFiscalTableComponent implements OnInit, OnChanges {
   @Input()
-  activos: ActivoFijo[] = [];
+  depreciaciones: DepreciacionFiscal[] = [];
 
   @Output()
   selectionChange = new EventEmitter<any[]>();
@@ -70,7 +70,11 @@ export class ActivosTableComponent implements OnInit, OnChanges {
     this.buildGridOptions();
   }
 
-  ngOnChanges(changes: SimpleChanges) {}
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes.depreciaciones.currentValue) {
+      // this.gridApi.setRowData(changes.depreciaciones.currentValue);
+    }
+  }
 
   ngOnInit() {}
 
@@ -88,16 +92,10 @@ export class ActivosTableComponent implements OnInit, OnChanges {
     this.defaultColDef = {
       editable: false,
       filter: 'agTextColumnFilter',
-      width: 150,
-      sort: 'true'
+      width: 170,
+      pinnedRowValueFormatter: params => ''
     };
     this.localeText = spAgGridText;
-    this.gridOptions.getRowStyle = params => {
-      if (params.node.rowPinned) {
-        return { 'font-weight': 'bold' };
-      }
-      return {};
-    };
   }
 
   onGridReady(params: GridReadyEvent) {
@@ -120,7 +118,6 @@ export class ActivosTableComponent implements OnInit, OnChanges {
 
   onModelUpdate(event: ModelUpdatedEvent) {
     if (this.gridApi) {
-      this.actualizarTotales();
       // this.gridApi.sizeColumnsToFit();
     }
   }
@@ -136,29 +133,6 @@ export class ActivosTableComponent implements OnInit, OnChanges {
     return data;
   }
 
-  actualizarTotales() {
-    let registros = 0;
-    let montoOriginal = 0;
-    let depreciacionAcumulada = 0;
-    let remanente = 0;
-    this.gridApi.forEachNodeAfterFilter((rowNode, index) => {
-      const row: ActivoFijo = rowNode.data;
-      montoOriginal += row.montoOriginal;
-      depreciacionAcumulada += row.depreciacionAcumulada;
-      remanente += row.remanente;
-      registros++;
-    });
-    const res = [
-      {
-        descripcion: `Registros: ${registros}`,
-        montoOriginal,
-        depreciacionAcumulada,
-        remanente
-      }
-    ];
-    this.gridApi.setPinnedBottomRowData(res);
-  }
-
   clearSelection() {
     this.gridApi.deselectAll();
   }
@@ -166,58 +140,41 @@ export class ActivosTableComponent implements OnInit, OnChanges {
   buildColsDef(): ColDef[] {
     return [
       {
-        headerName: 'Id',
-        field: 'id',
-        pinned: 'left'
+        headerName: 'Ejercicio',
+        field: 'ejercicio',
+        width: 100
       },
       {
-        headerName: 'Descripción',
-        field: 'descripcion',
-        pinned: 'left',
-        width: 250,
-        pinnedRowCellRenderer: r => r.value
+        headerName: 'INPC PM',
+        field: 'inpcPrimeraMitad',
+        valueFormatter: params =>
+          this.tableService.formatNumber(params.value, '1.1-4')
       },
       {
-        headerName: 'Cuenta contable',
-        field: 'cuentaContable',
-        pinned: 'left',
-        width: 200,
-        valueFormatter: params => (params.value ? params.value.descripcion : '')
+        headerName: 'INPC Mes',
+        field: 'inpcDelMesAdquisicion',
+        valueFormatter: params =>
+          this.tableService.formatNumber(params.value, '1.1-4')
       },
       {
-        headerName: 'Monto Orig',
-        field: 'montoOriginal',
+        headerName: 'Fac de Act',
+        field: 'factorDeActualizacion',
+        valueFormatter: params =>
+          this.tableService.formatNumber(params.value, '1.1-4')
+      },
+      {
+        headerName: 'Depreciación',
+        field: 'depreciacionFiscal',
         valueFormatter: params => this.tableService.formatCurrency(params.value)
       },
       {
-        headerName: 'Depreciado',
-        field: 'depreciacionAcumulada',
-        valueFormatter: params => this.tableService.formatCurrency(params.value)
+        headerName: 'Creado',
+        field: 'dateCreated',
+        valueFormatter: params => this.tableService.formatDate(params.value)
       },
       {
-        headerName: 'Remanente',
-        field: 'remanente',
-        valueFormatter: params => this.tableService.formatCurrency(params.value)
-      },
-      {
-        headerName: 'Estado',
-        field: 'estado'
-      },
-      {
-        headerName: 'Fac Ser',
-        field: 'facturaSerie'
-      },
-      {
-        headerName: 'Fac Folio',
-        field: 'facturaFolio'
-      },
-      {
-        headerName: 'Modelo',
-        field: 'modelo'
-      },
-      {
-        headerName: 'Serie',
-        field: 'serie'
+        headerName: 'Usuario',
+        field: 'createUser'
       }
     ];
   }

@@ -8,6 +8,7 @@ import { UpsertActivo } from '../store/actions/activo.actions';
 import { Observable, of } from 'rxjs';
 import { tap, map, catchError } from 'rxjs/operators';
 import { ActivoFijoService } from '../services/activo-fijo.service';
+import { LoadDepreciaciones } from '../store';
 
 @Injectable({ providedIn: 'root' })
 export class ActivoExistsGuard implements CanActivate {

@@ -5,11 +5,14 @@
     tdLoadingStrategy="overlay"
   >
     <sx-search-title title="Registro de activos">
-      <button class="actions" mat-menu-item>
+      <button class="actions" mat-menu-item (click)="onCreate()">
         <mat-icon>add</mat-icon> Alta
       </button>
       <button class="actions" mat-menu-item (click)="reload()">
         <mat-icon>refresh</mat-icon> Recargar
+      </button>
+      <button class="actions" mat-menu-item (click)="importarPendientes()">
+        <mat-icon>system_update_alt</mat-icon> Importar pendientes
       </button>
     </sx-search-title>
   </ng-template>
