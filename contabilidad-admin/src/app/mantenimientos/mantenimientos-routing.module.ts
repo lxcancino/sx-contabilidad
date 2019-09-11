@@ -19,6 +19,10 @@ const routes: Routes = [
       {
         path: 'activos',
         loadChildren: 'app/activo-fijo/activo-fijo.module#ActivoFijoModule'
+      },
+      {
+        path: 'inpcs',
+        loadChildren: 'app/inpc/inpc.module#InpcModule'
       }
     ]
   }

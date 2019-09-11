@@ -9,6 +9,11 @@ import * as fromStore from '../../store';
 import { ActivoFijo } from 'app/activo-fijo/models/activo-fijo';
 import { MatDialog } from '@angular/material';
 import { CreateActivoModalComponent } from 'app/activo-fijo/components';
+import { EjercicioMesDialogComponent } from 'app/_shared/components';
+import { buildCurrentPeriodo } from 'app/models/ejercicio-mes';
+import { TdDialogService } from '@covalent/core';
+
+import * as _ from 'lodash';
 
 @Component({
   selector: 'sx-activos',
@@ -18,10 +23,12 @@ import { CreateActivoModalComponent } from 'app/activo-fijo/components';
 export class ActivosComponent implements OnInit {
   activos$: Observable<ActivoFijo[]>;
   loading$: Observable<boolean>;
+  selected: ActivoFijo[] = [];
 
   constructor(
     private store: Store<fromStore.State>,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private dialogService: TdDialogService
   ) {}
 
   ngOnInit() {
@@ -45,8 +52,65 @@ export class ActivosComponent implements OnInit {
     this.store.dispatch(new fromStore.LoadActivos());
   }
 
+  onSelection(event: ActivoFijo[]) {
+    this.selected = event;
+  }
+
   importarPendientes() {
     this.store.dispatch(new fromStore.GenerarPendientes());
+  }
+
+  asignarInpcUso() {
+    if (this.selected.length > 0) {
+      const ids = this.selected.map(item => item.id);
+      this.dialogService
+        .openPrompt({
+          message: 'INPC PRIMERA MITAD DE USO',
+          title: 'ASIGNACION DE INPC',
+          acceptButton: 'ACEPTAR',
+          cancelButton: 'CANCELAR'
+        })
+        .afterClosed()
+        .subscribe(res => {
+          if (res) {
+            const inpc = res as number;
+            this.store.dispatch(new fromStore.AsignarInpc({ ids, inpc }));
+            this.selected = [];
+          }
+        });
+    }
+  }
+
+  generarDepreciacion() {
+    this.dialog
+      .open(EjercicioMesDialogComponent, {
+        data: { periodo: buildCurrentPeriodo() }
+      })
+      .afterClosed()
+      .subscribe(res => {
+        if (res) {
+          this.store.dispatch(
+            new fromStore.GenerarDepreciacionBatch({ periodo: res })
+          );
+        }
+      });
+  }
+
+  generarDepreciacionFiscal() {
+    this.dialog
+      .open(EjercicioMesDialogComponent, {
+        data: { periodo: buildCurrentPeriodo() }
+      })
+      .afterClosed()
+      .subscribe(res => {
+        if (res) {
+          this.store.dispatch(
+            new fromStore.GenerarDepreciacionFiscalBatch({
+              ejercicio: res.ejercicio
+            })
+          );
+        }
+      });
   }
 
   @HostListener('document:keydown.meta.i', ['$event'])

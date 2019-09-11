@@ -30,7 +30,9 @@ import { TdMediaService } from '@covalent/core';
     [tdLayoutNavListClose]="!media.query('gt-sm')"
   >
     <ng-template let-item let-last="last" ngFor [ngForOf]="navmenu">
-      <a mat-list-item [routerLink]="[item.route]" routerLinkActive="active">
+      <a mat-list-item [routerLink]="[item.route]" 
+        routerLinkActive="active" 
+        [routerLinkActiveOptions]="{exact:true}">
         <mat-icon matListAvatar>{{ item.icon }}</mat-icon>
         <h3 matLine>{{ item.title }}</h3>
         <p matLine>{{ item.description }}</p>
@@ -73,6 +75,17 @@ export class MantenimientosPageComponent implements OnInit {
       icon: 'business',
       route: 'activos',
       title: 'Activo Fijo'
+    },
+    {
+      icon: 'library_books',
+      route: 'activos/mensual',
+      title: 'Activo X Mes'
+    },
+    {
+      icon: 'question_answer',
+      route: 'inpcs',
+      title: 'INPCs',
+      description: 'INPCs Mensuales'
     }
   ];
 

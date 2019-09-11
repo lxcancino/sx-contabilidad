@@ -204,6 +204,58 @@ export class ActivoEffects {
   );
 
   @Effect()
+  generarDepreciacionesBatch$ = this.actions$.pipe(
+    ofType<fromActions.GenerarDepreciacionBatch>(
+      ActivoActionTypes.GenerarDepreciacionBatch
+    ),
+    map(action => action.payload.periodo),
+    switchMap(p =>
+      this.service.generarDepreciacionesBatch(p.ejercicio, p.mes).pipe(
+        map(
+          activos =>
+            new fromActions.GenerarDepreciacionBatchSuccess({ activos })
+        ),
+        catchError(response =>
+          of(new fromActions.GenerarDepreciacionBatchFail({ response }))
+        )
+      )
+    )
+  );
+
+  @Effect()
+  generarDepreciacionesFiscalBatch$ = this.actions$.pipe(
+    ofType<fromActions.GenerarDepreciacionFiscalBatch>(
+      ActivoActionTypes.GenerarDepreciacionFiscalBatch
+    ),
+    map(action => action.payload.ejercicio),
+    switchMap(ejercicio =>
+      this.service.generarDepreciacionesFiscalBatch(ejercicio).pipe(
+        map(
+          activos =>
+            new fromActions.GenerarDepreciacionFiscalBatchSuccess({ activos })
+        ),
+        catchError(response =>
+          of(new fromActions.GenerarDepreciacionFiscalBatchFail({ response }))
+        )
+      )
+    )
+  );
+
+  @Effect()
+  asignarInpc$ = this.actions$.pipe(
+    ofType<fromActions.AsignarInpc>(ActivoActionTypes.AsignarInpc),
+    map(action => action.payload),
+    switchMap(p =>
+      this.service.asignarInpcMedioMesUso(p.ids, p.inpc).pipe(
+        map(activos => new fromActions.AsignarInpcSuccess({ activos })),
+        catchError(response =>
+          of(new fromActions.AsignarInpcFail({ response }))
+        )
+      )
+    )
+  );
+
+  @Effect()
   errorHandler$ = this.actions$.pipe(
     ofType<
       | fromActions.LoadActivoFail
@@ -215,6 +267,9 @@ export class ActivoEffects {
       | fromFiscal.CreateDepreciacionFiscalFail
       | fromFiscal.DeleteDepreciacionFiscalFail
       | fromActions.GenerarPendientesFail
+      | fromActions.GenerarDepreciacionBatchFail
+      | fromActions.GenerarDepreciacionFiscalBatchFail
+      | fromActions.AsignarInpcFail
     >(
       ActivoActionTypes.LoadActivosFail,
       ActivoActionTypes.CreateActivoFail,
@@ -224,7 +279,10 @@ export class ActivoEffects {
       fromFiscal.DepreciacionFiscalActionTypes.LoadDepreciacionesFiscalesFail,
       fromFiscal.DepreciacionFiscalActionTypes.CreateDepreciacionFiscalFail,
       fromFiscal.DepreciacionFiscalActionTypes.DeleteDepreciacionFiscalFail,
-      ActivoActionTypes.GenerarPendientesFail
+      ActivoActionTypes.GenerarPendientesFail,
+      ActivoActionTypes.GenerarDepreciacionBatchFail,
+      ActivoActionTypes.GenerarDepreciacionFiscalBatchFail,
+      ActivoActionTypes.AsignarInpcFail
     ),
     map(action => action.payload.response),
     map(response => new fromRoot.GlobalHttpError({ response }))

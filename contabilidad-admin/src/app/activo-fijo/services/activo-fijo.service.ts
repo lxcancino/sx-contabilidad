@@ -95,6 +95,35 @@ export class ActivoFijoService {
       .pipe(catchError((error: any) => throwError(error)));
   }
 
+  generarDepreciacionesBatch(
+    ejercicio: number,
+    mes: number
+  ): Observable<ActivoFijo[]> {
+    const url = `${this.apiUrl}/depreciacionBatch/${ejercicio}/${mes}`;
+    return this.http
+      .get<ActivoFijo[]>(url)
+      .pipe(catchError((error: any) => throwError(error)));
+  }
+
+  generarDepreciacionesFiscalBatch(
+    ejercicio: number
+  ): Observable<ActivoFijo[]> {
+    const url = `${this.apiUrl}/generarDepreciacionFiscal/${ejercicio}`;
+    return this.http
+      .get<ActivoFijo[]>(url)
+      .pipe(catchError((error: any) => throwError(error)));
+  }
+
+  asignarInpcMedioMesUso(
+    ids: number[],
+    inpc: number
+  ): Observable<ActivoFijo[]> {
+    const url = `${this.apiUrl}/asignarInpcMedioMesUso`;
+    return this.http
+      .put<ActivoFijo[]>(url, { ids, inpc })
+      .pipe(catchError((error: any) => throwError(error)));
+  }
+
   get apiUrl() {
     if (!this._apiUrl) {
       this._apiUrl = this.config.buildApiUrl('activoFijo');

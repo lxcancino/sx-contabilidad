@@ -10,6 +10,7 @@ import {
 } from '@angular/core';
 
 import * as _ from 'lodash';
+import * as moment from 'moment';
 
 import {
   RowSelectedEvent,
@@ -38,6 +39,9 @@ import { spAgGridText } from 'app/_shared/components/lx-table/table-support';
         [gridOptions]="gridOptions"
         [defaultColDef]="defaultColDef"
         [floatingFilter]="true"
+        [enableSorting]="true"
+        [enableColResize]="true"
+        [animateRows]="true"
         [localeText]="localeText"
         (gridReady)="onGridReady($event)"
         (modelUpdated)="onModelUpdate($event)"
@@ -88,8 +92,7 @@ export class ActivosTableComponent implements OnInit, OnChanges {
     this.defaultColDef = {
       editable: false,
       filter: 'agTextColumnFilter',
-      width: 150,
-      sort: 'true'
+      width: 100
     };
     this.localeText = spAgGridText;
     this.gridOptions.getRowStyle = params => {
@@ -139,12 +142,16 @@ export class ActivosTableComponent implements OnInit, OnChanges {
   actualizarTotales() {
     let registros = 0;
     let montoOriginal = 0;
+    let depreciacionInicial = 0;
     let depreciacionAcumulada = 0;
+    let ultimaDepreciacion = 0;
     let remanente = 0;
     this.gridApi.forEachNodeAfterFilter((rowNode, index) => {
       const row: ActivoFijo = rowNode.data;
       montoOriginal += row.montoOriginal;
+      depreciacionInicial += row.depreciacionInicial;
       depreciacionAcumulada += row.depreciacionAcumulada;
+      ultimaDepreciacion += row.ultimaDepreciacion;
       remanente += row.remanente;
       registros++;
     });
@@ -152,8 +159,10 @@ export class ActivosTableComponent implements OnInit, OnChanges {
       {
         descripcion: `Registros: ${registros}`,
         montoOriginal,
+        depreciacionInicial,
         depreciacionAcumulada,
-        remanente
+        remanente,
+        ultimaDepreciacion
       }
     ];
     this.gridApi.setPinnedBottomRowData(res);
@@ -185,18 +194,68 @@ export class ActivosTableComponent implements OnInit, OnChanges {
         valueFormatter: params => (params.value ? params.value.descripcion : '')
       },
       {
-        headerName: 'Monto Orig',
+        headerName: 'Adquisicion',
+        field: 'adquisicion',
+        filter: 'agDateColumnFilter',
+        filterParams: {
+          comparator: (filterLocalDateAtMidnight, cellValue) => {
+            const dateAsString = cellValue;
+            if (dateAsString == null) {
+              return 0;
+            }
+            const cellDate = moment(dateAsString).toDate();
+            if (cellDate < filterLocalDateAtMidnight) {
+              return -1;
+            } else if (cellDate > filterLocalDateAtMidnight) {
+              return 1;
+            } else {
+              return 0;
+            }
+          }
+        },
+        valueFormatter: params => this.tableService.formatDate(params.value)
+      },
+      {
+        headerName: 'Tasa D',
+        field: 'tasaDepreciacion',
+        valueFormatter: params => this.tableService.formatPercent(params.value),
+        pinnedRowValueFormatter: params => ''
+      },
+      {
+        headerName: 'MOI',
         field: 'montoOriginal',
+        width: 130,
+        valueFormatter: params => this.tableService.formatCurrency(params.value)
+      },
+      {
+        headerName: 'Ini',
+        field: 'depreciacionInicial',
+        width: 120,
         valueFormatter: params => this.tableService.formatCurrency(params.value)
       },
       {
         headerName: 'Depreciado',
         field: 'depreciacionAcumulada',
+        width: 130,
         valueFormatter: params => this.tableService.formatCurrency(params.value)
       },
       {
         headerName: 'Remanente',
         field: 'remanente',
+        width: 130,
+        valueFormatter: params => this.tableService.formatCurrency(params.value)
+      },
+      {
+        headerName: 'U. Dep (P)',
+        field: 'ultimaDepreciacionFecha',
+        width: 120,
+        valueFormatter: params =>
+          this.tableService.formatDate(params.value, 'MM/yyyy')
+      },
+      {
+        headerName: 'U. Dep',
+        field: 'ultimaDepreciacion',
+        width: 120,
         valueFormatter: params => this.tableService.formatCurrency(params.value)
       },
       {
@@ -212,12 +271,20 @@ export class ActivosTableComponent implements OnInit, OnChanges {
         field: 'facturaFolio'
       },
       {
-        headerName: 'Modelo',
-        field: 'modelo'
+        headerName: 'U. Dep Fiscal',
+        field: 'ultimaDepreciacionFiscal'
       },
       {
-        headerName: 'Serie',
-        field: 'serie'
+        headerName: 'U Dep Ej',
+        field: 'ultimaDepreciacionFiscalEjercicio'
+      },
+      {
+        headerName: 'INPC (A)',
+        field: 'inpcDelMesAdquisicion'
+      },
+      {
+        headerName: 'INPC (USO)',
+        field: 'inpcPrimeraMitad'
       }
     ];
   }

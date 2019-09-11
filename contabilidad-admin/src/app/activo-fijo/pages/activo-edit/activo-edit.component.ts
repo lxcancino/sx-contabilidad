@@ -123,7 +123,6 @@ export class ActivoEditComponent implements OnInit, OnDestroy {
       .afterClosed()
       .subscribe(res => {
         if (res) {
-          console.log('Generar depreciacion fiscal: ', res);
           this.store.dispatch(
             new fromStore.CreateDepreciacionFiscal({
               activoId: activo.id,

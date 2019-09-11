@@ -4,13 +4,15 @@ import { ActivosGuard } from './guards/activos.guard';
 import {
   ActivosComponent,
   ActivoCreateComponent,
-  ActivoEditComponent
+  ActivoEditComponent,
+  PorMesComponent
 } from './pages';
 import { ActivoExistsGuard } from './guards/activo-exists.guard';
 
 const routes: Routes = [
   { path: '', canActivate: [ActivosGuard], component: ActivosComponent },
   { path: 'create', component: ActivoCreateComponent },
+  { path: 'mensual', component: PorMesComponent },
   {
     path: ':activoId',
     canActivate: [ActivoExistsGuard],

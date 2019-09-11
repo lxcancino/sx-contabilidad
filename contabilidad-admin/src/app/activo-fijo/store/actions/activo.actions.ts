@@ -1,6 +1,7 @@
 import { Action } from '@ngrx/store';
 import { ActivoFijo } from 'app/activo-fijo/models/activo-fijo';
 import { Update } from '@ngrx/entity';
+import { EjercicioMes } from 'app/models/ejercicio-mes';
 
 export enum ActivoActionTypes {
   LoadActivos = '[Activos Component] Load Activos ',
@@ -22,7 +23,22 @@ export enum ActivoActionTypes {
   // Generacion de pendientes
   GenerarPendientes = '[ActivoFijos component ] Generar pendientes',
   GenerarPendientesFail = '[ActivoFijos component ] Generar pendientes fail',
-  GenerarPendientesSuccess = '[ActivoFijos component ] Generar pendientes success'
+  GenerarPendientesSuccess = '[ActivoFijos component ] Generar pendientes success',
+
+  // Depreciacion BATCH
+  GenerarDepreciacionBatch = '[Activos component ] Generar depreciacion batch',
+  GenerarDepreciacionBatchFail = '[Activos component ] Generar depreciacion batch fail',
+  GenerarDepreciacionBatchSuccess = '[Activos component ] Generar depreciacion batch success',
+
+  // Asignar INPC medio mes
+  AsignarInpc = '[Activos component] Asignar INPC a activos',
+  AsignarInpcFail = '[Activos component] Asignar INPC a activos fail',
+  AsignarInpcSuccess = '[Activos component] Asignar INPC a activos success',
+
+  // Depreciacion fiscal
+  GenerarDepreciacionFiscalBatch = '[Activos component] Generar depreciacion fiscal batch',
+  GenerarDepreciacionFiscalBatchFail = '[Activos component] Generar depreciacion fiscal batch fail',
+  GenerarDepreciacionFiscalBatchSuccess = '[Activos component] Generar depreciacion fiscal batch success',
 }
 
 // Load
@@ -86,6 +102,48 @@ export class GenerarPendientesSuccess implements Action {
   constructor(public payload: { activos: ActivoFijo[] }) {}
 }
 
+// Generar depreciacion BATCH
+export class GenerarDepreciacionBatch implements Action {
+  readonly type = ActivoActionTypes.GenerarDepreciacionBatch;
+  constructor(public payload: { periodo: EjercicioMes }) {}
+}
+export class GenerarDepreciacionBatchFail implements Action {
+  readonly type = ActivoActionTypes.GenerarDepreciacionBatchFail;
+  constructor(public payload: { response: any }) {}
+}
+export class GenerarDepreciacionBatchSuccess implements Action {
+  readonly type = ActivoActionTypes.GenerarDepreciacionBatchSuccess;
+  constructor(public payload: { activos: ActivoFijo[] }) {}
+}
+
+// Asignacion de INPC
+export class AsignarInpc implements Action {
+  readonly type = ActivoActionTypes.AsignarInpc;
+  constructor(public payload: { ids: number[]; inpc: number }) {}
+}
+export class AsignarInpcFail implements Action {
+  readonly type = ActivoActionTypes.AsignarInpcFail;
+  constructor(public payload: { response: any }) {}
+}
+export class AsignarInpcSuccess implements Action {
+  readonly type = ActivoActionTypes.AsignarInpcSuccess;
+  constructor(public payload: { activos: ActivoFijo[] }) {}
+}
+
+// Generar depreciacion fiscal BATCH
+export class GenerarDepreciacionFiscalBatch implements Action {
+  readonly type = ActivoActionTypes.GenerarDepreciacionFiscalBatch;
+  constructor(public payload: { ejercicio: number }) {}
+}
+export class GenerarDepreciacionFiscalBatchFail implements Action {
+  readonly type = ActivoActionTypes.GenerarDepreciacionFiscalBatchFail;
+  constructor(public payload: { response: any }) {}
+}
+export class GenerarDepreciacionFiscalBatchSuccess implements Action {
+  readonly type = ActivoActionTypes.GenerarDepreciacionFiscalBatchSuccess;
+  constructor(public payload: { activos: ActivoFijo[] }) {}
+}
+
 export type ActivosActions =
   | LoadActivos
   | LoadActivoFail
@@ -99,4 +157,13 @@ export type ActivosActions =
   | UpsertActivo
   | GenerarPendientes
   | GenerarPendientesFail
-  | GenerarPendientesSuccess;
+  | GenerarPendientesSuccess
+  | GenerarDepreciacionBatch
+  | GenerarDepreciacionBatchFail
+  | GenerarDepreciacionBatchSuccess
+  | AsignarInpc
+  | AsignarInpcFail
+  | AsignarInpcSuccess
+  | GenerarDepreciacionFiscalBatch
+  | GenerarDepreciacionFiscalBatchFail
+  | GenerarDepreciacionFiscalBatchSuccess;

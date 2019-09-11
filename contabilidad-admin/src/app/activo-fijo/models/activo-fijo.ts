@@ -34,4 +34,11 @@ export interface ActivoFijo {
   updateUser: string;
   dateCreated: string;
   lastUpdated: string;
+  ultimaDepreciacion?: number;
+  ultimaDepreciacionFecha?: string;
+  ultimaDepreciacionFiscal?: number;
+  ultimaDepreciacionFiscalEjercicio?: number;
+  inpcDelMesAdquisicion?: number;
+  inpcPrimeraMitad?: number;
+
 }
