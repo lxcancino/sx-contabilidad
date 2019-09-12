@@ -2,6 +2,7 @@ import { createSelector } from '@ngrx/store';
 
 import * as fromFeature from './reducer';
 
+import * as _ from 'lodash';
 
 export const getInpcEntities = createSelector(
   fromFeature.getInpcState,
@@ -10,7 +11,12 @@ export const getInpcEntities = createSelector(
 
 export const selectInpc = createSelector(
   fromFeature.getInpcState,
-  fromFeature.selectAll);
+  fromFeature.selectAll
+);
+
+export const selectSortedInpc = createSelector(selectInpc, rows =>
+  _.sortBy(rows, ['ejercicio', 'mes'])
+);
 
 export const selectInpcLoading = createSelector(
   fromFeature.getInpcState,

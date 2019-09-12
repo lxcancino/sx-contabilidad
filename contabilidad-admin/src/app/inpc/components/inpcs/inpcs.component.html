@@ -18,6 +18,7 @@
     <sx-inpcs-table
       [inpcs]="inpcs$ | async"
       (select)="onSelect($event)"
+      (delete)="onDelete($event)"
     ></sx-inpcs-table>
   </div>
 </mat-card>

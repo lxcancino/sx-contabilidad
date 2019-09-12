@@ -98,6 +98,10 @@ export class ActivosTableComponent implements OnInit, OnChanges {
     this.gridOptions.getRowStyle = params => {
       if (params.node.rowPinned) {
         return { 'font-weight': 'bold' };
+      } else if (params.data.estado === 'DEPRECIADO') {
+        return { color: 'blue', 'font-style': 'italic' };
+      } else if (params.data.estado === 'VENDIDO') {
+        return { color: 'green', 'font-style': 'italic' };
       }
       return {};
     };
@@ -112,13 +116,6 @@ export class ActivosTableComponent implements OnInit, OnChanges {
       fileName: `AF_${new Date().getTime()}.csv`
     };
     this.gridApi.exportDataAsCsv(params);
-  }
-
-  buildRowStyle(params: any) {
-    if (params.node.rowPinned) {
-      return { 'font-weight': 'bold' };
-    }
-    return {};
   }
 
   onModelUpdate(event: ModelUpdatedEvent) {
@@ -192,6 +189,13 @@ export class ActivosTableComponent implements OnInit, OnChanges {
         pinned: 'left',
         width: 200,
         valueFormatter: params => (params.value ? params.value.descripcion : '')
+      },
+      {
+        headerName: 'E',
+        field: 'estado',
+        width: 60,
+        valueFormatter: params =>
+          params.value ? params.value.toString().substring(0, 3) : ''
       },
       {
         headerName: 'Adquisicion',

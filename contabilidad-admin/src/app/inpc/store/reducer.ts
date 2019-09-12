@@ -9,7 +9,17 @@ export interface State extends EntityState<Inpc> {
   loaded: boolean;
 }
 
-export const adapter: EntityAdapter<Inpc> = createEntityAdapter<Inpc>();
+export const adapter: EntityAdapter<Inpc> = createEntityAdapter<Inpc>({
+  sortComparer: (itemA, itemB) => {
+    if (itemA.ejercicio !== itemB.ejercicio) {
+      return itemB.ejercicio
+        .toString()
+        .localeCompare(itemA.ejercicio.toString());
+    } else {
+      return itemA.mes.toString().localeCompare(itemB.mes.toString());
+    }
+  }
+});
 
 export const initialState: State = adapter.getInitialState({
   loading: false,
@@ -28,10 +38,10 @@ export function reducer(state = initialState, action: InpcActions): State {
       };
     }
 
-    case InpcActionTypes.DeleteInpc:
-    case InpcActionTypes.UpdateInpc:
-    case InpcActionTypes.CreateInpc:
-    case InpcActionTypes.LoadInpcs: {
+    case InpcActionTypes.DeleteInpcFail:
+    case InpcActionTypes.UpdateInpcFail:
+    case InpcActionTypes.CreateInpcFail:
+    case InpcActionTypes.LoadInpcsFail: {
       return {
         ...state,
         loading: false

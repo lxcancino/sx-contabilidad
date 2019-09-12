@@ -6,6 +6,7 @@ import {
 } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
+import { Inpc } from 'app/inpc/models/inpc';
 
 @Component({
   selector: 'sx-inpc-modal',
@@ -15,28 +16,28 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 })
 export class InpcModalComponent implements OnInit {
   form: FormGroup;
-  mes: number;
-  ejercicio: number;
+  inpc: Inpc;
 
   constructor(
     private fb: FormBuilder,
     public dialogRef: MatDialogRef<InpcModalComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {
+    this.inpc = data.inpc;
     this.buildForm();
-    this.ejercicio = data.ejercicio;
-    this.mes = data.mes;
   }
 
-  ngOnInit() {}
+  ngOnInit() {
+    if (this.inpc) {
+      this.form.patchValue(this.inpc);
+    }
+  }
 
   private buildForm() {
     this.form = this.fb.group({
-      utilidadFiscalAf: [0.0, Validators.required],
-      cfUtilidad: [1.79, Validators.required],
-      perdidaFiscal: [0.0, Validators.required],
-      tasaIsr: [30.0, Validators.required],
-      isrAcreDiv: [0.0, Validators.required]
+      ejercicio: [2019, Validators.required],
+      mes: [null, Validators.required],
+      tasa: [0.0, Validators.required]
     });
   }
 

@@ -58,6 +58,9 @@ export class InpcsTableComponent implements OnInit, OnChanges {
   @Output()
   select = new EventEmitter<any[]>();
 
+  @Output()
+  delete = new EventEmitter();
+
   gridOptions: GridOptions;
 
   gridApi: GridApi;
@@ -83,6 +86,11 @@ export class InpcsTableComponent implements OnInit, OnChanges {
     this.gridOptions.enableColResize = true;
     this.gridOptions.onRowDoubleClicked = params => {
       this.select.emit(params.data);
+    };
+    this.gridOptions.onCellClicked = params => {
+      if (params.column.getColId() === 'delete') {
+        this.delete.emit(params.data);
+      }
     };
     this.defaultColDef = {
       editable: false,
@@ -132,6 +140,12 @@ export class InpcsTableComponent implements OnInit, OnChanges {
         headerName: 'Tasa',
         field: 'tasa',
         width: 150
+      },
+      {
+        headerName: 'D',
+        colId: 'delete',
+        valueGetter: params => 'D',
+        width: 80
       }
     ];
   }
