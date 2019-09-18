@@ -30,8 +30,8 @@ import { TdMediaService } from '@covalent/core';
     [tdLayoutNavListClose]="!media.query('gt-sm')"
   >
     <ng-template let-item let-last="last" ngFor [ngForOf]="navmenu">
-      <a mat-list-item [routerLink]="[item.route]" 
-        routerLinkActive="active" 
+      <a mat-list-item [routerLink]="[item.route]"
+        routerLinkActive="active"
         [routerLinkActiveOptions]="{exact:true}">
         <mat-icon matListAvatar>{{ item.icon }}</mat-icon>
         <h3 matLine>{{ item.title }}</h3>
@@ -41,7 +41,19 @@ import { TdMediaService } from '@covalent/core';
     </ng-template>
     <mat-divider></mat-divider>
 
-    <h3 matSubheader>Reportes</h3>
+    <h3 matSubheader>Activo Fijo</h3>
+    <ng-template let-item let-last="last" ngFor [ngForOf]="activo">
+      <a mat-list-item [routerLink]="[item.route]"
+        routerLinkActive="active"
+        [routerLinkActiveOptions]="{exact:true}">
+        <mat-icon matListAvatar>{{ item.icon }}</mat-icon>
+        <h3 matLine>{{ item.title }}</h3>
+        <p matLine>{{ item.description }}</p>
+      </a>
+      <mat-divider [inset]="true" *ngIf="!last"></mat-divider>
+    </ng-template>
+    <mat-divider></mat-divider>
+
   </mat-nav-list>
 
   <router-outlet></router-outlet>
@@ -70,16 +82,27 @@ export class MantenimientosPageComponent implements OnInit {
       title: 'Cheques',
       description: 'Registro de Cheques en Transito',
       icon: 'receipt'
-    },
+    }
+  ];
+
+  activo: Object[] = [
     {
       icon: 'business',
       route: 'activos',
-      title: 'Activo Fijo'
+      title: 'Activos',
+      description: 'Registro de activos'
+    },
+    {
+      icon: 'thumb_down',
+      route: 'activos/bajas',
+      title: 'Bajas AF',
+      description: 'Venta de activo fijo'
     },
     {
       icon: 'library_books',
-      route: 'activos/mensual',
-      title: 'Activo X Mes'
+      route: 'activos/resumen',
+      title: 'Resumen',
+      description: 'Analisis de depreciaciones'
     },
     {
       icon: 'question_answer',

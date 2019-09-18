@@ -163,7 +163,22 @@ export class DepreciacioneFiscalTableComponent implements OnInit, OnChanges {
           this.tableService.formatNumber(params.value, '1.1-4')
       },
       {
-        headerName: 'Depreciación',
+        headerName: 'Dep Ejercicio Ant',
+        field: 'depreciacionEjercicioAnterior',
+        valueFormatter: params => this.tableService.formatCurrency(params.value)
+      },
+      {
+        headerName: 'Dep Ejercicio',
+        field: 'depreciacionDelEjercicio',
+        valueFormatter: params => this.tableService.formatCurrency(params.value)
+      },
+      {
+        headerName: 'Dep acumulada',
+        field: 'depreciacionAcumulada',
+        valueFormatter: params => this.tableService.formatCurrency(params.value)
+      },
+      {
+        headerName: 'Depreciación Fiscal',
         field: 'depreciacionFiscal',
         valueFormatter: params => this.tableService.formatCurrency(params.value)
       },

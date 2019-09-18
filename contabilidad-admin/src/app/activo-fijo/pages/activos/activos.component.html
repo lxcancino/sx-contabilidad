@@ -35,6 +35,16 @@
       <button
         class="actions"
         mat-menu-item
+        [disabled]="selected.length === 0 || selected[0].estado === 'BAJA'"
+        matTooltip="Dar de baja activo"
+        (click)="onBaja(selected[0])"
+        color="warn"
+      >
+        <mat-icon color="warn"></mat-icon> Baja de activo
+      </button>
+      <button
+        class="actions"
+        mat-menu-item
         (click)="grid.exportData()"
         matTooltip="Descargar registros en formato CSV"
       >

@@ -20,6 +20,10 @@ export const selectActivos = createSelector(
   fromActivos.selectAll
 );
 
+export const selectActivosBajas = createSelector(selectActivos, activos =>
+  activos.filter(item => item.estado === 'VENDIDO')
+);
+
 export const selectActivosLoading = createSelector(
   getActivoState,
   fromActivos.getLoading

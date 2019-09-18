@@ -182,6 +182,11 @@ export class DepreciacionesTableComponent implements OnInit, OnChanges {
         field: 'depreciacion',
         valueFormatter: params => this.tableService.formatCurrency(params.value)
       },
+      // {
+      //   headerName: 'Remanente',
+      //   field: 'remanente',
+      //   valueFormatter: params => this.tableService.formatCurrency(params.value)
+      // },
       {
         headerName: 'Corte',
         field: 'corte',

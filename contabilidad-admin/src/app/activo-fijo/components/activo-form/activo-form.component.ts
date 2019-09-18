@@ -76,6 +76,7 @@ export class ActivoFormComponent implements OnInit {
       estado: ['VIGENTE'],
       cuentaContable: [null, [Validators.required]],
       montoOriginal: [0.0, [Validators.required, Validators.min(10.0)]],
+      montoOriginalFiscal: [0.0, [Validators.required, Validators.min(10.0)]],
       depreciacionInicial: [0.0, [Validators.required]],
       tasaDepreciacion: [
         0.0,

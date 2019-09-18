@@ -124,6 +124,13 @@ export class ActivoFijoService {
       .pipe(catchError((error: any) => throwError(error)));
   }
 
+  generarResumen(ejercicio: number, mes: number): Observable<any[]> {
+    const url = `${this.apiUrl}/resumen/${ejercicio}/${mes}`;
+    return this.http
+      .get<any[]>(url)
+      .pipe(catchError((error: any) => throwError(error)));
+  }
+
   get apiUrl() {
     if (!this._apiUrl) {
       this._apiUrl = this.config.buildApiUrl('activoFijo');

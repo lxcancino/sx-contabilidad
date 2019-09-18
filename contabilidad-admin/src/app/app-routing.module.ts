@@ -36,6 +36,10 @@ const routes: Routes = [
         path: 'operaciones',
         loadChildren:
           './mantenimientos/mantenimientos.module#MantenimientosModule'
+      },
+      {
+        path: 'fiscal',
+        loadChildren: './fiscal/fiscal.module#FiscalModule'
       }
     ]
   }

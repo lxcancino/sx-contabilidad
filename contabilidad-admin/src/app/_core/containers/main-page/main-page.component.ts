@@ -45,6 +45,11 @@ export class MainPageComponent implements OnInit, OnDestroy {
       title: 'Contabilidad SAT'
     },
     {
+      icon: 'speaker_notes',
+      route: '/fiscal',
+      title: 'Fiscal'
+    },
+    {
       icon: 'build',
       route: '/operaciones',
       title: 'Operaciones'

@@ -5,14 +5,16 @@ import {
   ActivosComponent,
   ActivoCreateComponent,
   ActivoEditComponent,
-  PorMesComponent
+  BajasComponent,
+  ResumenDeActivosComponent
 } from './pages';
 import { ActivoExistsGuard } from './guards/activo-exists.guard';
 
 const routes: Routes = [
   { path: '', canActivate: [ActivosGuard], component: ActivosComponent },
   { path: 'create', component: ActivoCreateComponent },
-  { path: 'mensual', component: PorMesComponent },
+  { path: 'resumen', component: ResumenDeActivosComponent },
+  { path: 'bajas', canActivate: [ActivosGuard], component: BajasComponent },
   {
     path: ':activoId',
     canActivate: [ActivoExistsGuard],

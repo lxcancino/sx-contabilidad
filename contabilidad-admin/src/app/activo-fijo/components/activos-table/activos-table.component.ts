@@ -143,6 +143,7 @@ export class ActivosTableComponent implements OnInit, OnChanges {
     let depreciacionAcumulada = 0;
     let ultimaDepreciacion = 0;
     let remanente = 0;
+    let ultimaDepreciacionFiscal = 0;
     this.gridApi.forEachNodeAfterFilter((rowNode, index) => {
       const row: ActivoFijo = rowNode.data;
       montoOriginal += row.montoOriginal;
@@ -150,6 +151,7 @@ export class ActivosTableComponent implements OnInit, OnChanges {
       depreciacionAcumulada += row.depreciacionAcumulada;
       ultimaDepreciacion += row.ultimaDepreciacion;
       remanente += row.remanente;
+      ultimaDepreciacionFiscal += row.ultimaDepreciacionFiscal || 0.0;
       registros++;
     });
     const res = [
@@ -159,7 +161,8 @@ export class ActivosTableComponent implements OnInit, OnChanges {
         depreciacionInicial,
         depreciacionAcumulada,
         remanente,
-        ultimaDepreciacion
+        ultimaDepreciacion,
+        ultimaDepreciacionFiscal
       }
     ];
     this.gridApi.setPinnedBottomRowData(res);
@@ -188,7 +191,14 @@ export class ActivosTableComponent implements OnInit, OnChanges {
         field: 'cuentaContable',
         pinned: 'left',
         width: 200,
-        valueFormatter: params => (params.value ? params.value.descripcion : '')
+        valueGetter: params => {
+          if (params.data && params.data.cuentaContable) {
+            return params.data.cuentaContable.descripcion;
+          } else {
+            return '';
+          }
+        }
+        // valueFormatter: params => (params.value ? params.value.descripcion : '')
       },
       {
         headerName: 'E',
@@ -200,6 +210,7 @@ export class ActivosTableComponent implements OnInit, OnChanges {
       {
         headerName: 'Adquisicion',
         field: 'adquisicion',
+        /*
         filter: 'agDateColumnFilter',
         filterParams: {
           comparator: (filterLocalDateAtMidnight, cellValue) => {
@@ -217,6 +228,7 @@ export class ActivosTableComponent implements OnInit, OnChanges {
             }
           }
         },
+        */
         valueFormatter: params => this.tableService.formatDate(params.value)
       },
       {
@@ -229,12 +241,6 @@ export class ActivosTableComponent implements OnInit, OnChanges {
         headerName: 'MOI',
         field: 'montoOriginal',
         width: 130,
-        valueFormatter: params => this.tableService.formatCurrency(params.value)
-      },
-      {
-        headerName: 'Ini',
-        field: 'depreciacionInicial',
-        width: 120,
         valueFormatter: params => this.tableService.formatCurrency(params.value)
       },
       {
@@ -276,7 +282,8 @@ export class ActivosTableComponent implements OnInit, OnChanges {
       },
       {
         headerName: 'U. Dep Fiscal',
-        field: 'ultimaDepreciacionFiscal'
+        field: 'ultimaDepreciacionFiscal',
+        valueFormatter: params => this.tableService.formatCurrency(params.value)
       },
       {
         headerName: 'U Dep Ej',

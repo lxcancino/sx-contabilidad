@@ -8,12 +8,17 @@ import * as fromStore from '../../store';
 
 import { ActivoFijo } from 'app/activo-fijo/models/activo-fijo';
 import { MatDialog } from '@angular/material';
-import { CreateActivoModalComponent } from 'app/activo-fijo/components';
+import {
+  CreateActivoModalComponent,
+  ActivoBajaModalComponent
+} from 'app/activo-fijo/components';
 import { EjercicioMesDialogComponent } from 'app/_shared/components';
 import { buildCurrentPeriodo } from 'app/models/ejercicio-mes';
 import { TdDialogService } from '@covalent/core';
 
 import * as _ from 'lodash';
+import { VentaDeActivo } from 'app/activo-fijo/models/venta-de-activo';
+import { Update } from '@ngrx/entity';
 
 @Component({
   selector: 'sx-activos',
@@ -111,6 +116,29 @@ export class ActivosComponent implements OnInit {
           );
         }
       });
+  }
+
+  onBaja(event: ActivoFijo) {
+    if (event.estado !== 'VENDIDO') {
+      this.dialog
+        .open(ActivoBajaModalComponent, {
+          data: { activo: event },
+          width: '600px'
+        })
+        .afterClosed()
+        .subscribe(res => {
+          if (res) {
+            const baja = {
+              ...res
+            };
+            const activo: Update<ActivoFijo> = {
+              id: event.id,
+              changes: { baja }
+            };
+            this.store.dispatch(new fromStore.UpdateActivo({ activo }));
+          }
+        });
+    }
   }
 
   @HostListener('document:keydown.meta.i', ['$event'])
