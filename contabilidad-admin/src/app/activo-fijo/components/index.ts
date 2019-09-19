@@ -9,6 +9,7 @@ import { DepreciacionFiscalComponent } from './depreciacion-fiscal/depreciacion-
 import { AfSucursalComponent } from './activo-form/af-sucursal/af-sucursal.component';
 import { ActivoBajaModalComponent } from './activo-baja/activo-baja-modal.component';
 import { ResumenTableComponent } from './resumen-table/resumen-table.component';
+import { BajasTableComponent } from './bajas-table/bajas-table.component';
 
 export const components: any[] = [
   ActivosTableComponent,
@@ -21,7 +22,8 @@ export const components: any[] = [
   DepreciacionFiscalComponent,
   AfSucursalComponent,
   ActivoBajaModalComponent,
-  ResumenTableComponent
+  ResumenTableComponent,
+  BajasTableComponent
 ];
 export const entryComponents: any[] = [
   CreateActivoModalComponent,
@@ -44,3 +46,4 @@ export * from './activo-form/af-sucursal/af-sucursal.component';
 
 export * from './activo-baja/activo-baja-modal.component';
 export * from './resumen-table/resumen-table.component';
+export * from './bajas-table/bajas-table.component';

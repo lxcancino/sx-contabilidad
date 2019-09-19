@@ -1,13 +1,11 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
 
+import { FiscalCommonModule } from '../fiscal-common/fiscal-common.module';
 import { DeclaracionAnualRoutingModule } from './declaracion-anual-routing.module';
+import { DeclaracionPageComponent } from './declaracion-page/declaracion-page.component';
 
 @NgModule({
-  imports: [
-    CommonModule,
-    DeclaracionAnualRoutingModule
-  ],
-  declarations: []
+  imports: [FiscalCommonModule, DeclaracionAnualRoutingModule],
+  declarations: [DeclaracionPageComponent]
 })
-export class DeclaracionAnualModule { }
+export class DeclaracionAnualModule {}

@@ -10,6 +10,20 @@ const routes: Routes = [
       {
         path: 'ajusteAnualPorInflacion',
         loadChildren: './inflacion/inflacion.module#InflacionModule'
+      },
+      {
+        path: 'declaracionAnual',
+        loadChildren:
+          './declaracion-anual/declaracion-anual.module#DeclaracionAnualModule'
+      },
+      {
+        path: 'ivaAcreditable',
+        loadChildren:
+          './iva-acreditable/iva-acreditable.module#IvaAcreditableModule'
+      },
+      {
+        path: 'ivaCobrado',
+        loadChildren: './iva-cobrado/iva-cobrado.module#IvaCobradoModule'
       }
     ]
   }

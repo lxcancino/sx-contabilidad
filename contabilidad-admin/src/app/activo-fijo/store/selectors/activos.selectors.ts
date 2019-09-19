@@ -21,7 +21,7 @@ export const selectActivos = createSelector(
 );
 
 export const selectActivosBajas = createSelector(selectActivos, activos =>
-  activos.filter(item => item.estado === 'VENDIDO')
+  activos.filter(item => item.baja)
 );
 
 export const selectActivosLoading = createSelector(

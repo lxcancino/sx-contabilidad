@@ -131,6 +131,20 @@ export class ActivoFijoService {
       .pipe(catchError((error: any) => throwError(error)));
   }
 
+  registrarBaja(activo: Update<ActivoFijo>): Observable<ActivoFijo> {
+    const url = `${this.apiUrl}/registrarBaja/${activo.id}`;
+    return this.http
+      .put<ActivoFijo>(url, activo.changes)
+      .pipe(catchError((error: any) => throwError(error)));
+  }
+
+  cancelarBaja(activoId: number): Observable<ActivoFijo> {
+    const url = `${this.apiUrl}/cancelarBaja/${activoId}`;
+    return this.http
+      .put<ActivoFijo>(url, {})
+      .pipe(catchError((error: any) => throwError(error)));
+  }
+
   get apiUrl() {
     if (!this._apiUrl) {
       this._apiUrl = this.config.buildApiUrl('activoFijo');

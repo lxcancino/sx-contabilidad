@@ -256,6 +256,34 @@ export class ActivoEffects {
   );
 
   @Effect()
+  registrarBaja$ = this.actions$.pipe(
+    ofType<fromActions.RegistrarBaja>(ActivoActionTypes.RegistrarBaja),
+    map(action => action.payload),
+    switchMap(p =>
+      this.service.registrarBaja(p.activo).pipe(
+        map(activo => new fromActions.RegistrarBajaSuccess({ activo })),
+        catchError(response =>
+          of(new fromActions.RegistrarBajaFail({ response }))
+        )
+      )
+    )
+  );
+
+  @Effect()
+  cancelarBaja$ = this.actions$.pipe(
+    ofType<fromActions.CancelarBaja>(ActivoActionTypes.CancelarBaja),
+    map(action => action.payload),
+    switchMap(p =>
+      this.service.cancelarBaja(p.activoId).pipe(
+        map(activo => new fromActions.CancelarBajaSuccess({ activo })),
+        catchError(response =>
+          of(new fromActions.CancelarBajaFail({ response }))
+        )
+      )
+    )
+  );
+
+  @Effect()
   errorHandler$ = this.actions$.pipe(
     ofType<
       | fromActions.LoadActivoFail
@@ -270,6 +298,7 @@ export class ActivoEffects {
       | fromActions.GenerarDepreciacionBatchFail
       | fromActions.GenerarDepreciacionFiscalBatchFail
       | fromActions.AsignarInpcFail
+      | fromActions.CancelarBajaFail
     >(
       ActivoActionTypes.LoadActivosFail,
       ActivoActionTypes.CreateActivoFail,
@@ -282,7 +311,8 @@ export class ActivoEffects {
       ActivoActionTypes.GenerarPendientesFail,
       ActivoActionTypes.GenerarDepreciacionBatchFail,
       ActivoActionTypes.GenerarDepreciacionFiscalBatchFail,
-      ActivoActionTypes.AsignarInpcFail
+      ActivoActionTypes.AsignarInpcFail,
+      ActivoActionTypes.CancelarBajaFail
     ),
     map(action => action.payload.response),
     map(response => new fromRoot.GlobalHttpError({ response }))

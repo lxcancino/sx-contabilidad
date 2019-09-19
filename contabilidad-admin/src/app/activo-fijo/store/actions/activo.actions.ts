@@ -39,6 +39,16 @@ export enum ActivoActionTypes {
   GenerarDepreciacionFiscalBatch = '[Activos component] Generar depreciacion fiscal batch',
   GenerarDepreciacionFiscalBatchFail = '[Activos component] Generar depreciacion fiscal batch fail',
   GenerarDepreciacionFiscalBatchSuccess = '[Activos component] Generar depreciacion fiscal batch success',
+
+  // Registrar Baja
+  RegistrarBaja = '[Bajas component] Registrar baja',
+  RegistrarBajaFail = '[Bajas component] Registrar baja fail',
+  RegistrarBajaSuccess = '[Bajas component] Registrar baja success',
+
+  // Cancelar Baja
+  CancelarBaja = '[Bajas component] Cancelar baja',
+  CancelarBajaFail = '[Bajas component] Cancelar baja fail',
+  CancelarBajaSuccess = '[Bajas component] Cancelar baja success',
 }
 
 // Load
@@ -144,6 +154,34 @@ export class GenerarDepreciacionFiscalBatchSuccess implements Action {
   constructor(public payload: { activos: ActivoFijo[] }) {}
 }
 
+// Registrar baja
+export class RegistrarBaja implements Action {
+  readonly type = ActivoActionTypes.RegistrarBaja;
+  constructor(public payload: {activo: Update<ActivoFijo>}) {}
+}
+export class RegistrarBajaFail implements Action {
+  readonly type = ActivoActionTypes.RegistrarBajaFail;
+  constructor( public payload: {response: any}) {}
+}
+export class RegistrarBajaSuccess implements Action {
+  readonly type = ActivoActionTypes.RegistrarBajaSuccess;
+  constructor (public payload: {activo: ActivoFijo}) {}
+}
+
+// Cancelar baja
+export class CancelarBaja implements Action {
+  readonly type = ActivoActionTypes.CancelarBaja;
+  constructor(public payload: {activoId: number}) {}
+}
+export class CancelarBajaFail implements Action {
+  readonly type = ActivoActionTypes.CancelarBajaFail;
+  constructor( public payload: {response: any}) {}
+}
+export class CancelarBajaSuccess implements Action {
+  readonly type = ActivoActionTypes.CancelarBajaSuccess;
+  constructor (public payload: {activo: ActivoFijo}) {}
+}
+
 export type ActivosActions =
   | LoadActivos
   | LoadActivoFail
@@ -166,4 +204,10 @@ export type ActivosActions =
   | AsignarInpcSuccess
   | GenerarDepreciacionFiscalBatch
   | GenerarDepreciacionFiscalBatchFail
-  | GenerarDepreciacionFiscalBatchSuccess;
+  | GenerarDepreciacionFiscalBatchSuccess
+  | RegistrarBaja
+  | RegistrarBajaFail
+  | RegistrarBajaSuccess
+  | CancelarBaja
+  | CancelarBajaFail
+  | CancelarBajaSuccess;

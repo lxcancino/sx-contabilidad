@@ -28,7 +28,7 @@ import { Update } from '@ngrx/entity';
 export class BajasComponent implements OnInit {
   activos$: Observable<ActivoFijo[]>;
   loading$: Observable<boolean>;
-  selected: ActivoFijo[] = [];
+  selected: ActivoFijo;
 
   constructor(
     private store: Store<fromStore.State>,
@@ -39,12 +39,7 @@ export class BajasComponent implements OnInit {
   ngOnInit() {
     this.loading$ = this.store.pipe(select(fromStore.selectActivosLoading));
     this.activos$ = this.store.pipe(select(fromStore.selectActivosBajas));
-  }
-
-  onCreate() {
-    this.store.dispatch(
-      new fromRoot.Go({ path: ['operaciones/activos/create'] })
-    );
+    this.activos$.subscribe(data => console.log(data));
   }
 
   onSelect(event: ActivoFijo) {
@@ -57,97 +52,21 @@ export class BajasComponent implements OnInit {
     this.store.dispatch(new fromStore.LoadActivos());
   }
 
+  onDeleteBaja(event: ActivoFijo) {
+    this.dialogService
+      .openConfirm({
+        title: 'ELIMINAR BAJA',
+        message: 'ACTIVO: ' + event.id,
+        cancelButton: 'CANCELAR',
+        acceptButton: 'ACEPTAR'
+      })
+      .afterClosed()
+      .subscribe(res => {
+        this.store.dispatch(new fromStore.CancelarBaja({ activoId: event.id }));
+      });
+  }
+
   onSelection(event: ActivoFijo[]) {
-    this.selected = event;
-  }
-
-  importarPendientes() {
-    this.store.dispatch(new fromStore.GenerarPendientes());
-  }
-
-  asignarInpcUso() {
-    if (this.selected.length > 0) {
-      const ids = this.selected.map(item => item.id);
-      this.dialogService
-        .openPrompt({
-          message: 'INPC PRIMERA MITAD DE USO',
-          title: 'ASIGNACION DE INPC',
-          acceptButton: 'ACEPTAR',
-          cancelButton: 'CANCELAR'
-        })
-        .afterClosed()
-        .subscribe(res => {
-          if (res) {
-            const inpc = res as number;
-            this.store.dispatch(new fromStore.AsignarInpc({ ids, inpc }));
-            this.selected = [];
-          }
-        });
-    }
-  }
-
-  generarDepreciacion() {
-    this.dialog
-      .open(EjercicioMesDialogComponent, {
-        data: { periodo: buildCurrentPeriodo() }
-      })
-      .afterClosed()
-      .subscribe(res => {
-        if (res) {
-          this.store.dispatch(
-            new fromStore.GenerarDepreciacionBatch({ periodo: res })
-          );
-        }
-      });
-  }
-
-  generarDepreciacionFiscal() {
-    this.dialog
-      .open(EjercicioMesDialogComponent, {
-        data: { periodo: buildCurrentPeriodo() }
-      })
-      .afterClosed()
-      .subscribe(res => {
-        if (res) {
-          this.store.dispatch(
-            new fromStore.GenerarDepreciacionFiscalBatch({
-              ejercicio: res.ejercicio
-            })
-          );
-        }
-      });
-  }
-
-  onBaja(event: ActivoFijo) {
-    if (event.estado !== 'VENDIDO') {
-      this.dialog
-        .open(ActivoBajaModalComponent, {
-          data: { activo: event },
-          width: '600px'
-        })
-        .afterClosed()
-        .subscribe(res => {
-          if (res) {
-            const baja = {
-              ...res
-            };
-            const activo: Update<ActivoFijo> = {
-              id: event.id,
-              changes: { baja }
-            };
-            this.store.dispatch(new fromStore.UpdateActivo({ activo }));
-          }
-        });
-    }
-  }
-
-  @HostListener('document:keydown.meta.i', ['$event'])
-  onHotKeyInsert(event) {
-    this.onCreate();
-  }
-
-  @HostListener('document:keydown.insert', ['$event'])
-  onHotKeyInsert2(event) {
-    this.onCreate();
+    this.selected = event[0];
   }
 }

@@ -1,6 +1,6 @@
 import { Proveedor } from 'app/models/proveedor';
 import { CuentaContable } from 'app/cuentas/models';
-import { VentaDeActivo } from './venta-de-activo';
+import { BajaDeActivo } from './baja-de-activo';
 
 export interface ActivoFijo {
   id: number;
@@ -41,5 +41,5 @@ export interface ActivoFijo {
   ultimaDepreciacionFiscalEjercicio?: number;
   inpcDelMesAdquisicion?: number;
   inpcPrimeraMitad?: number;
-  baja?: Partial<VentaDeActivo>;
+  baja?: Partial<BajaDeActivo>;
 }
