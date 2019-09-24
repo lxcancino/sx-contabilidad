@@ -79,6 +79,7 @@ export const initialState: State = {
       new Grupo('IMPUESTOS_SOBRE_NOMINA', 'Impuesto Sobre Nomina', ''),
       new Grupo('CIERRE_ANUAL', 'Cierre anual', ''),
       new Grupo('CIERRE_MENSUAL', 'Cierre Mensual', ''),
+      new Grupo('ACTIVO_FIJO', 'Activo Fijo', '')
     ])
   ]
 };

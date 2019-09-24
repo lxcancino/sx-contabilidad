@@ -201,6 +201,11 @@ export class ActivosTableComponent implements OnInit, OnChanges {
         // valueFormatter: params => (params.value ? params.value.descripcion : '')
       },
       {
+        headerName: 'Sucursal',
+        field: 'sucursalActual',
+        width: 90
+      },
+      {
         headerName: 'E',
         field: 'estado',
         width: 60,
@@ -210,25 +215,6 @@ export class ActivosTableComponent implements OnInit, OnChanges {
       {
         headerName: 'Adquisicion',
         field: 'adquisicion',
-        /*
-        filter: 'agDateColumnFilter',
-        filterParams: {
-          comparator: (filterLocalDateAtMidnight, cellValue) => {
-            const dateAsString = cellValue;
-            if (dateAsString == null) {
-              return 0;
-            }
-            const cellDate = moment(dateAsString).toDate();
-            if (cellDate < filterLocalDateAtMidnight) {
-              return -1;
-            } else if (cellDate > filterLocalDateAtMidnight) {
-              return 1;
-            } else {
-              return 0;
-            }
-          }
-        },
-        */
         valueFormatter: params => this.tableService.formatDate(params.value)
       },
       {

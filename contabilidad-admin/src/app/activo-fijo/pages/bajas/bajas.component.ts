@@ -39,7 +39,6 @@ export class BajasComponent implements OnInit {
   ngOnInit() {
     this.loading$ = this.store.pipe(select(fromStore.selectActivosLoading));
     this.activos$ = this.store.pipe(select(fromStore.selectActivosBajas));
-    this.activos$.subscribe(data => console.log(data));
   }
 
   onSelect(event: ActivoFijo) {

@@ -142,6 +142,12 @@ export class BajasTableComponent implements OnInit, OnChanges {
     let utilidadContable = 0;
     let perdidaContable = 0;
 
+    let depreciacionFiscalAcunulada = 0;
+    let costoFiscal = 0;
+    let costoFiscalActualizado = 0;
+    let utilidadFiscal = 0;
+    let perdidaFiscal = 0;
+
     this.gridApi.forEachNodeAfterFilter((rowNode, index) => {
       const row: BajaDeActivo = rowNode.data.baja;
       moiContable += row.moiContable;
@@ -153,6 +159,16 @@ export class BajasTableComponent implements OnInit, OnChanges {
       } else {
         perdidaContable += row.utilidadContable * -1;
       }
+      depreciacionFiscalAcunulada += row.depreciacionFiscalAcunulada;
+      costoFiscal += row.costoFiscal;
+      costoFiscalActualizado += row.costoFiscalActualizado;
+
+      if (row.utilidadFiscal > 0) {
+        utilidadFiscal += row.utilidadFiscal;
+      } else {
+        perdidaFiscal += row.utilidadFiscal * -1;
+      }
+
       registros++;
     });
     const res = [
@@ -162,7 +178,13 @@ export class BajasTableComponent implements OnInit, OnChanges {
         depreciacionContable,
         remanenteContable,
         importeDeVenta,
-        utilidadContable
+        utilidadContable,
+        perdidaContable,
+        depreciacionFiscalAcunulada,
+        costoFiscal,
+        costoFiscalActualizado,
+        utilidadFiscal,
+        perdidaFiscal
       }
     ];
     this.gridApi.setPinnedBottomRowData(res);
@@ -243,7 +265,7 @@ export class BajasTableComponent implements OnInit, OnChanges {
             }
           },
           {
-            headerName: 'Remanente',
+            headerName: 'Costo ',
             colId: 'remanenteContable',
             width: 110,
             valueGetter: params => {
@@ -319,45 +341,57 @@ export class BajasTableComponent implements OnInit, OnChanges {
         children: [
           {
             headerName: 'Depreciado',
-            colId: 'depreciadoFiscal',
+            colId: 'depreciacionFiscalAcunulada',
             width: 110,
             valueGetter: params => {
               if (params.data && params.data.baja) {
-                return params.data.baja.depreciacionAcumuladaFiscal;
+                return params.data.baja.depreciacionFiscalAcunulada;
               } else {
                 return 0;
               }
             },
             valueFormatter: params =>
-              this.tableService.formatCurrency(params.value)
+              this.tableService.formatCurrency(params.value),
+            pinnedRowValueFormatter: p => {
+              const v = p.data[p.column.getColId()];
+              return this.tableService.formatCurrency(v);
+            }
           },
           {
-            headerName: 'Remanente ',
-            colId: 'remanenteFiscal',
+            headerName: 'Costo ',
+            colId: 'costoFiscal',
             width: 110,
             valueGetter: params => {
               if (params.data && params.data.baja) {
-                return params.data.baja.remanenteFiscal;
+                return params.data.baja.costoFiscal;
               } else {
                 return 0;
               }
             },
             valueFormatter: params =>
-              this.tableService.formatCurrency(params.value)
+              this.tableService.formatCurrency(params.value),
+            pinnedRowValueFormatter: p => {
+              const v = p.data[p.column.getColId()];
+              return this.tableService.formatCurrency(v);
+            }
           },
           {
             headerName: 'Costo Act ',
-            colId: 'costoActualizadoFiscal',
+            colId: 'costoFiscalActualizado',
             width: 110,
             valueGetter: params => {
               if (params.data && params.data.baja) {
-                return params.data.baja.costoActualizadoFiscal;
+                return params.data.baja.costoFiscalActualizado;
               } else {
                 return 0;
               }
             },
             valueFormatter: params =>
-              this.tableService.formatCurrency(params.value)
+              this.tableService.formatCurrency(params.value),
+            pinnedRowValueFormatter: p => {
+              const v = p.data[p.column.getColId()];
+              return this.tableService.formatCurrency(v);
+            }
           },
           {
             headerName: 'Utilidad ',
@@ -370,6 +404,10 @@ export class BajasTableComponent implements OnInit, OnChanges {
                 const utilidad = params.data.baja.utilidadFiscal;
                 return utilidad > 0 ? utilidad : 0.0;
               }
+            },
+            pinnedRowValueFormatter: p => {
+              const v = p.data[p.column.getColId()];
+              return this.tableService.formatCurrency(v);
             }
           },
           {
@@ -383,6 +421,10 @@ export class BajasTableComponent implements OnInit, OnChanges {
                 const utilidad = params.data.baja.utilidadFiscal;
                 return utilidad < 0 ? utilidad : 0.0;
               }
+            },
+            pinnedRowValueFormatter: p => {
+              const v = p.data[p.column.getColId()];
+              return this.tableService.formatCurrency(v);
             }
           }
         ]
