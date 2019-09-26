@@ -33,7 +33,7 @@ export const initialState: State = {
         'INTERESES_PRESTAMO_CHOFERES',
         'Intereses prestamos ',
         'Prestamos choferes'
-      ),
+      )
     ]),
     new Grupo('EGRESO', 'Egreso', 'Pólizas de egresos', [
       new Grupo('CHEQUE', 'Cheques', 'Pagos con cheque'),
@@ -79,7 +79,8 @@ export const initialState: State = {
       new Grupo('IMPUESTOS_SOBRE_NOMINA', 'Impuesto Sobre Nomina', ''),
       new Grupo('CIERRE_ANUAL', 'Cierre anual', ''),
       new Grupo('CIERRE_MENSUAL', 'Cierre Mensual', ''),
-      new Grupo('ACTIVO_FIJO', 'Activo Fijo', '')
+      new Grupo('ACTIVO_FIJO', 'Activo Fijo', ''),
+      new Grupo('ACTIVO_FIJO_BAJA', 'Baja de Activo', '')
     ])
   ]
 };
