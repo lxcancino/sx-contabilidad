@@ -98,7 +98,9 @@ export class PolizasComponent implements OnInit, OnDestroy {
             case 'CHEQUES_EN_TRANSITO':
             case 'PROVISION_NOMINA':
             case 'CHEQUE':
+            case 'CHEQUES':
             case 'TRANSFERENCIA':
+            case 'TRANSFERENCIAS':
             case 'TARJETA':
             case 'COBRANZA_CON':
             case 'COBRANZA_COD':
