@@ -41,11 +41,12 @@ export const CUENTA_CONTABLE_LOOKUPFIELD_VALUE_ACCESSOR: any = {
 
   <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
     <mat-option *ngFor="let cuenta of cuentas$ | async" [value]="cuenta">
-      <span>
-        {{cuenta.clave}} {{cuenta.descripcion}}
-      </span>
+      {{cuenta.clave}} {{cuenta.descripcion}}
       <span *ngIf="cuenta.padre">
         ({{cuenta.padre.descripcion.trim()}})
+      </span>
+      <span>
+        [N: {{cuenta.nivel}}]
       </span>
 
     </mat-option>
@@ -132,7 +133,7 @@ export class CuentaContableFieldComponent
     }
     const p = cuenta.padre ? `(${cuenta.padre.descripcion.trim()})` : '';
     return `
-      ${p} ${cuenta.descripcion} ${cuenta.clave}`;
+      ${p} ${cuenta.descripcion} ${cuenta.clave} [N: ${cuenta.nivel}]`;
   }
 
   writeValue(obj: any): void {

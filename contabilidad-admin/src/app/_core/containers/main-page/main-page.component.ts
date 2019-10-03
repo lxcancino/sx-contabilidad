@@ -40,19 +40,19 @@ export class MainPageComponent implements OnInit, OnDestroy {
       title: 'Costos'
     },
     {
-      icon: 'business',
-      route: '/activo',
-      title: 'Activo Fijo'
-    },
-    {
       icon: 'settings_input_antenna',
       route: '/econta',
       title: 'Contabilidad SAT'
     },
     {
+      icon: 'speaker_notes',
+      route: '/fiscal',
+      title: 'Fiscal'
+    },
+    {
       icon: 'build',
-      route: '/ajustes',
-      title: 'Mantenimientos al SIIPAPX'
+      route: '/operaciones',
+      title: 'Operaciones'
     }
   ];
 

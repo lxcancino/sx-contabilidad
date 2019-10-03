@@ -23,7 +23,8 @@ import {
   RowDoubleClickedEvent,
   RowClickedEvent,
   CellClickedEvent,
-  CellDoubleClickedEvent
+  CellDoubleClickedEvent,
+  ColDef
 } from 'ag-grid-community';
 
 @Component({
@@ -38,7 +39,7 @@ import {
         [defaultColDef]="defaultColDef"
         [enableFilter]="true"
         [enableSorting]="true"
-        [floatingFilter]="true"
+        [floatingFilter]="false"
         [enableColResize]="true"
         [animateRows]="true"
         [localeText]="localeText"
@@ -162,10 +163,20 @@ export class SaldosTableComponent implements OnInit, OnChanges {
       let haber = 0.0;
       let saldoFinal = 0.0;
       this.gridApi.forEachNodeAfterFilterAndSort((rowNode, index) => {
-        saldoInicial += rowNode.data.saldoInicial;
-        debe += rowNode.data.debe;
-        haber += rowNode.data.haber;
-        saldoFinal += rowNode.data.saldoFinal;
+        const sal = rowNode.data;
+        console.log('Evaluando: ', sal);
+        if (sal.nivel === 1) {
+          saldoInicial += rowNode.data.saldoInicial;
+          debe += rowNode.data.debe;
+          haber += rowNode.data.haber;
+          saldoFinal += rowNode.data.saldoFinal;
+        }
+        /*
+          saldoInicial += rowNode.data.saldoInicial;
+          debe += rowNode.data.debe;
+          haber += rowNode.data.haber;
+          saldoFinal += rowNode.data.saldoFinal;
+        */
       });
       const totales = { saldoInicial, debe, haber, saldoFinal };
       this.totalesChanged.emit(totales);
@@ -191,17 +202,19 @@ export class SaldosTableComponent implements OnInit, OnChanges {
     this.gridApi.exportDataAsCsv(params);
   }
 
-  private buildColsDef() {
+  private buildColsDef(): ColDef[] {
     return [
       {
         headerName: 'Cuenta',
         field: 'clave',
-        width: 170
+        width: 170,
+        pinned: 'left'
       },
       {
         headerName: 'Descripción de la cuenta',
         field: 'descripcion',
-        width: 400
+        width: 400,
+        pinned: 'left'
       },
       {
         headerName: 'N',

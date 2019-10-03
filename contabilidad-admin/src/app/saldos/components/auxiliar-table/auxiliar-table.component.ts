@@ -167,37 +167,31 @@ export class AuxiliarTableComponent implements OnInit, OnChanges {
         headerName: 'T',
         field: 'tipo',
         cellRenderer: params => params.value.substring(0, 1),
-        width: 60
-      },
-      {
-        headerName: 'Subtipo',
-        field: 'subtipo',
-        width: 150
+        width: 60,
+        pinned: 'left'
       },
       {
         headerName: 'Poliza',
         field: 'poliza',
-        width: 100
-      },
-      {
-        headerName: 'Ej',
-        field: 'ejercicio',
-        width: 100
-      },
-      {
-        headerName: 'Mes',
-        field: 'mes',
-        width: 90
+        width: 100,
+        pinned: 'left'
       },
       {
         headerName: 'Fecha',
         field: 'fecha',
         cellRenderer: params => this.transformDate(params.value),
-        width: 120
+        width: 120,
+        pinned: 'left'
       },
       {
         headerName: 'Cuenta',
-        field: 'clave'
+        field: 'clave',
+        pinned: 'left'
+      },
+      {
+        headerName: 'Cuenta (Desc)',
+        field: 'ctaDescripcion',
+        pinned: 'left'
       },
       {
         headerName: 'Descripción',
@@ -225,6 +219,11 @@ export class AuxiliarTableComponent implements OnInit, OnChanges {
         headerName: 'Asiento',
         field: 'asiento',
         maxWidth: 130
+      },
+      {
+        headerName: 'Subtipo',
+        field: 'subtipo',
+        width: 150
       }
     ];
     return data;

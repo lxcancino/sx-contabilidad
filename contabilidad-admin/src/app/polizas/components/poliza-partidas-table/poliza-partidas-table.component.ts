@@ -22,7 +22,8 @@ import {
   GridApi,
   RowDoubleClickedEvent,
   CellDoubleClickedEvent,
-  CellContextMenuEvent
+  CellContextMenuEvent,
+  ColDef
 } from 'ag-grid-community';
 
 import { MatMenuTrigger } from '@angular/material';
@@ -39,9 +40,9 @@ import { MatMenuTrigger } from '@angular/material';
         [defaultColDef]="defaultColDef"
         [enableFilter]="true"
         [enableSorting]="true"
-        [floatingFilter]="true"
         [enableColResize]="true"
         [animateRows]="true"
+        [floatingFilter]="true"
         [localeText]="localeText"
         (firstDataRendered)="onFirstDataRendered($event)"
         (gridReady)="onGridReady($event)"
@@ -74,7 +75,7 @@ import { MatMenuTrigger } from '@angular/material';
     `
       .myGrid {
         width: 100%;
-        height: 100%;
+        height: 95%;
       }
       .print {
         width: '';
@@ -201,7 +202,7 @@ export class PolizaPartidasTableComponent implements OnInit, OnChanges {
   }
 
   onFirstDataRendered(params) {
-    params.api.sizeColumnsToFit();
+    // params.api.sizeColumnsToFit();
   }
 
   onFilter(event: FilterChangedEvent) {}
@@ -258,17 +259,20 @@ export class PolizaPartidasTableComponent implements OnInit, OnChanges {
       {
         headerName: 'Cuenta',
         field: 'clave',
-        width: 170
+        width: 170,
+        pinned: 'left'
       },
       {
         headerName: 'Descripción de la cuenta',
         field: 'concepto',
-        width: 200
+        width: 200,
+        pinned: 'left'
       },
       {
         headerName: 'Concepto',
         field: 'descripcion',
-        width: 280
+        width: 280,
+        pinned: 'left'
       },
       {
         headerName: 'Debe',
@@ -287,42 +291,29 @@ export class PolizaPartidasTableComponent implements OnInit, OnChanges {
         field: 'asiento'
       },
       {
-        headerName: 'Referencias',
-        marryChildren: true,
-        openByDefault: 'false',
-        children: [
-          {
-            headerName: 'Sucursal',
-            field: 'sucursal',
-            columnGroupShow: 'open'
-          },
-          { headerName: 'Ref', field: 'referencia', columnGroupShow: 'closed' },
-          {
-            headerName: 'Ref2',
-            field: 'referencia2'
-          },
-          { headerName: 'Origen', field: 'origen', columnGroupShow: 'closed' },
-          { headerName: 'Entidad', field: 'entidad', columnGroupShow: 'closed' }
-        ]
+        headerName: 'Sucursal',
+        field: 'sucursal',
+        columnGroupShow: 'open'
       },
+      { headerName: 'Ref', field: 'referencia', columnGroupShow: 'open' },
       {
-        headerName: 'Documento',
-        openByDefault: 'false',
-        children: [
-          { headerName: 'Docto', field: 'documento', columnGroupShow: 'open' },
+        headerName: 'Ref2',
+        field: 'referencia2'
+      },
+      { headerName: 'Origen', field: 'origen', columnGroupShow: 'open' },
+      { headerName: 'Entidad', field: 'entidad', columnGroupShow: 'open' },
+      { headerName: 'Docto', field: 'documento', columnGroupShow: 'open' },
           {
             headerName: 'Docto T',
             field: 'documentoTipo',
-            columnGroupShow: 'closed'
+            columnGroupShow: 'open'
           },
           {
             headerName: 'Docto F',
             field: 'documentoFecha',
             filter: 'agDateColumnFilter',
-            columnGroupShow: 'closed'
+            columnGroupShow: 'open'
           }
-        ]
-      }
     ];
   }
 
@@ -370,5 +361,4 @@ export class PolizaPartidasTableComponent implements OnInit, OnChanges {
   prorratearRegistro(event, index: number) {
     this.prorratear.emit({ index, data: event });
   }
-
 }

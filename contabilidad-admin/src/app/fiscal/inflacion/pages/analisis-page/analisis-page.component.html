@@ -1,0 +1,27 @@
+<div layout="row">
+  <div flex="5"></div>
+
+  <div flex>
+    <h5 class="text-center">Activos</h5>
+    <mat-list *ngIf="activosList$ | async as row">
+      <mat-list-item *ngFor="let p of meses; last as last">
+        <span>{{ p.toUpperCase() }}</span>
+        <span flex></span>
+        <span>{{ row[p] | currency }}</span>
+        <mat-divider [inset]="true" *ngIf="!last"></mat-divider>
+      </mat-list-item>
+    </mat-list>
+  </div>
+
+  <div flex>
+    <h5 class="text-center">Pasivos</h5>
+    <mat-list *ngIf="pasivosList$ | async as row">
+      <mat-list-item *ngFor="let p of meses">
+        <span>{{ p.toUpperCase() }}</span>
+        <span flex></span>
+        <span>{{ row[p] | currency }}</span>
+      </mat-list-item>
+    </mat-list>
+  </div>
+  <div flex="5"></div>
+</div>

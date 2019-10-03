@@ -26,9 +26,11 @@ import { CuentaContable } from 'app/cuentas/models';
         <mat-datepicker #myDatepicker2></mat-datepicker>
       </mat-form-field>
     </div>
-    <div layout>
-      <sx-cuenta-contable-field formControlName="cuenta" flex placeholder="Cuenta:" [detalle]="true">
-      </sx-cuenta-contable-field>
+    <div layout="column">
+      <sx-cuenta-contable-field2 formControlName="cuentaInicial" flex placeholder="Cuenta Inicial" >
+      </sx-cuenta-contable-field2>
+      <sx-cuenta-contable-field2 formControlName="cuentaFinal" flex placeholder="Cuenta Final" >
+      </sx-cuenta-contable-field2>
     </div>
   </form>
   </mat-dialog-content>
@@ -41,7 +43,8 @@ import { CuentaContable } from 'app/cuentas/models';
 export class AuxiliarContableDialogComponent implements OnInit {
   periodo: Periodo;
   form: FormGroup;
-  cuenta: CuentaContable;
+  cuentaInicial: CuentaContable;
+  cuentaFinal: CuentaContable;
 
   constructor(
     public dialogRef: MatDialogRef<AuxiliarContableDialogComponent>,
@@ -49,7 +52,8 @@ export class AuxiliarContableDialogComponent implements OnInit {
     private fb: FormBuilder
   ) {
     this.periodo = data.periodo || Periodo.mesActual();
-    this.cuenta = data.cuenta;
+    this.cuentaInicial = data.cuentaInicial;
+    this.cuentaFinal = data.cuentaFinal;
   }
 
   ngOnInit() {
@@ -61,21 +65,16 @@ export class AuxiliarContableDialogComponent implements OnInit {
     this.form = this.fb.group({
       fechaInicial: [this.periodo.fechaInicial, Validators.required],
       fechaFinal: [this.periodo.fechaInicial, Validators.required],
-      cuenta: [this.cuenta, Validators.required]
+      cuentaInicial: [this.cuentaInicial, Validators.required],
+      cuentaFinal: [this.cuentaInicial]
     });
   }
 
-  setPeriodo(event: Periodo) {
-    console.log('Periodo');
-  }
-
   closeDialog() {
-    const params = { ...this.form.value };
-    params.cuenta = this.form.get('cuenta').value;
     const f1 = moment(this.form.get('fechaInicial').value).toDate();
     const f2 = moment(this.form.get('fechaFinal').value).toDate();
     const periodo = new Periodo(f1, f2);
-    params.periodo = periodo;
+    const params = { ...this.form.value, ...periodo.toApiJSON(), periodo };
     this.dialogRef.close(params);
   }
 }

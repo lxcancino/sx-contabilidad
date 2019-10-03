@@ -6,7 +6,7 @@ import { SharedModule } from '../_shared/shared.module';
 import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
 
-// import { reducers, effects } from './store';
+import { reducers, effects } from './store';
 
 import { components, entryComponents } from './components';
 import { pages } from './pages';
@@ -20,12 +20,11 @@ import { AgGridModule } from 'ag-grid-angular';
     AgGridModule.withComponents([]),
     AuthModule,
     ReportesModule,
-    ActivoFijoRoutingModule
-    // StoreModule.forFeature('activo', reducers),
-    // EffectsModule.forFeature(effects)
+    ActivoFijoRoutingModule,
+    StoreModule.forFeature('activo-fijo', reducers),
+    EffectsModule.forFeature(effects)
   ],
   declarations: [...components, ...pages],
   entryComponents: [...entryComponents]
-  // exports: [...containers, ...components]
 })
 export class ActivoFijoModule {}

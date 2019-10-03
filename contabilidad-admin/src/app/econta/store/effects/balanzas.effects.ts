@@ -17,10 +17,10 @@ import { MatSnackBar } from '@angular/material';
 export class BalanzasEffects {
   constructor(
     private actions$: Actions,
-    private service: fromServices.BalanzaService,
+    // private service: fromServices.BalanzaService,
     public snackBar: MatSnackBar
   ) {}
-
+  /*
   @Effect()
   load$ = this.actions$.pipe(
     ofType(BalanzasActionTypes.LoadBalanzas),
@@ -75,4 +75,5 @@ export class BalanzasEffects {
     map(action => action.payload.response),
     map(response => new fromRoot.GlobalHttpError({ response }))
   );
+   */
 }

@@ -2,7 +2,7 @@
   <mat-card flex>
     <div layout layout-align="start center" class="pad">
       <span class="push-left-sm">
-        <span class="mat-title">SALDOS POR CUENTA</span>
+        <span class="mat-title">BALANZA</span>
       </span>
       <span flex></span>
       <span class="info" *ngIf="totales">
@@ -26,7 +26,7 @@
           <mat-icon>more_vert</mat-icon>
         </button>
         <mat-menu #toolbarMenu="matMenu">
-          <button mat-menu-item class="actions" (click)="reload()">
+          <button mat-menu-item class="actions" (click)="reload(filter)">
             <mat-icon>refresh</mat-icon> Recargar
           </button>
           <button mat-menu-item class="actuibs" (click)="printAuxiliar()">
@@ -40,18 +40,6 @@
           >
             <mat-icon>add</mat-icon> Actualizar saldos
           </a>
-          <a mat-menu-item color="accent" class="actions" (click)="onCierre()">
-            <mat-icon>fast_forward</mat-icon> Cierre mensual
-          </a>
-          <a
-            mat-menu-item
-            color="accent"
-            class="actions"
-            (click)="onPolizaDeCierre()"
-            *ngIf="filter.mes === 13"
-          >
-            <mat-icon>leak_remove</mat-icon> Poliza CIERRE ANUAL
-          </a>
         </mat-menu>
       </span>
     </div>
@@ -64,11 +52,12 @@
     </ng-template>
     <div class="saldos-panel">
       <sx-saldos-table
-        [saldos]="saldos$ | async"
+        [saldos]="balanza$ | async"
         #grid
         (totalesChanged)="onFilter($event)"
         (drillData)="onDrill($event)"
         (selectionChange)="onSelectionChanged($event)"
+        nivelAcumulativo="1"
       >
       </sx-saldos-table>
     </div>

@@ -1,33 +1,22 @@
 <div layout="column">
   <mat-card flex>
-    <div layout layout-align="start center" class="">
-      <mat-card-title-group>
-        <mat-card-title>Auxiliar</mat-card-title>
-      </mat-card-title-group>
-
-      <div layout class="pad-sm-bottom" *ngIf="cuenta" flex>
-        <span class="pad-left" flex>Cuenta: {{ cuenta.clave }}</span>
-        <span class="pad-left">({{ cuenta.descripcion }})</span>
-        <div flex class="pad-left info totales-panel" layout>
-          <ng-container *ngIf="totales$ | async as totales">
-            <label>Inicial: </label>
-            <span *ngIf="saldoInicial">
-              {{ saldoInicial.saldoInicial | currency }}</span
-            >
-            <label>Debe:</label>
-            <span>{{ totales?.debe | currency }}</span>
-            <label>Haber:</label>
-            <span>{{ totales?.haber | currency }}</span>
-            <span>Final:</span>
-          </ng-container>
-        </div>
+    <div layout layout-align="start center" class="pad">
+      <div class="mat-title" layour>
+        <span class="pad-right">Auxiliar contable</span>
+        <ng-container *ngIf="cuentaInicial">
+          <span class="pad-left">De la Cuenta: {{ cuentaInicial }}</span>
+          <span class="pad-left">A la: {{ cuentaFinal }}</span>
+        </ng-container>
       </div>
-
+      <span flex></span>
+      <div layout>
+        <span>Periodo: {{ periodo }}</span>
+      </div>
       <span flex></span>
       <button
         mat-button
         mat-icon-button
-        matTooltip="Genera auxiliar de bancos"
+        matTooltip="Genera auxiliar"
         (click)="generar()"
       >
         <mat-icon color="accent">play_for_work</mat-icon>
@@ -55,6 +44,7 @@
         </mat-menu>
       </span>
     </div>
+
     <mat-divider></mat-divider>
     <ng-template
       tdLoading

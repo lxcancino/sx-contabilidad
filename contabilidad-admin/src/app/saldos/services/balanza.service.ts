@@ -10,19 +10,18 @@ import { SaldoPorCuentaContable } from '../models';
 import { EjercicioMes } from '../../models/ejercicio-mes';
 
 @Injectable({ providedIn: 'root' })
-export class SaldosService {
+export class BalanzaService {
   private _apiUrl: string;
 
   constructor(private http: HttpClient, private config: ConfigService) {}
 
   list(filter: EjercicioMes): Observable<SaldoPorCuentaContable[]> {
+    const url = this.config.buildApiUrl('contabilidad/saldos/loadBalanza');
     const params = new HttpParams()
       .set('ejercicio', filter.ejercicio.toString())
-      .set('mes', filter.mes.toString())
-      .set('sort', 'clave')
-      .set('order', 'asc');
+      .set('mes', filter.mes.toString());
     return this.http
-      .get<SaldoPorCuentaContable[]>(this.apiUrl, { params: params })
+      .get<SaldoPorCuentaContable[]>(url, { params: params })
       .pipe(catchError((error: any) => throwError(error)));
   }
 

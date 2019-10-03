@@ -15,6 +15,14 @@ const routes: Routes = [
       {
         path: 'cheques',
         loadChildren: './cheques/cheques.module#ChequesModule'
+      },
+      {
+        path: 'activos',
+        loadChildren: 'app/activo-fijo/activo-fijo.module#ActivoFijoModule'
+      },
+      {
+        path: 'inpcs',
+        loadChildren: 'app/inpc/inpc.module#InpcModule'
       }
     ]
   }
