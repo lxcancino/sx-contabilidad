@@ -65,7 +65,6 @@ export class PolizasPageComponent implements OnInit {
     this.grupos$ = this.store.pipe(select(fromStore.getGrupos));
     this.periodo$ = this.store.pipe(select(fromStore.getPeriodoDePolizas));
     this.periodo$.subscribe(per => {
-      console.log('Fijando menu de polizas para el: ', per.ejercicio);
       const ejercicio = per.ejercicio;
       this.store.dispatch(new fromStore.SetMenuContext({ ejercicio }));
     });
