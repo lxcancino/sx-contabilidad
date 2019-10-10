@@ -12,17 +12,14 @@ import {
 import * as _ from 'lodash';
 
 import {
-  RowSelectedEvent,
   ModelUpdatedEvent,
   ColDef,
-  CellDoubleClickedEvent,
   GridOptions,
   GridApi,
   GridReadyEvent
 } from 'ag-grid-community';
 
 import { SxTableService } from 'app/_shared/components/lx-table/sx-table.service';
-
 import { spAgGridText } from 'app/_shared/components/lx-table/table-support';
 import { AjusteConcepto } from '../../model';
 
@@ -30,12 +27,12 @@ import { AjusteConcepto } from '../../model';
   selector: 'sx-conceptos-table',
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <div style="height: 350px">
+    <div style="height: 500px">
       <ag-grid-angular
         #agGrid
         class="ag-theme-balham"
         style="width: 100%; height: 100%;"
-        [rowData]="inpcs"
+        [rowData]="rows"
         [gridOptions]="gridOptions"
         [defaultColDef]="defaultColDef"
         [floatingFilter]="true"
@@ -50,7 +47,7 @@ import { AjusteConcepto } from '../../model';
 })
 export class ConceptosTableComponent implements OnInit, OnChanges {
   @Input()
-  inpcs: any[] = [];
+  rows: any[] = [];
 
   @Output()
   selectionChange = new EventEmitter<AjusteConcepto>();
@@ -127,25 +124,30 @@ export class ConceptosTableComponent implements OnInit, OnChanges {
   buildColsDef(): ColDef[] {
     return [
       {
-        headerName: 'Ejercicio',
-        field: 'ejercicio',
+        headerName: 'Concepto',
+        field: 'concepto',
+        width: 200,
+        pinned: 'left'
+      },
+      {
+        headerName: 'Tipo',
+        field: 'tipo',
+        width: 120
+      },
+      {
+        headerName: 'Grupo',
+        field: 'grupo',
+        width: 120
+      },
+      {
+        headerName: 'Cta',
+        field: 'clave',
         width: 150
       },
       {
-        headerName: 'Mes',
-        field: 'mes',
-        width: 150
-      },
-      {
-        headerName: 'Tasa',
-        field: 'tasa',
-        width: 150
-      },
-      {
-        headerName: 'D',
-        colId: 'delete',
-        valueGetter: params => 'D',
-        width: 80
+        headerName: 'Activo',
+        field: 'activo',
+        width: 100
       }
     ];
   }

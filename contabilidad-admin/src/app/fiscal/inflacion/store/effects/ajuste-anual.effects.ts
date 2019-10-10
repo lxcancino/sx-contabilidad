@@ -41,8 +41,8 @@ export class AjusteAnualEffects {
       fromActions.AjusteAnualActionTypes.GenerarAjustes
     ),
     map(action => action.payload),
-    switchMap(command =>
-      this.service.generar(command.ejercicio).pipe(
+    switchMap(({ejercicio, mes}) =>
+      this.service.generar(ejercicio, mes).pipe(
         map(
           ajus =>
             new fromActions.GenerarAjustesSuccess({

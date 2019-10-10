@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpParams, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 
 import { Update } from '@ngrx/entity';
 
@@ -22,8 +22,8 @@ export class AjusteAnualService {
       .pipe(catchError((error: any) => throwError(error)));
   }
 
-  generar(ejercicio: number): Observable<AjusteAnual[]> {
-    const url = `${this.apiUrl}/generar/${ejercicio}`;
+  generar(ejercicio: number, mes: number): Observable<AjusteAnual[]> {
+    const url = `${this.apiUrl}/generar/${ejercicio}/${mes}`;
     return this.http
       .post<AjusteAnual[]>(url, {})
       .pipe(catchError((error: any) => throwError(error)));
@@ -40,6 +40,13 @@ export class AjusteAnualService {
     const url = `${this.apiUrl}/${inpc.id}`;
     return this.http
       .put<AjusteAnual>(url, inpc.changes)
+      .pipe(catchError((error: any) => throwError(error)));
+  }
+
+  sumary(ejercicio: number, mes: number) {
+    const url = `${this.apiUrl}/sumary/${ejercicio}/${mes}`;
+    return this.http
+      .get<any>(url)
       .pipe(catchError((error: any) => throwError(error)));
   }
 

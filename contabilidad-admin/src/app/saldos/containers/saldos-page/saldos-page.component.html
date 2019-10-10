@@ -48,6 +48,25 @@
       </a>
       <mat-divider [inset]="true" *ngIf="!last"></mat-divider>
     </ng-template>
+
+    <h3 matSubheader>Reportes</h3>
+    <ng-container *ngIf="periodo$ | async as periodo">
+      <a mat-list-item (click)="estadoDeResultados(periodo)">
+        <mat-icon matListAvatar>picture_as_pdf</mat-icon>
+        <h3 matLine>Estado de resultados</h3>
+      </a>
+      <mat-divider inset></mat-divider>
+      <a mat-list-item (click)="balanzaDeComprobacion(periodo)">
+        <mat-icon matListAvatar>picture_as_pdf</mat-icon>
+        <h3 matLine>Balanza de comprobación</h3>
+      </a>
+      <mat-divider inset></mat-divider>
+      <a mat-list-item (click)="balanceGeneral(periodo)">
+        <mat-icon matListAvatar>picture_as_pdf</mat-icon>
+        <h3 matLine>Balance General</h3>
+      </a>
+      <mat-divider inset></mat-divider>
+    </ng-container>
   </mat-nav-list>
 
   <router-outlet></router-outlet>

@@ -3,10 +3,11 @@
   flex-direction: row;
   background: lightblue;
 }
-.mat-list {
-  // border: 1px solid black;
-}
+
 .mat-list-item {
   // background: lightblue;
   padding: 0px 10px;
+}
+.sumary-panel {
+  min-height: 700px;
 }

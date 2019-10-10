@@ -65,7 +65,5 @@ export class FiscalPageComponent implements OnInit {
 
   constructor(public media: TdMediaService) {}
 
-  ngOnInit() {
-    console.log('Cargando modulo....');
-  }
+  ngOnInit() {}
 }

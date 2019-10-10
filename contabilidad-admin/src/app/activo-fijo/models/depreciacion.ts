@@ -9,6 +9,7 @@ export interface Depreciacion {
   tasaDepreciacion: number;
   depreciacionAcumulada: number;
   depreciacion: number;
+  remanente: number;
   dateCreeated: string;
   lastUpdated: string;
   createUser: string;

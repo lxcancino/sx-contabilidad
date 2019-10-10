@@ -7,6 +7,9 @@ import * as fromStore from '../../store';
 
 import { Observable } from 'rxjs';
 import { EjercicioMes } from '../../../models/ejercicio-mes';
+import { MatDialog } from '@angular/material';
+import { EjercicioMesDialogComponent } from 'app/_shared/components';
+import { ReportService } from 'app/reportes/services/report.service';
 
 @Component({
   selector: 'sx-saldos-page',
@@ -62,13 +65,13 @@ export class SaldosPageComponent implements OnInit {
       title: 'Bancos',
       description: 'Auxiliar de bancos',
       icon: 'account_balance'
-    },
-    {
-      route: 'estadoDeResultados',
-      title: 'Estado de resultados',
-      description: '',
-      icon: 'assessment'
     }
+    // {
+    //   route: 'estadoDeResultados',
+    //   title: 'Estado de resultados',
+    //   description: '',
+    //   icon: 'assessment'
+    // }
   ];
 
   loading$: Observable<boolean>;
@@ -76,7 +79,9 @@ export class SaldosPageComponent implements OnInit {
 
   constructor(
     public media: TdMediaService,
-    private store: Store<fromStore.State>
+    private store: Store<fromStore.State>,
+    private reportService: ReportService,
+    private dialog: MatDialog
   ) {}
 
   ngOnInit() {
@@ -86,5 +91,39 @@ export class SaldosPageComponent implements OnInit {
 
   onCambiarPeriodo(event: EjercicioMes) {
     this.store.dispatch(new fromStore.SetSaldosPeriodo({ periodo: event }));
+  }
+
+  estadoDeResultados(periodo: EjercicioMes) {
+    this.dialog
+      .open(EjercicioMesDialogComponent, { data: { periodo } })
+      .afterClosed()
+      .subscribe(res => {
+        if (res) {
+          this.reportService.runReport(`contabilidad/estadoDeResultados`, res);
+        }
+      });
+  }
+  balanzaDeComprobacion(periodo: EjercicioMes) {
+    this.dialog
+      .open(EjercicioMesDialogComponent, { data: { periodo } })
+      .afterClosed()
+      .subscribe(res => {
+        if (res) {
+          this.reportService.runReport(
+            `contabilidad/balanzaDeComprobacion`,
+            res
+          );
+        }
+      });
+  }
+  balanceGeneral(periodo: EjercicioMes) {
+    this.dialog
+      .open(EjercicioMesDialogComponent, { data: { periodo } })
+      .afterClosed()
+      .subscribe(res => {
+        if (res) {
+          this.reportService.runReport(`contabilidad/balanceGeneral`, res);
+        }
+      });
   }
 }

@@ -6,6 +6,11 @@ import * as fromStore from '../../store';
 import { Observable } from 'rxjs';
 
 import { AjusteAnual } from '../../model';
+import {
+  EjercicioMes,
+  loadEjercicioMesFromStorage,
+  saveOnStorage
+} from 'app/models/ejercicio-mes';
 
 @Component({
   selector: 'sx-inflacion-page',
@@ -14,10 +19,15 @@ import { AjusteAnual } from '../../model';
 })
 export class InflacionPageComponent implements OnInit {
   ejercicio: number;
+
+  periodo: EjercicioMes;
+
   loading$: Observable<boolean>;
   ajustes$: Observable<AjusteAnual[]>;
   activos$: Observable<AjusteAnual[]>;
   pasivos$: Observable<AjusteAnual[]>;
+
+  periodoStorageKey = 'sx.ajuste-anual.periodo';
 
   constructor(private store: Store<fromStore.State>) {}
 
@@ -36,9 +46,19 @@ export class InflacionPageComponent implements OnInit {
     );
   }
 
+  onPeriodoChange(event: EjercicioMes) {
+    this.periodo = event;
+    saveOnStorage(this.periodoStorageKey, event);
+  }
+
   private loadEjercicio() {
     const found =
       localStorage.getItem('sx.ajuste-anual-inflacion.ejercicio') || '2018';
     this.ejercicio = parseFloat(found);
+    this.periodo = loadEjercicioMesFromStorage(this.periodoStorageKey);
+  }
+
+  onGenerar({ ejercicio, mes }) {
+    this.store.dispatch(new fromStore.GenerarAjustes({ ejercicio, mes }));
   }
 }

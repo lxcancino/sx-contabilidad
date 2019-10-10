@@ -26,7 +26,7 @@ export class LoadAjustesSuccess implements Action {
 
 export class GenerarAjustes implements Action {
   readonly type = AjusteAnualActionTypes.GenerarAjustes;
-  constructor(public payload: { ejercicio: number }) {}
+  constructor(public payload: { ejercicio: number; mes: number }) {}
 }
 export class GenerarAjustesFail implements Action {
   readonly type = AjusteAnualActionTypes.GenerarAjustesFail;

@@ -18,7 +18,7 @@
         ></mat-datepicker-toggle>
         <mat-datepicker #myDatepicker></mat-datepicker>
       </mat-form-field>
-      <sx-af-estado [parent]="form" class="pad-left"></sx-af-estado>
+      <!-- <sx-af-estado [parent]="form" class="pad-left"></sx-af-estado> -->
       <mat-form-field class="pad-left">
         <input
           matInput
@@ -53,15 +53,15 @@
       </mat-form-field>
 
       <mat-form-field>
-          <input
-            matInput
-            placeholder="Monto Original Fiscal"
-            formControlName="montoOriginalFiscal"
-            type="number"
-            autocomplete="off"
-          />
-          <mat-error>Monto invalido</mat-error>
-        </mat-form-field>
+        <input
+          matInput
+          placeholder="Monto Original Fiscal"
+          formControlName="montoOriginalFiscal"
+          type="number"
+          autocomplete="off"
+        />
+        <mat-error>Monto invalido</mat-error>
+      </mat-form-field>
 
       <mat-form-field class="pad-left">
         <input
@@ -78,6 +78,7 @@
           matInput
           placeholder="Depreciación inicial"
           formControlName="depreciacionInicial"
+          [readOnly]="true"
         />
       </mat-form-field>
       <mat-form-field class="pad-left">

@@ -73,7 +73,6 @@ export class ActivoFormComponent implements OnInit {
       departamentoOrigen: [],
       departamentoActual: [],
       consignatario: [],
-      estado: ['VIGENTE'],
       cuentaContable: [null, [Validators.required]],
       montoOriginal: [0.0, [Validators.required, Validators.min(10.0)]],
       montoOriginalFiscal: [0.0, [Validators.required, Validators.min(10.0)]],
@@ -130,12 +129,12 @@ export class ActivoFormComponent implements OnInit {
       this.form.get('adquisicion').disable();
       this.form.get('montoOriginal').disable();
       this.form.get('tasaDepreciacion').disable();
-      this.form.get('depreciacionInicial').disable();
+      // this.form.get('depreciacionInicial').disable();
     } else {
       this.form.get('adquisicion').enable();
       this.form.get('montoOriginal').enable();
       this.form.get('tasaDepreciacion').enable();
-      this.form.get('depreciacionInicial').enable();
+      // this.form.get('depreciacionInicial').enable();
     }
   }
 }
