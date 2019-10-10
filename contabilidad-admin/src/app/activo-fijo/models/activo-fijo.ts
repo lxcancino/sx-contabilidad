@@ -42,4 +42,5 @@ export interface ActivoFijo {
   inpcDelMesAdquisicion?: number;
   inpcPrimeraMitad?: number;
   baja?: Partial<BajaDeActivo>;
+  depreciado?: string;
 }

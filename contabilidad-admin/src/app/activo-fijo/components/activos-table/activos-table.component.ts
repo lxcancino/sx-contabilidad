@@ -226,13 +226,19 @@ export class ActivosTableComponent implements OnInit, OnChanges {
       {
         headerName: 'MOI',
         field: 'montoOriginal',
-        width: 130,
+        width: 120,
         valueFormatter: params => this.tableService.formatCurrency(params.value)
       },
       {
-        headerName: 'Depreciado',
+        headerName: 'Inicial',
+        field: 'depreciacionInicial',
+        width: 120,
+        valueFormatter: params => this.tableService.formatCurrency(params.value)
+      },
+      {
+        headerName: 'Acumulada',
         field: 'depreciacionAcumulada',
-        width: 130,
+        width: 120,
         valueFormatter: params => this.tableService.formatCurrency(params.value)
       },
       {
@@ -242,30 +248,36 @@ export class ActivosTableComponent implements OnInit, OnChanges {
         valueFormatter: params => this.tableService.formatCurrency(params.value)
       },
       {
+        headerName: 'F. Depreciado',
+        field: 'depreciado',
+        width: 110,
+        valueFormatter: params => this.tableService.formatDate(params.value)
+      },
+      {
         headerName: 'U. Dep (P)',
         field: 'ultimaDepreciacionFecha',
         width: 120,
         valueFormatter: params =>
           this.tableService.formatDate(params.value, 'MM/yyyy')
       },
-      {
-        headerName: 'U. Dep',
-        field: 'ultimaDepreciacion',
-        width: 120,
-        valueFormatter: params => this.tableService.formatCurrency(params.value)
-      },
-      {
-        headerName: 'Estado',
-        field: 'estado'
-      },
-      {
-        headerName: 'Fac Ser',
-        field: 'facturaSerie'
-      },
-      {
-        headerName: 'Fac Folio',
-        field: 'facturaFolio'
-      },
+      // {
+      //   headerName: 'U. Dep',
+      //   field: 'ultimaDepreciacion',
+      //   width: 120,
+      //   valueFormatter: params => this.tableService.formatCurrency(params.value)
+      // },
+      // {
+      //   headerName: 'Estado',
+      //   field: 'estado'
+      // },
+      // {
+      //   headerName: 'Fac Ser',
+      //   field: 'facturaSerie'
+      // },
+      // {
+      //   headerName: 'Fac Folio',
+      //   field: 'facturaFolio'
+      // },
       {
         headerName: 'U. Dep Fiscal',
         field: 'ultimaDepreciacionFiscal',

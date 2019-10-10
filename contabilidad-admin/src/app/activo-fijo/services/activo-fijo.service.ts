@@ -99,7 +99,9 @@ export class ActivoFijoService {
     ejercicio: number,
     mes: number
   ): Observable<ActivoFijo[]> {
-    const url = `${this.apiUrl}/depreciacionBatch/${ejercicio}/${mes}`;
+    const url = `${
+      this.apiUrl
+    }/generarDepreciacionContable/${ejercicio}/${mes}`;
     return this.http
       .get<ActivoFijo[]>(url)
       .pipe(catchError((error: any) => throwError(error)));

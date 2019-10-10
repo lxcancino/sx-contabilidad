@@ -32,7 +32,7 @@ import { AjusteAnual } from '../../model';
     <ag-grid-angular
       #agGrid
       class="ag-theme-balham"
-      style="width: 100%; height: 500px;"
+      style="width: 100%; height: 600px;"
       [rowData]="rows"
       [gridOptions]="gridOptions"
       [defaultColDef]="defaultColDef"

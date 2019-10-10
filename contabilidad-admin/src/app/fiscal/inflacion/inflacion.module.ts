@@ -12,6 +12,8 @@ import { ReportesModule } from 'app/reportes/reportes.module';
 import { ConceptosTableComponent } from './components/conceptos-table/conceptos-table.component';
 import { AjustesTableComponent } from './components/ajustes-table/ajustes-table.component';
 import { AnalisisPageComponent } from './pages/analisis-page/analisis-page.component';
+import { SumaryTableComponent } from './components/sumary-table/sumary-table.component';
+import { ConceptosPageComponent } from './pages/conceptos-page/conceptos-page.component';
 
 @NgModule({
   imports: [
@@ -25,7 +27,9 @@ import { AnalisisPageComponent } from './pages/analisis-page/analisis-page.compo
     InflacionPageComponent,
     ConceptosTableComponent,
     AjustesTableComponent,
-    AnalisisPageComponent
+    AnalisisPageComponent,
+    SumaryTableComponent,
+    ConceptosPageComponent
   ]
 })
 export class InflacionModule {}

@@ -53,6 +53,11 @@
     <td mat-cell *matCellDef="let row">{{row.costo | currency}}</td>
   </ng-container>
 
+  <ng-container matColumnDef="gasto">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header>Gasto</th>
+    <td mat-cell *matCellDef="let row">{{row.gasto | currency}}</td>
+  </ng-container>
+
   <ng-container matColumnDef="costop">
     <th mat-header-cell *matHeaderCellDef mat-sort-header>Costo P(U)</th>
     <td mat-cell *matCellDef="let row">{{row.costoPromedio | currency}}</td>

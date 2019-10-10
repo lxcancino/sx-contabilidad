@@ -16,8 +16,9 @@ export class AjusteConceptoService {
   constructor(private http: HttpClient, private config: ConfigService) {}
 
   list(): Observable<AjusteConcepto[]> {
+    const params = new HttpParams().set('max', '100');
     return this.http
-      .get<AjusteConcepto[]>(this.apiUrl, {})
+      .get<AjusteConcepto[]>(this.apiUrl, { params })
       .pipe(catchError((error: any) => throwError(error)));
   }
 
