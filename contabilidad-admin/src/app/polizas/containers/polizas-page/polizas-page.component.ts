@@ -6,7 +6,7 @@ import { Store, select } from '@ngrx/store';
 import * as fromStore from '../../store';
 
 import { Observable } from 'rxjs';
-import { Grupo } from 'app/polizas/store/reducers/ui-context.reducre';
+import { Grupo } from 'app/polizas/store/reducers/grupo';
 import { EjercicioMes } from '../../../models/ejercicio-mes';
 import { ReportService } from 'app/reportes/services/report.service';
 import { MatDialog } from '@angular/material';
@@ -64,6 +64,11 @@ export class PolizasPageComponent implements OnInit {
   ngOnInit() {
     this.grupos$ = this.store.pipe(select(fromStore.getGrupos));
     this.periodo$ = this.store.pipe(select(fromStore.getPeriodoDePolizas));
+    this.periodo$.subscribe(per => {
+      console.log('Fijando menu de polizas para el: ', per.ejercicio);
+      const ejercicio = per.ejercicio;
+      this.store.dispatch(new fromStore.SetMenuContext({ ejercicio }));
+    });
   }
 
   onCambiarPeriodo(event: EjercicioMes) {

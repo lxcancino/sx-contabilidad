@@ -1,6 +1,6 @@
 import { Grupo } from './grupo';
 
-export const POLIZAS_2018 = [
+export const POLIZAS_2019 = [
   new Grupo('INGRESO', 'Ingreso', 'Pólizas de ingresos', [
     new Grupo('COBRANZA_CON', 'Cobranza CON', 'Contado'),
     new Grupo('COBRANZA_COD', 'Cobranza COD', 'Contra entrega (COD)'),
@@ -14,7 +14,7 @@ export const POLIZAS_2018 = [
     )
   ]),
   new Grupo('EGRESO', 'Egreso', 'Pólizas de egresos', [
-    new Grupo('CHEQUE', 'Cheques', 'Pagos con cheque'),
+    new Grupo('CHEQUE', 'Cheques 2019', 'Pagos con cheque'),
     new Grupo('TRANSFERENCIA', 'Transferencias', 'Pagos con transferencia'),
     new Grupo('COMISIONES_TARJETA', 'Comisiones Tarjeta', 'Comisiones')
   ]),
