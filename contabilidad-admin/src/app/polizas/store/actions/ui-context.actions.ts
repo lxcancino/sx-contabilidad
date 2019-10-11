@@ -2,12 +2,18 @@ import { Action } from '@ngrx/store';
 import { EjercicioMes } from 'app/models/ejercicio-mes';
 
 export enum UIContextActionTypes {
-  SetPeriodoDePoliza = '[Polizas page] Set Periodo de polizas'
+  SetPeriodoDePoliza = '[Polizas page] Set Periodo de polizas',
+  SetMenuContext = '[Polizas page] Set menu de polizas'
 }
 
 export class SetPeriodoDePoliza implements Action {
-  type = UIContextActionTypes.SetPeriodoDePoliza;
+  readonly type = UIContextActionTypes.SetPeriodoDePoliza;
   constructor(public payload: { periodo: EjercicioMes }) {}
 }
 
-export type UIContextActions = SetPeriodoDePoliza;
+export class SetMenuContext implements Action {
+  readonly type = UIContextActionTypes.SetMenuContext;
+  constructor(public payload: { ejercicio: number }) {}
+}
+
+export type UIContextActions = SetPeriodoDePoliza | SetMenuContext;

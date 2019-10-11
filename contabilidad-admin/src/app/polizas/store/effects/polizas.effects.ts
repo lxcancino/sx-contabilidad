@@ -171,6 +171,7 @@ export class PolizasEffects {
     ofType<fromContext.SetPeriodoDePoliza>(
       fromContext.UIContextActionTypes.SetPeriodoDePoliza
     ),
+    // tap(action => console.log('Periodo de polizas: ', action.payload.periodo)),
     tap(action => {
       saveOnStorage(POLIZAS_STORAGE_KEY, action.payload.periodo);
     })
