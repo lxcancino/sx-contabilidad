@@ -18,6 +18,7 @@ import { EjercicioMes } from '../../../models/ejercicio-mes';
 import { AuxiliarContableDialogComponent } from 'app/saldos/components';
 import { Periodo } from 'app/_core/models/periodo';
 import { PolizaDet } from 'app/polizas/models';
+// import { getSaldosMayor } from '../../store/selectors/saldos.selectors';
 
 @Component({
   selector: 'sx-saldos',

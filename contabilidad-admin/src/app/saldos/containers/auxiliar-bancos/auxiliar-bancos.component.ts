@@ -11,9 +11,10 @@ import { ReportService } from 'app/reportes/services/report.service';
 
 import { MatDialog } from '@angular/material';
 
-import { AuxiliarContableDialogComponent } from 'app/saldos/components';
+
 import { Auxiliar } from 'app/saldos/models/auxiliar';
 import { Periodo } from 'app/_core/models/periodo';
+import { AuxiliarBancosDialogComponent } from '../../components/auxiliar-bancos-dialog/auxiliar-bancos-dialog.component';
 
 @Component({
   selector: 'sx-auxiliar-bancos',
@@ -51,7 +52,7 @@ export class AuxiliarBancosComponent implements OnInit, OnDestroy {
 
   generar() {
     this.dialog
-      .open(AuxiliarContableDialogComponent, {
+      .open(AuxiliarBancosDialogComponent, {
         data: { periodo: this.periodo },
         width: '750px'
       })
@@ -76,7 +77,7 @@ export class AuxiliarBancosComponent implements OnInit, OnDestroy {
 
   printAuxiliar() {
     this.dialog
-      .open(AuxiliarContableDialogComponent, {
+      .open(AuxiliarBancosDialogComponent, {
         data: {
           periodo: this.periodo
         },

@@ -2,11 +2,11 @@ import { Grupo } from './grupo';
 
 export const POLIZAS_2019 = [
   new Grupo('INGRESO', 'Ingreso', 'Pólizas de ingresos', [
-    new Grupo('COBRANZA_CON', 'Cobranza CON', 'Contado'),
-    new Grupo('COBRANZA_COD', 'Cobranza COD', 'Contra entrega (COD)'),
-    new Grupo('COBRANZA_CRE', 'Cobranza CRE', 'Crédito'),
-    new Grupo('COBRANZA_CHE', 'Cobranza CHE', 'Cheque devuelto'),
-    new Grupo('COBRANZA_JUR', 'Cobranza JUR', 'Trámite jurídico'),
+    new Grupo('INGRESOS_CON', 'Ingresos CON', 'Contado'),
+    new Grupo('INGRESOS_COD', 'Ingresos COD', 'COD'),
+    new Grupo('INGRESOS_CRE', 'Ingresos CRE', 'Credito'),
+    new Grupo('INGRESOS_CHE', 'Ingresos CHE', 'Cheques Devueltos'),
+    new Grupo('INGRESOS_JUR', 'Ingresos JUR', 'Juridico'),
     new Grupo(
       'INTERESES_PRESTAMO_CHOFERES',
       'Intereses prestamos ',
@@ -14,19 +14,17 @@ export const POLIZAS_2019 = [
     )
   ]),
   new Grupo('EGRESO', 'Egreso', 'Pólizas de egresos', [
-    new Grupo('CHEQUE', 'Cheques 2019', 'Pagos con cheque'),
-    new Grupo('TRANSFERENCIA', 'Transferencias', 'Pagos con transferencia'),
+    new Grupo('CHEQUES', 'Cheques', 'Pagos con cheque'),
+    new Grupo('TRANSFERENCIAS', 'Transferencias', 'Pagos con transferencia'),
     new Grupo('COMISIONES_TARJETA', 'Comisiones Tarjeta', 'Comisiones')
   ]),
   new Grupo('DIARIO', 'Diario', 'Pólizas de diario', [
-    new Grupo('VENTAS_CON', 'Ventas CON', 'Contado'),
-    new Grupo('VENTAS_COD', 'Ventas COD', 'Contra entrega'),
-    new Grupo('VENTAS_CRE', 'Ventas CRE', 'Crédito'),
-    new Grupo('VENTAS_ACF', 'Ventas ACF', 'Activo Fijo'),
-    new Grupo('VENTAS_OTR', 'Ventas OTR', 'Otros'),
-    new Grupo('NOTAS_DE_CARGO', 'Notas de cargos', 'Pólizas de notas de cargo'),
-    new Grupo('TRASPASOS_CXC', 'Traspasos de CxC', 'Traspaso de CxC'),
 
+    new Grupo(
+      'NOTAS_DE_CARGO',
+      'Notas de cargos',
+      'Pólizas de notas de cargo'
+    ),
     new Grupo('NOTAS_DE_CREDITO_DEV', 'Devoluciones', ''),
     new Grupo('NOTAS_DE_CREDITO_BON', 'Bonificaciones', ''),
     new Grupo('ANTICIPOS', 'Anticipos', ''),
@@ -51,6 +49,7 @@ export const POLIZAS_2019 = [
     new Grupo('PROVISION_DE_CARGA_SOCIAL', 'Provisión de carga social', ''),
     new Grupo('VARIACION_CAMBIARIA', 'Variacion Cambiaria', ''),
     new Grupo('IMPUESTOS_SOBRE_NOMINA', 'Impuesto Sobre Nomina', ''),
+    new Grupo('TRASPASO_IVA', 'Traspaso Iva', ''),
     new Grupo('CIERRE_ANUAL', 'Cierre anual', ''),
     new Grupo('CIERRE_MENSUAL', 'Cierre Mensual', ''),
     new Grupo('ACTIVO_FIJO', 'Activo Fijo', ''),
