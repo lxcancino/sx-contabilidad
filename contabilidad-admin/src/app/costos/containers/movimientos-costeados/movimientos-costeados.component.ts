@@ -82,6 +82,7 @@ export class MovimientosCosteadosComponent implements OnInit {
     this.loading$ = this.store.pipe(
       select(fromStore.getMovimientosCostoLoading)
     );
+    // this.costos$.subscribe(data => console.log('Data: ', data));
   }
 
   onSelect(event: any, periodo: { ejercicio: number; mes: number }) {

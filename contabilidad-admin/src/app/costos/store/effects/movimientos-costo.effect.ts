@@ -56,10 +56,14 @@ export class MovimientosCostoEffects {
     })
   );
 
-  @Effect()
+  @Effect({ dispatch: false })
   cambiarPeriodo$ = this.actions$.pipe(
     ofType<fromActions.SetPeriodoDeMovmientosCosto>(
       MovimientosCostoActionTypes.SetPeriodoDeMovmientosCosto
+    ),
+    map(action => action.payload.periodo),
+    tap(per =>
+      localStorage.setItem('sx.costos.movimientos.periodo', JSON.stringify(per))
     ),
     map(() => new fromActions.LoadMovmientosCosto())
   );

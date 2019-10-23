@@ -53,6 +53,11 @@ export class MainPageComponent implements OnInit, OnDestroy {
       icon: 'build',
       route: '/operaciones',
       title: 'Operaciones'
+    },
+    {
+      icon: 'spellcheck',
+      route: '/auditoria',
+      title: 'Auditoría'
     }
   ];
 

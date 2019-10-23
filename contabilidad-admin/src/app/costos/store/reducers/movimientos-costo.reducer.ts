@@ -4,6 +4,7 @@ import {
   MovmientosCostoActions,
   MovimientosCostoActionTypes
 } from '../actions/movimientos-costo.actions';
+import { loadEjercicioMesFromStorage } from 'app/models/ejercicio-mes';
 
 export interface State extends EntityState<any> {
   loading: boolean;
@@ -21,7 +22,7 @@ export const adapter: EntityAdapter<any> = createEntityAdapter<any>({
 export const initialState: State = adapter.getInitialState({
   loading: false,
   loaded: false,
-  periodo: { ejercicio: 2018, mes: 1 }, // Periodo.getEjercicioMes(),
+  periodo: loadEjercicioMesFromStorage('sx.costos.movimientos.periodo'),
   selectedId: undefined
 });
 

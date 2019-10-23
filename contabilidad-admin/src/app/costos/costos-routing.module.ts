@@ -16,7 +16,7 @@ const routes: Routes = [
       },
       {
         path: 'movimientos',
-        canActivate: [fromGuards.MovimientosCostoGuard],
+        // canActivate: [fromGuards.MovimientosCostoGuard],
         component: fromContainers.MovimientosCosteadosComponent
       }
     ]

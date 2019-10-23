@@ -104,7 +104,7 @@ export class CostoPorProductoTableComponent implements OnInit, OnChanges {
     const saldoIni = costop.saldoInicial < 0 ? 0 : costop.saldoInicial;
     const costoIni = costop.saldoInicial < 0 ? 0 : costop.costoInicial;
     return saldoIni + costop.comsUni + costop.trsEntUni !== 0
-      ? (costoIni + costop.comsCosto + costop.comsFlete + costop.trsEntCosto) /
+      ? (costoIni + costop.comsCosto + costop.comsFlete + costop.comsMaq + costop.trsEntCosto) /
           (saldoIni + costop.comsUni + costop.trsEntUni)
       : 0.0;
   }

@@ -35,6 +35,7 @@ export class CostoPorProductoMovsTableComponent implements OnInit, OnChanges {
     'comsUni',
     'comsCosto',
     'comsFlete',
+    'comsMaq',
     'movsUni',
     'movsCosto',
     'decUni',

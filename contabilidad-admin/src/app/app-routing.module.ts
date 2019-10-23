@@ -40,6 +40,10 @@ const routes: Routes = [
       {
         path: 'fiscal',
         loadChildren: './fiscal/fiscal.module#FiscalModule'
+      },
+      {
+        path: 'auditoria',
+        loadChildren: './auditoria/auditoria.module#AuditoriaModule'
       }
     ]
   }
