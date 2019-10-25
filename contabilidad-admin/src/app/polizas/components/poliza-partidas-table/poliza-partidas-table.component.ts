@@ -260,19 +260,16 @@ export class PolizaPartidasTableComponent implements OnInit, OnChanges {
         headerName: 'Cuenta',
         field: 'clave',
         width: 170,
-        pinned: 'left'
       },
       {
         headerName: 'Descripción de la cuenta',
         field: 'concepto',
         width: 200,
-        pinned: 'left'
       },
       {
         headerName: 'Concepto',
         field: 'descripcion',
         width: 280,
-        pinned: 'left'
       },
       {
         headerName: 'Debe',
