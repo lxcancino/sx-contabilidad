@@ -15,6 +15,7 @@ import * as moment from 'moment';
 import { map } from 'rxjs/operators';
 import { DepreciacionFiscalComponent } from 'app/activo-fijo/components';
 import { DepreciacionFiscal } from 'app/activo-fijo/models/depreciacion-fiscal';
+import { TdDialogService } from '@covalent/core';
 
 @Component({
   selector: 'sx-activo-edit',
@@ -33,7 +34,8 @@ export class ActivoEditComponent implements OnInit, OnDestroy {
 
   constructor(
     private store: Store<fromStore.State>,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private dialogService: TdDialogService
   ) {}
 
   subs: Subscription;
@@ -75,6 +77,23 @@ export class ActivoEditComponent implements OnInit, OnDestroy {
 
   onBack() {
     this.store.dispatch(new fromRoot.Go({ path: ['operaciones/activos'] }));
+  }
+
+  onDelete(af: ActivoFijo) {
+    this.dialogService
+      .openConfirm({
+        title: 'ELIMIAR ACTIVO',
+        message: `Seguro que desea eliminar el activo: ${af.id}`,
+        acceptButton: 'ELIMINAR',
+        cancelButton: 'CANCELAR'
+      })
+      .afterClosed()
+      .subscribe(res => {
+        if (res) {
+          console.log('Eliminar activo: ', af);
+          this.store.dispatch(new fromStore.DeleteActivo({ activo: af }));
+        }
+      });
   }
 
   crearDepreciacion(activo: ActivoFijo, fecha: Date = new Date()) {

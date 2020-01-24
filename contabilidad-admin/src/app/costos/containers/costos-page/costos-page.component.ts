@@ -18,7 +18,8 @@ import {
 import { ReportService } from '../../../reportes/services/report.service';
 import {
   KardexReportComponent,
-  VentasDiariasDialogComponent
+  VentasDiariasDialogComponent,
+  RepPeriodoSucursalComponent
 } from '../../../reportes/components';
 import { Periodo } from '../../../_core/models/periodo';
 import { PeriodoDialogComponent } from '../../../_shared/components';
@@ -210,6 +211,36 @@ export class CostosPageComponent implements OnInit {
       .subscribe(res => {
         if (res) {
           this.reportService.runReport(`inventario/ventasDiarias`, res);
+        }
+      });
+  }
+
+  analisisDevoluciones() {
+    this.dialog
+      .open(RepPeriodoSucursalComponent, {
+        data: {},
+        width: '500px'
+      })
+      .afterClosed()
+      .subscribe(params => {
+        if (params) {
+          this.reportService.runReport('cxp/notas/reporteDeAnalisis', params);
+        }
+      });
+  }
+  analisisTransformaciones() {
+    this.dialog
+      .open(RepPeriodoSucursalComponent, {
+        data: {},
+        width: '500px'
+      })
+      .afterClosed()
+      .subscribe(params => {
+        if (params) {
+          this.reportService.runReport(
+            'cxp/analisisDeTransformacion/reporteDeAnalisis',
+            params
+          );
         }
       });
   }

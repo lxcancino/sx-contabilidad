@@ -20,6 +20,11 @@ export enum ActivoActionTypes {
 
   UpsertActivo = '[Activo exists guard] Upsert Activo fijo',
 
+  // Delete
+  DeleteActivo = '[EditActivo component] Delete activo',
+  DeleteActivoFail = '[EditActivo component] Delete activo fail',
+  DeleteActivoSuccess = '[EditActivo component] Delete activo success',
+
   // Generacion de pendientes
   GenerarPendientes = '[ActivoFijos component ] Generar pendientes',
   GenerarPendientesFail = '[ActivoFijos component ] Generar pendientes fail',
@@ -48,7 +53,7 @@ export enum ActivoActionTypes {
   // Cancelar Baja
   CancelarBaja = '[Bajas component] Cancelar baja',
   CancelarBajaFail = '[Bajas component] Cancelar baja fail',
-  CancelarBajaSuccess = '[Bajas component] Cancelar baja success',
+  CancelarBajaSuccess = '[Bajas component] Cancelar baja success'
 }
 
 // Load
@@ -96,6 +101,20 @@ export class UpdateActivoSuccess implements Action {
 // Upasert entity
 export class UpsertActivo implements Action {
   readonly type = ActivoActionTypes.UpsertActivo;
+  constructor(public payload: { activo: ActivoFijo }) {}
+}
+
+// Delete activo
+export class DeleteActivo implements Action {
+  readonly type = ActivoActionTypes.DeleteActivo;
+  constructor(public payload: { activo: ActivoFijo }) {}
+}
+export class DeleteActivoFail implements Action {
+  readonly type = ActivoActionTypes.DeleteActivoFail;
+  constructor(public payload: { response: any }) {}
+}
+export class DeleteActivoSuccess implements Action {
+  readonly type = ActivoActionTypes.DeleteActivoSuccess;
   constructor(public payload: { activo: ActivoFijo }) {}
 }
 
@@ -157,29 +176,29 @@ export class GenerarDepreciacionFiscalBatchSuccess implements Action {
 // Registrar baja
 export class RegistrarBaja implements Action {
   readonly type = ActivoActionTypes.RegistrarBaja;
-  constructor(public payload: {activo: Update<ActivoFijo>}) {}
+  constructor(public payload: { activo: Update<ActivoFijo> }) {}
 }
 export class RegistrarBajaFail implements Action {
   readonly type = ActivoActionTypes.RegistrarBajaFail;
-  constructor( public payload: {response: any}) {}
+  constructor(public payload: { response: any }) {}
 }
 export class RegistrarBajaSuccess implements Action {
   readonly type = ActivoActionTypes.RegistrarBajaSuccess;
-  constructor (public payload: {activo: ActivoFijo}) {}
+  constructor(public payload: { activo: ActivoFijo }) {}
 }
 
 // Cancelar baja
 export class CancelarBaja implements Action {
   readonly type = ActivoActionTypes.CancelarBaja;
-  constructor(public payload: {activoId: number}) {}
+  constructor(public payload: { activoId: number }) {}
 }
 export class CancelarBajaFail implements Action {
   readonly type = ActivoActionTypes.CancelarBajaFail;
-  constructor( public payload: {response: any}) {}
+  constructor(public payload: { response: any }) {}
 }
 export class CancelarBajaSuccess implements Action {
   readonly type = ActivoActionTypes.CancelarBajaSuccess;
-  constructor (public payload: {activo: ActivoFijo}) {}
+  constructor(public payload: { activo: ActivoFijo }) {}
 }
 
 export type ActivosActions =
@@ -210,4 +229,7 @@ export type ActivosActions =
   | RegistrarBajaSuccess
   | CancelarBaja
   | CancelarBajaFail
-  | CancelarBajaSuccess;
+  | CancelarBajaSuccess
+  | DeleteActivo
+  | DeleteActivoFail
+  | DeleteActivoSuccess;

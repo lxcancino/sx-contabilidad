@@ -6,6 +6,8 @@
   <mat-card *ngIf="activo$ | async as activo">
     <div layout class="header">
       <span class="mat-title"> Activo: {{ activo.descripcion }} </span>
+      <span flex></span>
+      <span class="mat-title"> ID: {{ activo.id }}</span>
     </div>
     <div layout class="subheader">
       <span flex> Monto Original: {{ activo.montoOriginal | currency }} </span>
@@ -53,6 +55,9 @@
         (click)="form.submit()"
       >
         <mat-icon>save</mat-icon> Actualizar
+      </button>
+      <button mat-button (click)="onDelete(activo)" color="warn">
+        <mat-icon>delete</mat-icon> Eliminar
       </button>
       <!-- <button mat-button (click)="crearDepreciacion(activo)">
         Ejecutar depreciación

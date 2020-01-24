@@ -136,4 +136,17 @@ export class PolizasPageComponent implements OnInit {
         }
       });
   }
+
+  reporteCarteraCOD() {
+    this.dialog
+      .open(SucursalFechaDialogComponent, {
+        data: { title: 'Cartera COD', storeKey: 'sx.cartera.cod.last' }
+      })
+      .afterClosed()
+      .subscribe(res => {
+        if (res) {
+          this.reportService.runReport('cxc/carteraCod', res);
+        }
+      });
+  }
 }

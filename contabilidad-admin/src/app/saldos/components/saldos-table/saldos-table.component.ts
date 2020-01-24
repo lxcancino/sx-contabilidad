@@ -213,7 +213,7 @@ export class SaldosTableComponent implements OnInit, OnChanges {
       {
         headerName: 'Descripción de la cuenta',
         field: 'descripcion',
-        width: 400,
+        width: 300,
         pinned: 'left'
       },
       {
@@ -223,11 +223,14 @@ export class SaldosTableComponent implements OnInit, OnChanges {
         width: 60
       },
       {
-        headerName: 'D',
-        field: 'detalle',
-        filter: 'agNumberColumnFilter',
-        cellRenderer: params => (params.value ? 'S' : 'N'),
-        width: 60
+        headerName: 'Ejercicio',
+        field: 'ejercicio',
+        width: 90
+      },
+      {
+        headerName: 'Mes',
+        field: 'mes',
+        width: 90
       },
       {
         headerName: 'S. Inicial',

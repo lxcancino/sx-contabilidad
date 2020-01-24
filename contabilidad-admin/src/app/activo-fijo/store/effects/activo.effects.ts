@@ -65,6 +65,26 @@ export class ActivoEffects {
   );
 
   @Effect()
+  delete$ = this.actions$.pipe(
+    ofType<fromActions.DeleteActivo>(ActivoActionTypes.DeleteActivo),
+    map(action => action.payload.activo),
+    switchMap(a =>
+      this.service.delete(a.id).pipe(
+        map(() => new fromActions.DeleteActivoSuccess({ activo: a })),
+        catchError(response =>
+          of(new fromActions.DeleteActivoFail({ response }))
+        )
+      )
+    )
+  );
+
+  @Effect()
+  deleteSuccess$ = this.actions$.pipe(
+    ofType(ActivoActionTypes.DeleteActivoSuccess),
+    map(() => new fromRoot.Go({ path: ['operaciones/activos'] }))
+  );
+
+  @Effect()
   loadDepreciaciones$ = this.actions$.pipe(
     ofType<fromDepreciaciones.LoadDepreciaciones>(
       fromDepreciaciones.DepreciacionActionTypes.LoadDepreciaciones
@@ -299,6 +319,7 @@ export class ActivoEffects {
       | fromActions.GenerarDepreciacionFiscalBatchFail
       | fromActions.AsignarInpcFail
       | fromActions.CancelarBajaFail
+      | fromActions.DeleteActivoFail
     >(
       ActivoActionTypes.LoadActivosFail,
       ActivoActionTypes.CreateActivoFail,
@@ -312,7 +333,8 @@ export class ActivoEffects {
       ActivoActionTypes.GenerarDepreciacionBatchFail,
       ActivoActionTypes.GenerarDepreciacionFiscalBatchFail,
       ActivoActionTypes.AsignarInpcFail,
-      ActivoActionTypes.CancelarBajaFail
+      ActivoActionTypes.CancelarBajaFail,
+      ActivoActionTypes.DeleteActivoFail
     ),
     map(action => action.payload.response),
     map(response => new fromRoot.GlobalHttpError({ response }))

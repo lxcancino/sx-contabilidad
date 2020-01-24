@@ -43,6 +43,12 @@ export class ActivoFijoService {
       .pipe(catchError((error: any) => throwError(error)));
   }
 
+  delete(activoId: number) {
+    const url = `${this.apiUrl}/${activoId}`;
+    return this.http.delete(url).pipe()
+    .pipe(catchError((error: any) => throwError(error)));
+  }
+
   depreciaciones(activoId: number): Observable<Depreciacion[]> {
     const url = `${this.apiUrl}/${activoId}/depreciaciones`;
     return this.http

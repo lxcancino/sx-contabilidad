@@ -19,6 +19,7 @@ export const initialState: State = adapter.getInitialState({
 
 export function reducer(state = initialState, action: ActivosActions): State {
   switch (action.type) {
+    case ActivoActionTypes.DeleteActivo:
     case ActivoActionTypes.RegistrarBaja:
     case ActivoActionTypes.CancelarBaja:
     case ActivoActionTypes.GenerarDepreciacionFiscalBatch:
@@ -33,6 +34,7 @@ export function reducer(state = initialState, action: ActivosActions): State {
         loading: true
       };
     }
+    case ActivoActionTypes.DeleteActivoFail:
     case ActivoActionTypes.RegistrarBajaFail:
     case ActivoActionTypes.CancelarBajaFail:
     case ActivoActionTypes.GenerarDepreciacionFiscalBatchFail:
@@ -89,6 +91,13 @@ export function reducer(state = initialState, action: ActivosActions): State {
     case ActivoActionTypes.AsignarInpcSuccess:
     case ActivoActionTypes.GenerarDepreciacionBatchSuccess: {
       return adapter.upsertMany(action.payload.activos, {
+        ...state,
+        loading: false
+      });
+    }
+
+    case ActivoActionTypes.DeleteActivoSuccess: {
+      return adapter.removeOne(action.payload.activo.id, {
         ...state,
         loading: false
       });
