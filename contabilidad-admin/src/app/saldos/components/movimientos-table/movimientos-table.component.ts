@@ -196,7 +196,7 @@ export class MovimientosTableComponent implements OnInit, OnChanges {
         width: 250
       },
       {
-        headerName: 'Aisento',
+        headerName: 'Asiento',
         field: 'asiento',
         width: 150
       },
@@ -219,6 +219,7 @@ export class MovimientosTableComponent implements OnInit, OnChanges {
         maxWidth: 120
       },
       { headerName: 'Ref', field: 'referencia', maxWidth: 120 },
+      { headerName: 'Ref2', field: 'referencia2', maxWidth: 120 },
       { headerName: 'Docto', field: 'documento', maxWidth: 120 }
     ];
   }
