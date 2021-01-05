@@ -26,7 +26,7 @@ export class EjercicioFieldComponent implements OnInit {
   @Input()
   parent: FormGroup;
 
-  years = [2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024];
+  years = [2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026];
 
   constructor() {}
 
