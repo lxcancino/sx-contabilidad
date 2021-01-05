@@ -1,8 +1,8 @@
-import { Component, OnInit, OnDestroy, Input } from '@angular/core';
-import { FormGroup } from '@angular/forms';
+import { Component, OnInit, OnDestroy, Input } from "@angular/core";
+import { FormGroup } from "@angular/forms";
 
 @Component({
-  selector: 'sx-ejercicio-field',
+  selector: "sx-ejercicio-field",
   template: `
   <ng-container [formGroup]="parent">
     <mat-form-field class="fill" >
@@ -26,7 +26,7 @@ export class EjercicioFieldComponent implements OnInit {
   @Input()
   parent: FormGroup;
 
-  years = [2017, 2018, 2019, 2020];
+  years = [2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024];
 
   constructor() {}
 
