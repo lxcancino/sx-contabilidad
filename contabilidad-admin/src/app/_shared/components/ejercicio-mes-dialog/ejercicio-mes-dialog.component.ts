@@ -14,7 +14,7 @@ import { EjercicioMes } from '../../../models/ejercicio-mes';
   </form>
   </mat-dialog-content>
   <mat-dialog-actions>
-    <button mat-button mat-dialog-close>Canelar</button>
+    <button mat-button mat-dialog-close>Cancelar</button>
     <button mat-button (click)="closeDialog()" [disabled]="form.invalid">Aceptar</button>
   </mat-dialog-actions>
 `

@@ -34,6 +34,7 @@ export const POLIZAS_2019 = [
       'Descuentos en compras',
       'Notas de credito CXP'
     ),
+    new Grupo('TRASPASOS_CXC', 'Traspasos de CxC', 'Traspaso de CxC'),
     new Grupo('INVENTARIOS', 'Inventarios', ''),
     new Grupo('ACTIVO_FIJO', 'Activo fijo', ''),
     new Grupo('CHEQUES_EN_TRANSITO', 'Cheques en transito', ''),
