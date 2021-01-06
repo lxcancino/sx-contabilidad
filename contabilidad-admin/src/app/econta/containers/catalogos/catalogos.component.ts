@@ -1,18 +1,18 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy } from "@angular/core";
 
-import { Store, select } from '@ngrx/store';
-import * as fromRoot from 'app/store';
-import * as fromStore from '../../store';
+import { Store, select } from "@ngrx/store";
+import * as fromRoot from "app/store";
+import * as fromStore from "../../store";
 
-import { Observable } from 'rxjs';
+import { Observable } from "rxjs";
 
-import { Catalogo } from '../../models';
-import { MatDialog } from '@angular/material';
-import { EjercicioMesDialogComponent } from 'app/_shared/components';
-import { buildCurrentPeriodo, EjercicioMes } from 'app/models/ejercicio-mes';
+import { Catalogo } from "../../models";
+import { MatDialog } from "@angular/material";
+import { EjercicioMesDialogComponent } from "app/_shared/components";
+import { buildCurrentPeriodo, EjercicioMes } from "app/models/ejercicio-mes";
 
 @Component({
-  selector: 'sx-catalogos',
+  selector: "sx-catalogos",
   template: `
     <mat-card >
       <sx-search-title title="Bitácora de catálogos"></sx-search-title>
@@ -46,7 +46,7 @@ import { buildCurrentPeriodo, EjercicioMes } from 'app/models/ejercicio-mes';
   ]
 })
 export class CatalogosComponent implements OnInit {
-  search = '';
+  search = "";
   catalogos$: Observable<Catalogo[]>;
   loading$: Observable<boolean>;
 
@@ -61,6 +61,9 @@ export class CatalogosComponent implements OnInit {
   }
 
   onSelect(event: Catalogo) {
+    // this.store.dispatch(
+    //   new fromRoot.Go({ path: ["econta", "catalogos", event.id] })
+    // );
     this.store.dispatch(new fromStore.MostrarCatalogoXml({ catalogo: event }));
   }
 
@@ -74,7 +77,7 @@ export class CatalogosComponent implements OnInit {
     this.dialog
       .open(EjercicioMesDialogComponent, {
         data: {
-          title: 'Periodo para el clatáogo',
+          title: "Periodo para el clatáogo",
           periodo: buildCurrentPeriodo()
         }
       })
