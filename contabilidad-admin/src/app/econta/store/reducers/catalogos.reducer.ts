@@ -1,22 +1,24 @@
-import { EntityState, EntityAdapter, createEntityAdapter } from '@ngrx/entity';
+import { EntityState, EntityAdapter, createEntityAdapter } from "@ngrx/entity";
 
 import {
   CatalogosActionTypes,
   CatalogosActions
-} from '../actions/catalogos.actions';
+} from "../actions/catalogos.actions";
 
-import { Catalogo } from '../../models';
+import { Catalogo, Empresa } from "../../models";
 
 export interface State extends EntityState<Catalogo> {
   loading: boolean;
   loaded: boolean;
+  empresa: Empresa | null;
 }
 
 export const adapter: EntityAdapter<Catalogo> = createEntityAdapter<Catalogo>();
 
 export const initialState: State = adapter.getInitialState({
   loading: false,
-  loaded: false
+  loaded: false,
+  empresa: null
 });
 
 export function reducer(state = initialState, action: CatalogosActions): State {
@@ -56,6 +58,13 @@ export function reducer(state = initialState, action: CatalogosActions): State {
         loading: false
       });
     }
+
+    case CatalogosActionTypes.SetEmpresa: {
+      return {
+        ...state,
+        empresa: action.payload.empresa
+      };
+    }
   }
   return state;
 }
@@ -69,3 +78,4 @@ export const {
 
 export const getCatalogosLoaded = (state: State) => state.loaded;
 export const getCatalogosLoading = (state: State) => state.loading;
+export const getCatalogosEmpresa = (state: State) => state.empresa;

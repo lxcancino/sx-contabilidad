@@ -1,4 +1,9 @@
-import { Component, OnInit, OnDestroy } from "@angular/core";
+import {
+  Component,
+  OnInit,
+  OnDestroy,
+  ChangeDetectionStrategy
+} from "@angular/core";
 
 import { Store, select } from "@ngrx/store";
 import * as fromRoot from "app/store";
@@ -13,18 +18,45 @@ import { MatDialog } from "@angular/material";
   selector: "sx-catalogo-item",
   template: `
     <mat-card >
-      <mat-card-header>
-        <mat-card-title>
-          Catalogo de cuentas
-        </mat-card-title>
-      </mat-card-header>
+      <div class="title" *ngIf="catalogo$ | async as catalogo">
+        <h2>
+          Catálogo de Cuentas {{catalogo.emisor}}
+        </h2>
+        <span>
+          Contabilidad electrónica
+        </span>
+        <span>
+          <span> Ejercicio: <strong> {{catalogo.ejercicio}} </strong></span>
+          <span> Mes: <strong> {{catalogo.mes}} </strong></span>
+        </span>
+
+      </div>
+
       <mat-divider></mat-divider>
+      <div *ngIf="catalogo$ | async as catalogo" class="info-panel">
+        <span>Creado por: </span>
+        <mat-label>{{catalogo.createUser}}</mat-label>
+        <mat-label> ({{catalogo.dateCreated | date: 'dd/MM/yyyy HH:mm'}})</mat-label>
+        <div class="totales">
+          <span>Total de cuentas: </span>
+          <mat-label>{{catalogo?.cuentas?.length}}</mat-label>
+        </div>
 
 
-      <mat-card-actions>
+      </div>
+      <div class="partidas">
+        <sx-econta-cuentas-table [rows]="(catalogo$ | async)?.cuentas" #table></sx-econta-cuentas-table>
+      </div>
+
+      <mat-card-actions *ngIf="catalogo$ | async as catalogo">
         <button mat-button (click)="toCatalogos()">
           <mat-icon>arrow_back</mat-icon>
           <mat-label>Regresar</mat-label>
+        </button>
+        <sx-econta-item-buttons [documento]="catalogo" tipo="CATALOGO" ></sx-econta-item-buttons>
+        <button mat-button color="primary" matTooltip="Exportar a CVS" (click)="table.exportData()">
+          <mat-icon>send</mat-icon>
+          <mat-label>CSV</mat-label>
         </button>
       </mat-card-actions>
 
@@ -32,14 +64,8 @@ import { MatDialog } from "@angular/material";
     </mat-card>
 
   `,
-  styles: [
-    `
-      .mat-card {
-        width: calc(100% - 15px);
-        height: calc(100% - 15px);
-      }
-    `
-  ]
+  styleUrls: ["./catalogo-item.component.scss"],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class CatalogoItemComponent implements OnInit {
   catalogo$: Observable<Catalogo>;
@@ -52,6 +78,8 @@ export class CatalogoItemComponent implements OnInit {
 
   ngOnInit() {
     this.loading$ = this.store.pipe(select(fromStore.getCatalogosLoading));
+    this.catalogo$ = this.store.pipe(select(fromStore.getSelectedCatalogo));
+    // this.catalogo$.subscribe(cts => console.log("Cuenta: ", cts.cuentas));
   }
 
   onSelect(event: Catalogo) {
@@ -69,4 +97,6 @@ export class CatalogoItemComponent implements OnInit {
   toCatalogos() {
     this.store.dispatch(new fromRoot.Go({ path: ["econta", "catalogos"] }));
   }
+
+  showXml(catalogo: Catalogo) {}
 }

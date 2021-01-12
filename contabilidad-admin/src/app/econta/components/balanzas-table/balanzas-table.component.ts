@@ -8,15 +8,15 @@ import {
   ViewChild,
   Output,
   EventEmitter
-} from '@angular/core';
-import { MatTableDataSource, MatPaginator, MatSort } from '@angular/material';
+} from "@angular/core";
+import { MatTableDataSource, MatPaginator, MatSort } from "@angular/material";
 
-import { Balanza } from '../../models';
+import { Balanza } from "../../models";
 
 @Component({
-  selector: 'sx-balanzas-table',
+  selector: "sx-balanzas-table",
   changeDetection: ChangeDetectionStrategy.OnPush,
-  templateUrl: './balanzas-table.component.html',
+  templateUrl: "./balanzas-table.component.html",
   styles: [
     `
       table {
@@ -54,15 +54,14 @@ export class BalanzasTableComponent implements OnInit, OnChanges {
 
   @Input()
   displayColumns = [
-    'id',
-    'ejercicio',
-    'mes',
-    'tipo',
-    'dateCreated',
-    'lastUpdated',
-    'updateUser',
-    'fileName',
-    'operaciones'
+    "ejercicio",
+    "mes",
+    "tipo",
+    "dateCreated",
+    "lastUpdated",
+    "updateUser",
+    "fileName",
+    "status"
   ];
 
   @ViewChild(MatSort)
@@ -92,7 +91,7 @@ export class BalanzasTableComponent implements OnInit, OnChanges {
       this.dataSource.data = changes.balanzas.currentValue;
     }
     if (changes.filter) {
-      const s = changes.filter.currentValue || '';
+      const s = changes.filter.currentValue || "";
       this.dataSource.filter = s.toLowerCase();
     }
   }

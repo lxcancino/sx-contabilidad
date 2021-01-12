@@ -16,6 +16,7 @@ const routes: Routes = [
       },
       {
         path: "catalogos/:id",
+        canActivate: [fromGuards.CatalogoExistsGuard],
         component: fromContainers.CatalogoItemComponent
       },
       {
@@ -24,9 +25,18 @@ const routes: Routes = [
         component: fromContainers.BalanzasComponent
       },
       {
+        path: "balanzas/:id",
+        canActivate: [fromGuards.BalanzaExistsGuard],
+        component: fromContainers.BalanzaItemComponent
+      },
+      {
         path: "polizas",
         canActivate: [fromGuards.PolizasPeriodoGuard],
         component: fromContainers.PolizasPeriodoComponent
+      },
+      {
+        path: "empresas",
+        component: fromContainers.EmpresasComponent
       }
     ]
   }

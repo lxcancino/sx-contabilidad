@@ -1,12 +1,12 @@
-import { createSelector } from '@ngrx/store';
+import { createSelector } from "@ngrx/store";
 
-import * as fromRoot from '../../../store';
-import * as fromFeature from '../reducers';
-import * as fromCatalogos from '../reducers/catalogos.reducer';
+import * as fromRoot from "../../../store";
+import * as fromFeature from "../reducers";
+import * as fromCatalogos from "../reducers/catalogos.reducer";
 
-import { Catalogo } from '../../models';
+import { Catalogo } from "../../models";
 
-import * as _ from 'lodash';
+import * as _ from "lodash";
 
 export const getCatalogosState = createSelector(
   fromFeature.getState,
@@ -28,20 +28,24 @@ export const getCatalogosLoading = createSelector(
   fromCatalogos.getCatalogosLoading
 );
 
-export const getSelectedSaldo = createSelector(
+export const getSelectedCatalogo = createSelector(
   getCatalogosEntities,
   fromRoot.getRouterState,
-  (entities, router): Catalogo => {
-    return router.state && entities[router.state.params.catalogoId];
-  }
+  (entities, router): Catalogo =>
+    router.state && entities[router.state.params.id]
 );
 
-export const getSelectedSaldoId = createSelector(
-  getSelectedSaldo,
-  saldo => (saldo ? saldo.id : undefined)
+export const getSelectedCatalogoId = createSelector(
+  getSelectedCatalogo,
+  catalogo => (catalogo ? catalogo.id : undefined)
 );
 
 export const getCatalogosLoaded = createSelector(
   getCatalogosState,
   fromCatalogos.getCatalogosLoaded
+);
+
+export const getCatalogosEmpresa = createSelector(
+  getCatalogosState,
+  fromCatalogos.getCatalogosEmpresa
 );

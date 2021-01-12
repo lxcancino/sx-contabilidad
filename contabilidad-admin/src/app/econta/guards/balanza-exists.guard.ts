@@ -7,13 +7,13 @@ import * as fromStore from "../store";
 import { Observable, of } from "rxjs";
 import { tap, map, catchError } from "rxjs/operators";
 
-import { CatalogoService } from "../services";
+import { BalanzaService } from "../services";
 
 @Injectable()
-export class CatalogoExistsGuard implements CanActivate {
+export class BalanzaExistsGuard implements CanActivate {
   constructor(
     private store: Store<fromStore.State>,
-    private service: CatalogoService
+    private service: BalanzaService
   ) {}
 
   canActivate(route: ActivatedRouteSnapshot): Observable<boolean> {
@@ -27,7 +27,7 @@ export class CatalogoExistsGuard implements CanActivate {
    */
   hasEntityInApi(id: string): Observable<boolean> {
     return this.service.get(id).pipe(
-      map(catalogo => new fromStore.UpserCatalogo({ catalogo })),
+      map(balanza => new fromStore.UpsertBalanza({ balanza })),
       tap(action => this.store.dispatch(action)),
       map(poliza => !!poliza),
       catchError(() => {

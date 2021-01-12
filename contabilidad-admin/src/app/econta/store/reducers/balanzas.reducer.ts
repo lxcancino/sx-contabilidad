@@ -1,22 +1,24 @@
-import { EntityState, EntityAdapter, createEntityAdapter } from '@ngrx/entity';
+import { EntityState, EntityAdapter, createEntityAdapter } from "@ngrx/entity";
 
 import {
   BalanzasActionTypes,
   BalanzasActions
-} from '../actions/balanzas.actions';
+} from "../actions/balanzas.actions";
 
-import { Balanza } from '../../models';
+import { Balanza, Empresa } from "../../models";
 
 export interface State extends EntityState<Balanza> {
   loading: boolean;
   loaded: boolean;
+  empresa: Empresa | null;
 }
 
 export const adapter: EntityAdapter<Balanza> = createEntityAdapter<Balanza>();
 
 export const initialState: State = adapter.getInitialState({
   loading: false,
-  loaded: false
+  loaded: false,
+  empresa: null
 });
 
 export function reducer(state = initialState, action: BalanzasActions): State {
@@ -56,6 +58,13 @@ export function reducer(state = initialState, action: BalanzasActions): State {
         loading: false
       });
     }
+
+    case BalanzasActionTypes.SetBalanzasEmpresa: {
+      return {
+        ...state,
+        empresa: action.payload.empresa
+      };
+    }
   }
   return state;
 }
@@ -69,3 +78,4 @@ export const {
 
 export const getBalanzasLoaded = (state: State) => state.loaded;
 export const getBalanzasLoading = (state: State) => state.loading;
+export const getBalanzasEmpresa = (state: State) => state.empresa;

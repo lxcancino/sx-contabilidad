@@ -1,14 +1,7 @@
-import { CuentaContable } from 'app/cuentas/models';
+import { EcontaDocument } from "./econta";
 
-export interface Balanza {
-  id: number;
-  ejercicio: number;
-  mes: number;
-  tipo: string;
-  fileName: string;
-  acuse: boolean;
-  dateCreated?: string;
-  lastUpdated?: string;
-  createUser?: string;
-  updateUser?: string;
+export interface Balanza extends EcontaDocument {
+  tipo: "N" | "C";
+  partidas: any[];
+  ultimaModificacion: string;
 }

@@ -1,19 +1,21 @@
-import { Action } from '@ngrx/store';
+import { Action } from "@ngrx/store";
 
-import { Catalogo } from '../../models';
+import { Catalogo, Empresa } from "../../models";
 
 export enum CatalogosActionTypes {
-  LoadCatalogos = '[Catalogo Guard] Load Catalogos',
-  LoadCatalogosSuccess = '[Catalogo API] Load Catalogos Success',
-  LoadCatalogosFail = '[Catalogo API] Load Catalogos Fail',
+  LoadCatalogos = "[Catalogo Guard] Load Catalogos",
+  LoadCatalogosSuccess = "[Catalogo API] Load Catalogos Success",
+  LoadCatalogosFail = "[Catalogo API] Load Catalogos Fail",
 
-  GenerarCatalogo = '[Catalogos component] Generar catalogo',
-  GenerarCatalogoFail = '[Catalogos API] Generar catalogo fail',
-  GenerarCatalogoSuccess = '[Catalogos API] Generar catalogo success',
+  GenerarCatalogo = "[Catalogos component] Generar catalogo",
+  GenerarCatalogoFail = "[Catalogos API] Generar catalogo fail",
+  GenerarCatalogoSuccess = "[Catalogos API] Generar catalogo success",
 
-  UpserCatalogo = '[Catalogo exists guard] Upsert catalogo',
-  MostrarCatalogoXml = '[Catalogos component] Mostrar catalogo XML',
-  DescargarCatalogoXml = '[Catalogos component] Descargar catalogo XML'
+  UpserCatalogo = "[Catalogo exists guard] Upsert catalogo",
+  MostrarCatalogoXml = "[Catalogos component] Mostrar catalogo XML",
+  DescargarCatalogoXml = "[Catalogos component] Descargar catalogo XML",
+
+  SetEmpresa = "[Catalogos component] Set empres"
 }
 
 // Load catalogos
@@ -32,7 +34,13 @@ export class LoadCatalogosSuccess implements Action {
 
 export class GenerarCatalogo implements Action {
   readonly type = CatalogosActionTypes.GenerarCatalogo;
-  constructor(public payload: { ejercicio: number; mes: number }) {}
+  constructor(
+    public payload: {
+      empresa: Partial<Empresa>;
+      ejercicio: number;
+      mes: number;
+    }
+  ) {}
 }
 export class GenerarCatalogoFail implements Action {
   readonly type = CatalogosActionTypes.GenerarCatalogoFail;
@@ -60,6 +68,11 @@ export class DescargarCatalogoXml implements Action {
   constructor(public payload: { catalogo: Partial<Catalogo> }) {}
 }
 
+export class SetEmpresa implements Action {
+  readonly type = CatalogosActionTypes.SetEmpresa;
+  constructor(public payload: { empresa: Empresa }) {}
+}
+
 export type CatalogosActions =
   | LoadCatalogos
   | LoadCatalogosFail
@@ -69,4 +82,5 @@ export type CatalogosActions =
   | GenerarCatalogoSuccess
   | UpserCatalogo
   | MostrarCatalogoXml
-  | DescargarCatalogoXml;
+  | DescargarCatalogoXml
+  | SetEmpresa;

@@ -8,15 +8,15 @@ import {
   ViewChild,
   Output,
   EventEmitter
-} from '@angular/core';
-import { MatTableDataSource, MatPaginator, MatSort } from '@angular/material';
+} from "@angular/core";
+import { MatTableDataSource, MatPaginator, MatSort } from "@angular/material";
 
-import { Catalogo } from '../../models';
+import { Catalogo } from "../../models";
 
 @Component({
-  selector: 'sx-catalogos-table',
+  selector: "sx-catalogos-table",
   changeDetection: ChangeDetectionStrategy.OnPush,
-  templateUrl: './catalogos-table.component.html',
+  templateUrl: "./catalogos-table.component.html",
   styles: [
     `
       table {
@@ -54,15 +54,14 @@ export class CatalogosTableComponent implements OnInit, OnChanges {
 
   @Input()
   displayColumns = [
-    'id',
-    'ejercicio',
-    'mes',
-    'emisor',
-    'dateCreated',
-    'lastUpdated',
-    'updateUser',
-    'fileName',
-    'operaciones'
+    "ejercicio",
+    "mes",
+    "emisor",
+    "dateCreated",
+    "lastUpdated",
+    "updateUser",
+    "fileName",
+    "operaciones"
   ];
 
   @ViewChild(MatSort)
@@ -92,7 +91,7 @@ export class CatalogosTableComponent implements OnInit, OnChanges {
       this.dataSource.data = changes.catalogos.currentValue;
     }
     if (changes.filter) {
-      const s = changes.filter.currentValue || '';
+      const s = changes.filter.currentValue || "";
       this.dataSource.filter = s.toLowerCase();
     }
   }

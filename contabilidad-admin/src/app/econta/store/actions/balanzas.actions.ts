@@ -1,19 +1,21 @@
-import { Action } from '@ngrx/store';
+import { Action } from "@ngrx/store";
 
-import { Balanza } from '../../models';
+import { Balanza, Empresa } from "../../models";
 
 export enum BalanzasActionTypes {
-  LoadBalanzas = '[Balanza Guard] Load Balanzas',
-  LoadBalanzasSuccess = '[Balanza API] Load Balanzas Success',
-  LoadBalanzasFail = '[Balanza API] Load Balanzas Fail',
+  LoadBalanzas = "[Balanza Guard] Load Balanzas",
+  LoadBalanzasSuccess = "[Balanza API] Load Balanzas Success",
+  LoadBalanzasFail = "[Balanza API] Load Balanzas Fail",
 
-  GenerarBalanza = '[Balanzas component] Generar balanza',
-  GenerarBalanzaFail = '[Balanzas API] Generar balanza fail',
-  GenerarBalanzaSuccess = '[Balanzas API] Generar balanza success',
+  GenerarBalanza = "[Balanzas component] Generar balanza",
+  GenerarBalanzaFail = "[Balanzas API] Generar balanza fail",
+  GenerarBalanzaSuccess = "[Balanzas API] Generar balanza success",
 
-  UpsertBalanza = '[Balanza exists guard] Upsert balanza',
-  MostrarBalanzaXml = '[Balanzas component] Mostrar balanza XML',
-  DescargarBalanzaXml = '[Balanzas component] Descargar balanza XML'
+  UpsertBalanza = "[Balanza exists guard] Upsert balanza",
+  MostrarBalanzaXml = "[Balanzas component] Mostrar balanza XML",
+  DescargarBalanzaXml = "[Balanzas component] Descargar balanza XML",
+
+  SetBalanzasEmpresa = "[Balanza component] Set balanzas empres"
 }
 
 // Load balanzas
@@ -32,7 +34,9 @@ export class LoadBalanzasSuccess implements Action {
 
 export class GenerarBalanza implements Action {
   readonly type = BalanzasActionTypes.GenerarBalanza;
-  constructor(public payload: { ejercicio: number; mes: number }) {}
+  constructor(
+    public payload: { empresa: Empresa; ejercicio: number; mes: number }
+  ) {}
 }
 export class GenerarBalanzaFail implements Action {
   readonly type = BalanzasActionTypes.GenerarBalanzaFail;
@@ -60,6 +64,11 @@ export class DescargarBalanzaXml implements Action {
   constructor(public payload: { balanza: Partial<Balanza> }) {}
 }
 
+export class SetBalanzasEmpresa implements Action {
+  readonly type = BalanzasActionTypes.SetBalanzasEmpresa;
+  constructor(public payload: { empresa: Empresa }) {}
+}
+
 export type BalanzasActions =
   | LoadBalanzas
   | LoadBalanzasFail
@@ -69,4 +78,5 @@ export type BalanzasActions =
   | GenerarBalanzaSuccess
   | UpsertBalanza
   | MostrarBalanzaXml
-  | DescargarBalanzaXml;
+  | DescargarBalanzaXml
+  | SetBalanzasEmpresa;

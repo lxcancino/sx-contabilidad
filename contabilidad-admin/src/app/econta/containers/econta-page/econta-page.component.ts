@@ -46,6 +46,12 @@ export class EcontaPageComponent implements OnInit {
       title: "CUENTAS (AUX)",
       description: "XML Auxiliar de cuentas",
       icon: "view_comfy"
+    },
+    {
+      route: "empresas",
+      title: "EMPRESAS",
+      description: "Empresas registradas",
+      icon: "business"
     }
   ];
 

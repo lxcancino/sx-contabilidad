@@ -1,31 +1,42 @@
-import { Injectable } from '@angular/core';
+import { Injectable } from "@angular/core";
 
-import * as fromRoot from 'app/store';
+import * as fromRoot from "app/store";
 
-import { Effect, Actions, ofType } from '@ngrx/effects';
-import { map, switchMap, catchError, tap } from 'rxjs/operators';
-import { of } from 'rxjs';
+import { Effect, Actions, ofType } from "@ngrx/effects";
+import {
+  map,
+  switchMap,
+  catchError,
+  tap,
+  withLatestFrom
+} from "rxjs/operators";
+import { of } from "rxjs";
 
-import * as fromActions from '../actions/balanzas.actions';
-import { BalanzasActionTypes } from '../actions/balanzas.actions';
+import * as fromStore from "../reducers/balanzas.reducer";
+import * as fromActions from "../actions/balanzas.actions";
+import * as fromSelectors from "../selectors/balanzas.selectors";
+import { BalanzasActionTypes } from "../actions/balanzas.actions";
 
-import * as fromServices from '../../services';
+import * as fromServices from "../../services";
 
-import { MatSnackBar } from '@angular/material';
+import { MatSnackBar } from "@angular/material";
+import { Store, select } from "@ngrx/store";
 
 @Injectable()
 export class BalanzasEffects {
   constructor(
     private actions$: Actions,
-    // private service: fromServices.BalanzaService,
-    public snackBar: MatSnackBar
+    private service: fromServices.BalanzaService,
+    public snackBar: MatSnackBar,
+    private store: Store<fromStore.State>
   ) {}
-  /*
+
   @Effect()
   load$ = this.actions$.pipe(
     ofType(BalanzasActionTypes.LoadBalanzas),
-    switchMap(filter =>
-      this.service.list().pipe(
+    withLatestFrom(this.store.pipe(select(fromSelectors.getBalanzasEmpresa))),
+    switchMap(([action, empresa]) =>
+      this.service.list(empresa).pipe(
         map(balanzas => new fromActions.LoadBalanzasSuccess({ balanzas })),
         catchError(error =>
           of(new fromActions.LoadBalanzasFail({ response: error }))
@@ -38,8 +49,8 @@ export class BalanzasEffects {
   generar$ = this.actions$.pipe(
     ofType<fromActions.GenerarBalanza>(BalanzasActionTypes.GenerarBalanza),
     map(action => action.payload),
-    switchMap(periodo =>
-      this.service.generar(periodo.ejercicio, periodo.mes).pipe(
+    switchMap(a =>
+      this.service.generar(a.empresa, a.ejercicio, a.mes).pipe(
         map(balanza => new fromActions.GenerarBalanzaSuccess({ balanza })),
         catchError(response =>
           of(new fromActions.GenerarBalanzaFail({ response }))
@@ -48,22 +59,18 @@ export class BalanzasEffects {
     )
   );
 
-  @Effect({ dispatch: false })
-  mostrarXml$ = this.actions$.pipe(
-    ofType<fromActions.MostrarBalanzaXml>(
-      BalanzasActionTypes.MostrarBalanzaXml
+  @Effect()
+  setBalanzasEmpresa$ = this.actions$.pipe(
+    ofType<fromActions.SetBalanzasEmpresa>(
+      BalanzasActionTypes.SetBalanzasEmpresa
     ),
-    map(action => action.payload.balanza),
-    tap(balanza => this.service.mostrarXml(balanza))
-  );
-
-  @Effect({ dispatch: false })
-  descargarXml$ = this.actions$.pipe(
-    ofType<fromActions.DescargarBalanzaXml>(
-      BalanzasActionTypes.DescargarBalanzaXml
+    tap(action =>
+      localStorage.setItem(
+        "econta.balanza.empresa",
+        JSON.stringify(action.payload.empresa)
+      )
     ),
-    map(action => action.payload.balanza),
-    tap(balanza => this.service.descargarXml(balanza))
+    map(action => new fromActions.LoadBalanzas())
   );
 
   @Effect()
@@ -75,5 +82,4 @@ export class BalanzasEffects {
     map(action => action.payload.response),
     map(response => new fromRoot.GlobalHttpError({ response }))
   );
-   */
 }

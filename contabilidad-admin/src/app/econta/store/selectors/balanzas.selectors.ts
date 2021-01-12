@@ -1,12 +1,12 @@
-import { createSelector } from '@ngrx/store';
+import { createSelector } from "@ngrx/store";
 
-import * as fromRoot from '../../../store';
-import * as fromFeature from '../reducers';
-import * as fromBalanzas from '../reducers/balanzas.reducer';
+import * as fromRoot from "../../../store";
+import * as fromFeature from "../reducers";
+import * as fromBalanzas from "../reducers/balanzas.reducer";
 
-import { Balanza } from '../../models';
+import { Balanza } from "../../models";
 
-import * as _ from 'lodash';
+import * as _ from "lodash";
 
 export const getBalanzasState = createSelector(
   fromFeature.getState,
@@ -32,7 +32,7 @@ export const getSelectedBalanza = createSelector(
   getBalanzasEntities,
   fromRoot.getRouterState,
   (entities, router): Balanza => {
-    return router.state && entities[router.state.params.balanzaId];
+    return router.state && entities[router.state.params.id];
   }
 );
 
@@ -44,4 +44,9 @@ export const getSelectedBalanzaId = createSelector(
 export const getBalanzasLoaded = createSelector(
   getBalanzasState,
   fromBalanzas.getBalanzasLoaded
+);
+
+export const getBalanzasEmpresa = createSelector(
+  getBalanzasState,
+  fromBalanzas.getBalanzasEmpresa
 );
