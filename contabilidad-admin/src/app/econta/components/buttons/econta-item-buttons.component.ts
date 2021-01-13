@@ -53,7 +53,7 @@ import { EcontaService } from "../../services";
       <button
         color="accent"
         (click)="fileInput.click()"
-        mat-button (click)="uploadAcuse()"
+        mat-button
         matTooltip="Subir Acuse" >
         <mat-icon >file_upload</mat-icon>
         <span>Acuse</span>
